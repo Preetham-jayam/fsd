@@ -1,0 +1,54 @@
+<%-include("../partials/adminheader.ejs");%>
+<h1 class="display-3 text-center" style="font-size: 3rem;">Teacher Details</h1>
+  
+    <div class="row col-md-12 justify-content-center btn-add">
+       
+        <div class="col-md-1 carousel-title "> </div>
+        <div class="col-md-10 carousel-title btn-add">
+          <div>
+            <hr />
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+      </div>
+      
+      <% for(const fod of model){%>
+
+            <div class="row col-md-12 justify-content-center">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                <div class="item-container">
+                    <div class="item-image col-md-3">
+                     
+                        <img class="img-thumbnail item-image" src="https://img1.cgtrader.com/items/4259557/bf9d20c4fa/large/3d-avatar-profession-as-teacher-3d-model-bf9d20c4fa.jpg"  style="width:200px"
+                        alt="Can not display">
+                  
+                    </div>
+                    <div class="item-content col-md-6">
+                    <div>
+                       
+                        <h3><%=fod.Fullname%></h3>
+                        
+                    </div>
+                    
+                    <div> <b>Id:</b>  <%=fod.tid%></div>
+                    <div> <b>Institute Name:</b> <%= fod.Instname%></div>
+                    <div> <b>PhoneNo:</b> <%= fod.PhoneNo%></div>
+                    <div><b>Email:</b> <%= fod.Email%></div>
+                    <div><b>Type:</b>  <span>Teacher</span> </div>
+                    
+                    </div>
+                    <div class="col-md-1">
+                            <div><button type="button" class="btn btn-danger">Block</button></div>
+                            <div><button type="button" class="btn btn-danger" style="margin-top: 20px;">Delete</button></div>
+                    
+                    </div>
+                </div>
+                </a>
+                <div>
+                    <hr />
+                </div>
+                </div>
+        <%}%>
+<%-include('../partials/adminfooter.ejs');%>
+

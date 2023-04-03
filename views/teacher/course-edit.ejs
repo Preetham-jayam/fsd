@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>course edit</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
+  />
+   <link rel="stylesheet" href="/admindb.css">
+  
+
+   
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark " id="navbar" style="background-color: #06bbcc;">
+        <a class="navbar-brand" href="/">
+          <i class="fa fa-home fa-lg"></i>
+        </a>
+        <a class="navbar-brand" href="/teacher">Eduphoria</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto"> 
+          </ul>
+          
+          
+          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav  mr-sm-2">
+          </ul>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                Welcome, <b>Dr.Bheemappa</b>!
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/teacher/profile">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  Sign Out
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <form method="POST" action="/teacher/course/edit/<%=course._id%>"  id="frmCourse" enctype="multipart/form-data" >
+        <div class="card">
+          <h3 class="card-header">Edit Course</h3>
+          <div class="card-body">
+            <div class="form-group">
+              <input type="hidden" name="IdCourse" value="<%=course._id%>">
+              <label for="txtNameCourse">Course:</label>
+              <input type="text" class="form-control" id="txtNameCourse" name="nameCourse" value="<%=course.name%>" placeholder="" autofocus>
+            </div>
+            <label for="fuImage">Image Course:</label>
+            <div class="form-group file-loading">
+              <input id="fuImage" name="fuImage" type="file" class="file" data-show-preview="false"  data-allowed-file-extensions='["jpg","png"]'>
+            </div>
+            <div class="form-group">
+              <label for="txtTitle">Title:</label>
+              <input type="text" class="form-control" id="txtTitle" name="title" value="<%=course.title%>">
+            </div>
+            <div class="form-group">
+              <label for="txtDescription">Description:</label>
+              <textarea name="Description" id="txtDescription" class="form-control"rows="2"><%=course.description%></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="txtPrice" >Fee:</label>
+              <input type="text" class="form-control" id="txtPrice" name="Price" value="<%=course.price%>"readonly>
+            </div>
+            <!-- <div class="form-group">
+              <label for="txtSaleCost" >SaleCost:</label>
+              <input type="text" class="form-control" id="txtSaleCost" name="SaleCost" value="<%=course.salecost%>" placeholder="5.00">
+            </div> -->
+            <div class="form-group">
+              <label for="txtStatus" >Status:</label>
+              <div class="input-group">
+              <select name="status" id="txtStatus" style="width:150px;height: 35px;">
+                      <option value="unfinished">unfinish</option>
+                      <option value="finished">finish</option>
+              </select>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-muted">
+            <a class="btn btn-success" href="/teacher/courseDetails/<%=course._id%>">Go Back</a>
+            <button type="submit" class="btn btn-outline-success" style="float: right;">
+              <i class="fa fa-check" aria-hidden="true"></i>
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-jXCJJT3KKcnNjZ3rfsabCj1EX4j2omR4xxm+H5CtywE=" crossorigin="anonymous"></script>
+<script src="/js/bootnavbar.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+      tinymce.init({
+        selector: '#txtDescription',
+        height: 300,
+        plugins:'paste image link autolink lists table media',
+        menubar: false,
+        toolbar: [
+        'undo redo | fontselect fontsizeselect | bold italic underline strikethrough | numlist bullist alignleft aligncenter alignright | forecolor  backcolor | table link image media'
+        ],
+        fontsize_formats: '10pt 12pt 14pt 16pt 18pt 24pt 36pt',
+        elementpath: false,
+        icons: 'material',
+        placeholder: 'write description here',
+      });
+</script>
+<script>
+  $('#frmCourse').on('submit', function (e) {
+    e.preventDefault();
+    const nameCourse=$('#txtNameCourse').val();
+    const title=$('#txtTitle').val();
+    let SaleCost=$('#txtSaleCost').val();
+    if(nameCourse.length === 0 || title.length === 0 || SaleCost.length === 0){
+       Swal.fire({
+        icon: 'error',
+        text: 'Empty data.',
+      })
+      return;
+    }
+    if(isNaN(SaleCost)){
+      Swal.fire({
+      icon: 'error',
+      text: 'not a number at SaleCost data.',
+    })
+    return;
+    }
+      if(SaleCost<=0 || SaleCost >999){
+       Swal.fire({
+        icon: 'error',
+        text: 'the amount is too large. Please re-write.',
+      })
+      return;
+     }
+     $('#frmCourse').off('submit').submit();
+  });
+</script>
+<script>
+$('#domain').on('change', function() {
+    let selected = $(this).val();
+    $("#categories option").each(function(){
+        let element =  $(this) ;
+        if (element.data("tag") != selected){
+            element.removeClass('visible');
+            element.addClass('hidden');
+            element.hide() ;
+        }else{
+            element.removeClass('hidden');
+            element.addClass('visible');
+            element.show();
+        }
+    });
+    let categories = $('#categories');
+    categories.prop('selectedIndex',categories.find("option.visible:eq(0)").index());
+}).triggerHandler('change');
+</script> 
+
+</html>

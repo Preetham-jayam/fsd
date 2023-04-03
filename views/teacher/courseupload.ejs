@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload page</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput-rtl.min.css">
+   <link rel="stylesheet" href="/admindb.css">
+  
+
+   
+</head>
+<body>
+  
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark " id="navbar" style="background-color: #06bbcc;">
+        <a class="navbar-brand" href="/">
+          <i class="fa fa-home fa-lg"></i>
+        </a>
+        <a class="navbar-brand" href="/teacher">Eduphoria</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto"> 
+          </ul>
+          
+         
+          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav  mr-sm-2">
+          </ul>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                Welcome, <b>Dr.Bheemappa</b>!
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/teacher/profile">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  Sign Out
+                </a>
+              </div>
+            </li>
+           
+      
+          </ul>
+        </div>
+      </nav>
+
+
+
+
+
+      <form method="post" id="frmCourse" enctype="multipart/form-data" action="/teacher/course/upload/<%=data._id%>?newlesson=new&newChapter=new">
+        <div class="card">
+          <h3 class="card-header">Upload</h3>
+          <div class="card-body">
+            <div class="form-group">
+              <input type="hidden" name="IdCourse" id="txtIdCourse" value="<%=data._id%>">
+            </div>
+            <div class="form-group">
+            <div class="row">
+              <div style="width: 15px;"></div>
+               <label for="chapter">Chapter:</label>
+                  <div class="col-sm-4">
+                      <div class="input-group">
+                      <select name="chapter" id="txtChapter" style="width: 100%;height: 35px;">
+                          <option value="new" id="new" selected>New Chapter</option>
+                          <option value="IdChapter" id="IdChapter">Chaptername</option>
+                      </select>
+                      </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <input type="text" id="txtNameChapter" name="newNameChapter" placeholder=" fill new chapter"style="width: 100%;height: 35px;">
+                  </div>
+            </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+              <div style="width: 15px;"></div>
+                  <label for="lesson">Lesson:</label>
+                  <div class="col-sm-4">
+                      <div class="input-group">
+                      <select name="lesson" id="txtLesson" style="width: 100%;height: 35px;">
+                         <option value="new" data-tag="new" selected>New Lesson</option>
+                          <option value="idLesson" data-tag="idChapter">Lesson name</option>
+                      </select>
+                      </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <input type="text" id="txtNameLesson" name="newNameLesson" placeholder=" fill new lesson" style="width: 100%;height: 35px;">
+                  </div>
+                  <div class="col-sm-10"></div>
+              </div>
+            </div>
+            <div class="form-group file-loading">
+              <label for="fuVideo">Video:</label>
+              <input id="fuVideo" name="fuVideo" type="file" class="file" data-allowed-file-extensions='["mp4", "mov", "avi"]'>
+            </div>
+          </div>
+          <div class="card-footer text-muted">
+              <a class="btn btn-success" href="/teacher/courseDetails/<%=data._id%>">Go Back</a>
+            <button class="btn btn-outline-success" style="float: right;">
+              <i class="fa fa-check" aria-hidden="true"><strong>Save</strong></i>
+            </button>
+          </div>
+        </div>
+      </form>
+
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-jXCJJT3KKcnNjZ3rfsabCj1EX4j2omR4xxm+H5CtywE=" crossorigin="anonymous"></script>
+<script src="/js/bootnavbar.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $("#fuVideo").fileinput({
+        maxFileCount: 10,
+        allowedFileTypes: ["mp4", "mov", "avi"]
+    });
+});
+
+</script>
+<script>
+$('#frmCourse').on('submit',function(e){
+  e.preventDefault();
+  if($('#txtChapter').val()== 'new'){
+    if($('#txtNameChapter').val()==''){
+      Swal.fire({
+        icon: 'error',
+        text: 'Empty name of new Chapter.',
+      })
+      return;
+    }
+    if($('#txtNameLesson').val()==''){
+      Swal.fire({
+        icon: 'error',
+        text: 'Empty name of new Lesson.',
+      })
+      return;
+    }
+  }else{
+    if($('#txtLesson').val() == 'new' && $('#txtNameLesson').val()==''){
+        Swal.fire({
+          icon: 'error',
+          text: 'Empty name of new Lesson.',
+        });
+        return;
+      }
+  };
+ 
+  $('#frmCourse').off('submit').submit();
+});
+
+</script>
+
+
+</html>

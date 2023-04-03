@@ -1,0 +1,138 @@
+<%-include('partials/header.ejs');%>
+
+<h1 class="display-3 text-center mt-5 mb-5" style="font-size: 4rem;">Contact Us Page</h1>
+
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center" >
+            <h1 class="mb-5">Contact For Any Query</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6" >
+                <h5 class="mb-4">Get In Touch</h5>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 " style="width: 50px; height: 50px;">
+                        <i class="fa fa-map-marker-alt "></i>
+                    </div>
+                    <div class="ms-3">
+                        <h5>IIIT Sricity</h5>
+                        <p>Chittor district,Andhra Pradesh</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 " style="width: 50px; height: 50px;">
+                        <i class="fa fa-phone-alt "></i>
+                    </div>
+                    <div class="ms-3">
+                        <h5>Mobile</h5>
+                        <p>9573569787</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 " style="width: 50px; height: 50px;">
+                        <i class="fa fa-envelope-open "></i>
+                    </div>
+                    <div class="ms-3">
+                        <h5>Email</h5>
+                        <p>iiits@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <form id="frmRegister"  action="/contact">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text"  class="form-control" name="name" id="name" placeholder="Your Name">
+                                <label for="name">Your Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="email" class="form-control" name="emailId" id="email" placeholder="Your Email">
+                                <label for="email">Your Email</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text"  class="form-control" name="Desc" id="Describe" placeholder="Describe">
+                                <label for="Describe">Describe</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control"  name="message" placeholder="Leave a message here" id="message" style="height: 150px"></textarea>
+                                <label for="message">Message</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-secondary w-100 py-3" style=" color: black;" type="submit">Send Message</button>
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<%-include('partials/footer.ejs');%>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    $('#frmRegister').on('submit',function(e){
+          e.preventDefault();
+          const name=$('#name').val();
+          if(name.length==0){
+            Swal.fire({
+              icon:'error',
+              text:'Invalid name data',
+            })
+              return;
+          }
+
+          
+          const message = $('#message').val();
+            if (message.length == 0) {
+              Swal.fire({
+                icon: 'error',
+                text: 'Invalid message data.',
+              })
+              return;
+            }
+            
+            const desc = $('#Describe').val();
+            if (desc.length == 0) {
+              Swal.fire({
+                icon: 'error',
+                text: 'Invalid Describe data.',
+              })
+              return;
+            }
+          
+          
+
+            const email = $('#email').val();
+            if (email.length == 0) {
+              Swal.fire({
+                icon: 'error',
+                text: 'Invalid email data.',
+              })
+              return;
+            }
+
+            if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Invalid email data.',
+                })
+                return;
+              }
+              $('#frmRegister').off('submit').submit();
+              
+    });
+
+</script>

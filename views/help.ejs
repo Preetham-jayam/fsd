@@ -1,0 +1,104 @@
+<%-include('partials/header.ejs');%>
+
+<section class="faqs">
+  <h2>Frequently asked questions</h2>
+  <div class="container faqs_container">
+    <article class="faq">
+      <div class="faq_icon"><i class="fa fa-plus"></i></div>
+      <div class="question_answer">
+        <h4>How do I know the right course for me?</h4>
+        <p>
+          List the interests of your concepts then choose the right course
+          accordingly
+        </p>
+      </div>
+    </article>
+    <article class="faq">
+      <div class="faq_icon"><i class="fa fa-plus"></i></div>
+      <div class="question_answer">
+        <h4>Do i get a certificate for every course i take?</h4>
+        <p>Yes you will get the certificate after completion of course.</p>
+      </div>
+    </article>
+    <article class="faq">
+      <div class="faq_icon"><i class="fa fa-plus"></i></div>
+      <div class="question_answer">
+        <h4>Is the course has life time access?</h4>
+        <p>Once the course is purchased then it is full time access.</p>
+      </div>
+    </article>
+    <article class="faq">
+      <div class="faq_icon"><i class="fa fa-plus"></i></div>
+      <div class="question_answer">
+        <h4>What is eLearning?</h4>
+        <p>
+          To put it simply, eLearning is electronic learning, and it typically
+          includes a combination of electronic media and educational technology.
+          E-learning is computer based and makes use of multimedia sources such
+          as text, audio, animations, images and so on.
+        </p>
+      </div>
+    </article>
+    <article class="faq">
+      <div class="faq_icon"><i class="fa fa-plus"></i></div>
+      <div class="question_answer">
+        <h4>Can I customize eLearning courses?</h4>
+        <p>
+          While there are many off the shelf ready-made courses available in the
+          market,eLearning courses can be customized to your specifications.
+          Many corporate bigwigs utilize this feature of eLearning to train
+          their staff on specific subjects. customization helps in providing a
+          better understanding of the processes and principles in an
+          organization. You can opt for a customized eLearning course, when your
+          training needs are unique and confidential. For instance, the procure
+          to pay (P2P) process differs from organization to organization. In
+          such cases, it is ideal to have a customized eLearning course.
+        </p>
+      </div>
+    </article>
+    <article class="faq">
+      <div class="faq_icon"><i class="fa fa-plus"></i></div>
+      <div class="question_answer">
+        <h4>How much does an eLearning course cost?</h4>
+        <p>
+          E-learning is a one-time investment, and once you have your course you
+          can use it as many times as you want. You can save precious dollars by
+          eliminating the need for repeated presence of the trainer. Building
+          and delivering eLearning include activities such as conducting a
+          training needs analysis, comprehending the content, developing an
+          instructional strategy, identifying the best delivery method like LMS,
+          assessing the extent of customization and so on.
+        </p>
+      </div>
+    </article>
+
+    <form class="qForm" id="helpfrm" action="/help">
+      <label for="question">Questions:</label><br />
+      <input id="question" name="question" style="font-size: 15pt ; margin: 5px;" >
+      
+      <br />
+      <button type="submit" class="btn btn-warning">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Submit
+      </button>
+     
+    </form>
+  </div>
+</section>
+<%-include('partials/footer.ejs');%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    $('#helpfrm').on('submit',function(e){
+          e.preventDefault();
+          const question=$('#question').val();
+          if(question.length==0){
+            Swal.fire({
+              icon:'error',
+              text:'Question is Empty please type something',
+            })
+              return;
+          }
+
+          $('#helpfrm').off('submit').submit();
+        });
+</script>

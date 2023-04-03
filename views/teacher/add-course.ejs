@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add course</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
+  />
+   <link rel="stylesheet" href="/admindb.css">
+  
+
+   
+</head>
+<body>
+  
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark " id="navbar" style="background-color: #06bbcc;">
+        <a class="navbar-brand" href="/">
+          <i class="fa fa-home fa-lg"></i>
+        </a>
+        <a class="navbar-brand" href="/teacher">Eduphoria</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto"> 
+          </ul>
+          
+          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav  mr-sm-2">
+          </ul>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                Welcome, <b>Dr.Bheemappa</b>!
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/teacher/profile">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  Profile
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  Sign Out
+                </a>
+              </div>
+            </li>
+           
+      
+          </ul>
+        </div>
+      </nav>
+
+
+
+
+
+
+<form action="/teacher/addCourse" method="post" id="frmCourse" enctype="multipart/form-data">
+  <div class="card">
+    <h5 class="card-header">New Course</h5>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="txtNameCourse">What is the course name?</label>
+        <input type="text" class="form-control" id="txtNameCourse" name="nameCourse" placeholder="" autofocus>
+      </div>
+      <div class="form-group">
+        
+      <div class="form-group">
+        <label for="txtTitle">The course title is:</label>
+        <input type="text" class="form-control" id="txtTitle" name="title" placeholder="what you want to share with everybody?">
+      </div>
+      <div class="form-group">
+        <label for="txtcategory">The course category is:</label>
+        <input type="text" class="form-control" id="txtcategory" name="category" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="txtDescription">Description of course:</label>
+        <textarea name="Description" id="txtDescription" class="form-control"rows="2"></textarea>
+      </div>
+      
+            <div class="form-group file-loading">
+              <label for="fuImage">Image Course:</label>
+              <input id="fuImage" name="fuImage" type="file" class="file" data-show-preview="false"  data-allowed-file-extensions='["jpg","png"]'>
+            </div>
+      <div class="form-group">
+        <label for="txtPrice" >How much do you want to post this course?</label>
+        <input type="text" class="form-control" id="txtPrice" name="Price" placeholder="₹5999.00">
+      </div>
+      
+       <div class="form-group">
+        <label for="txtsale" >How much do you want to sale this Course?</label>
+        <input type="text" class="form-control" id="txtsale" name="salePrice" placeholder="₹4999.00">
+      </div>
+
+     
+     
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-outline-success">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Create new course
+      </button>
+    </div>
+  </div>
+</form>
+
+
+</body>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-jXCJJT3KKcnNjZ3rfsabCj1EX4j2omR4xxm+H5CtywE=" crossorigin="anonymous"></script>
+<script src="/js/bootnavbar.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.tiny.cloud/1/wafynfll6yk0et81pwlvcwdx6r76d4pl4gy3397p9126dmzm/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#txtDescription',
+    height: 300,
+    menubar: false,
+    toolbar: [
+    'undo redo | fontselect fontsizeselect | bold italic underline strikethrough | numlist bullist alignleft aligncenter alignright | forecolor  backcolor | table link image media'
+    ],
+    fontsize_formats: '10pt 12pt 14pt 16pt 18pt 24pt 36pt',
+    elementpath: false,
+    icons: 'material',
+    placeholder: 'write description here',
+    toolbar_mode:'scrolling'
+  });
+</script>
+
+<script>
+  $('#frmCourse').on('submit', function (e) {
+    e.preventDefault();
+    const nameCourse=$('#txtNameCourse').val();
+    const title=$('#txtTitle').val();
+    let Price=$('#txtPrice').val();
+    if(nameCourse.length === 0 || title.length === 0 || Price.length === 0){
+       Swal.fire({
+        icon: 'error',
+        text: 'Empty data.',
+     
+       })
+      return;
+    }
+    if(isNaN(Price)){
+      Swal.fire({
+      icon: 'error',
+      text: 'not a number at Price data.',
+    })
+    return;
+    }
+      if(Price<=0 || Price >9999){
+       Swal.fire({
+        icon: 'error',
+        text: 'the amount is too large. Please re-write.',
+      })
+      return;
+     }
+     $('#frmCourse').off('submit').submit();
+  });
+  </script>
+</html>

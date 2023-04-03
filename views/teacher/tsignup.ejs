@@ -1,0 +1,188 @@
+
+<%-include("../partials/header.ejs") %>;
+
+<section class="">
+    <form method="post" action="/tsignup" class="form-wrapper" id="frmRegister"  > 
+    <div class="container">
+      <div class="row d-flex justify-content-center align-items-center ">
+        <div class="col">
+          <div class="card card-registration my-4">
+            <div class="row g-0" >
+              <div class="col-xl-6 d-none d-xl-block">
+                <img src="https://img.freepik.com/free-vector/teacher-standing-near-blackboard-holding-stick-isolated-flat-vector-illustration-cartoon-woman-character-near-chalkboard-pointing-alphabet_74855-8600.jpg?size=626&ext=jpg&ga=GA1.2.873243650.1672493420&semt=sph"
+                  alt="Sample photo" class="img-fluid"
+                  style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+              </div>
+              <div class="col-xl-6">
+                <div class="card-body p-md-5 text-black">
+                  <h3 class="mb-5 text-uppercase">Teacher Registration Form</h3>
+                  <input type="text" hidden name="role" value="1">
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="name">Full Name</label>
+                      <input type="text" id="name" name="fname" class="form-control form-control-lg"  />
+                       <small class="error-name error"></small>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="phno">Phone No</label>
+                        <input type="text" id="phno" name="phno" class="form-control form-control-lg"  />
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="instame">Institute Name</label>
+                        <input type="text" name="instname" autocomplete="off" id="instname" class="form-control form-control-lg"  />
+                        <small class="error-email error"></small>
+                      </div>
+                      <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
+
+                        <h6 class="mb-0 me-4">Gender: </h6>
+      
+                        <div class="form-check form-check-inline mb-0 me-4">
+                          <input class="form-check-input" type="radio" name="gender" id="femaleGender"
+                            value="1" />
+                          <label class="form-check-label" for="femaleGender">Female</label>
+                        </div>
+      
+                        <div class="form-check form-check-inline mb-0 me-4">
+                          <input class="form-check-input" type="radio" name="gender" id="maleGender"
+                            value="0" />
+                          <label class="form-check-label" for="maleGender">Male</label>
+                        </div>
+                      </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="emailId">Email ID</label>
+                    <input type="email" name="email" autocomplete="off" id="emailId" class="form-control form-control-lg"  />
+                    <small class="error-email error"></small>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" name="pwd" autocomplete="off" id="password" class="form-control form-control-lg"  />
+                    <small class="error-password error"></small>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="repassword">ConfirmPassword</label>
+                    <input type="password" id="repassword" class="form-control form-control-lg"  />
+                    <small class="error-repassword error"></small>
+                  </div>
+
+                  <div class="member">
+                    <p>Already a memeber? <a href="/login">Login</a></p>
+                  </div>
+  
+                  <div class="d-flex justify-content-end pt-5">
+                    <!-- <button type="submit" style="background-color: #06BBCC;" class="btn  btn-lg ">Submit form</button> -->
+                    <button type="submit" class="btn btn-outline-success">
+                      <i class="fa fa-check" aria-hidden="true"></i>
+                      Register
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</form>
+  </section>
+
+
+<%-include("../partials/footer.ejs") %>;
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const pwdreg= /^^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/;
+    $('#frmRegister').on('submit',function(e){
+          e.preventDefault();
+          const name=$('#name').val();
+          if(name.length==0){
+            Swal.fire({
+              icon:'error',
+              text:'Invalid name data',
+            })
+              return;
+          }
+          const password = $('#password').val();
+            if (password.length == 0) {
+              Swal.fire({
+                icon: 'error',
+                text: 'Invalid password data.',
+              })
+              return;
+            }
+            if( !pwdreg.test(password)){
+             Swal.fire({
+              icon:'error',
+              text:'Password contain minimum 6 characters and atleast one special character one number and one digit ',
+             })
+             return;
+          }
+
+            const phno=$('#phno').val();
+          let regph=/^[0-9]+$/;
+
+          if(phno.length==0 ){
+             Swal.fire({
+              icon:'error',
+              text:'Phone Number is Empty ',
+             })
+             return;
+          }
+          if( !regph.test(phno)){
+             Swal.fire({
+              icon:'error',
+              text:'Phone Number must be in numbers ',
+             })
+             return;
+          }
+
+
+          if(phno.length!=10 || !regph.test(phno)){
+             Swal.fire({
+              icon:'error',
+              text:'Phone Number must be 10 numbers ',
+             })
+             return;
+          }
+
+
+
+            const Instname=$('#instname').val();
+            if(Instname.length == 0){
+              Swal.fire({
+                icon:'error',
+                text:'Invalid Inst Name',
+              })
+              return;
+            }
+            const confirm = $('#repassword').val();
+            if (password !== confirm) {
+              Swal.fire({
+                icon: 'error',
+                text: 'Invalid confirm password data.',
+              })
+              return;
+            }
+
+            const email = $('#emailId').val();
+            if (email.length == 0) {
+              Swal.fire({
+                icon: 'error',
+                text: 'Invalid email data.',
+              })
+              return;
+            }
+
+            if (!mailformat.test(email)) {
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Invalid email data.',
+                })
+                return;
+              }
+              $('#frmRegister').off('submit').submit();
+             
+    });
+</script>
+
+
+</html>

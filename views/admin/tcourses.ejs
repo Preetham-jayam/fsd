@@ -1,0 +1,62 @@
+<%-include("../partials/adminheader.ejs");%>
+<h1 class="display-3 text-center" style="font-size: 3rem;">Course Details</h1>
+    
+  
+    <div class="row col-md-12 justify-content-center btn-add">
+       
+        <div class="col-md-1 carousel-title "> </div>
+        <div class="col-md-10 carousel-title btn-add">
+          <div>
+            <hr />
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+      </div>
+      
+      <% for(const fod of model){%>
+        <div class="row col-md-12 justify-content-center">
+          <div class="col-md-1"></div>
+         
+          <div class="col-md-10">
+              <div class="item-container">
+                  <div class="item-image col-md-3">
+                    <img class="img-thumbnail item-image" src='/Img/course.jpg'
+                      alt="Can not display" style="width: 250px;">
+                  </div>
+                <div class="item-content col-md-6">
+                  <div>
+                     <a href="/admin/detail/course/<%=fod.cid%>">
+                      <h3><%=fod.Title%></h3></a>
+                  </div>
+                  <div>
+                    <%=fod.Name%>
+                  </div>
+                 
+                  <div class="item-teacher">Dr.Bheemappa </div>
+                  <div >
+                    <p class="avgRating ">4.5 (3 Ratings)</p>
+                  </div>
+                </div>
+                <div>
+                  <div class="item-price col-md-1">
+                    <div class="item-real-price">
+                      <h4>₹<%=fod.cost%></h4>
+                    </div>
+                    <div><strike>₹<%=fod.salecost%></strike></div>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div><a type="button" href="/admin/course/edit/<%=fod.cid%>" class="btn p-2 btn-success btn-dimen">Edit</a></div>
+                  <div><a href="/admin/course/delete/<%=fod.cid%>" type="button" class="btn btn-danger">Disable</a></div>
+                </div>
+              </div>
+              </a>
+              
+            <div>
+              <hr />
+            </div>
+           
+        </div>
+        <%}%>
+<%-include('../partials/adminfooter.ejs');%>
+

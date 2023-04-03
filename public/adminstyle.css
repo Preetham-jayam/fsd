@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    font-family: poppins;
+}
+
+body{
+    
+    font-family: poppins;
+    align-items: center;
+    justify-content: center;
+    background-image: url("https://t3.ftcdn.net/jpg/02/42/77/22/360_F_242772256_PRwokoyoXkDCIISNjfj9N3If0TPFtje8.jpg");
+    background-size: cover; 
+}
+.container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 30px;
+    box-shadow: 0 50px 50px -50px darkslategray;
+    height: max-content;
+    width: max-content;
+    
+}
+div.container div.admin-form{
+    width: 300px;
+    margin-right: 30px;
+}
+.admin-form{
+    margin-left: 300px;
+}
+div.container div.admin-form h2{
+    color: #1c1c1e;
+    margin-bottom: 20px;
+}
+
+div.container div.admin-form input{
+    border: none;
+    outline: none;
+    border-radius: 0;
+    width: 100%;
+    border-bottom: 2px solid #1c1c1e;
+    margin-bottom: 25px;
+    padding: 7px 0;
+    font-size: 14px;
+}
+
+div.container div.admin-form button{
+    
+    color: white;
+    background-color: #1c1c1e;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    font-size: 14px;
+    padding: 5px 12px;
+    font-weight: 500;
+}
+div.container div.admin-image{
+    width: 300px;
+}
+
+.adminimage{
+    width: 100%;
+
+}

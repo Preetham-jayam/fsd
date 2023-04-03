@@ -1,0 +1,60 @@
+<nav
+class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
+>
+<a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+  <h2 class="m-0"><span style="color: #06bbcc">Edu</span>Phoria</h2>
+</a>
+
+<form
+  style="align-items: center; display: flex"
+  class="d-flex"
+  method="post"
+  action="/course/search"
+>
+  <input
+    name="cname"
+    class="form-control me-2"
+    type="search"
+    placeholder="Search Courses"
+    aria-label="Search"
+  />
+  <button class="btn" type="submit" style="color: #06bbcc">
+    <i class="fa fa-search"></i>
+  </button>
+</form>
+<button
+  type="button"
+  class="navbar-toggler me-4"
+  data-bs-toggle="collapse"
+  data-bs-target="#navbarCollapse"
+>
+ 
+  <i class="fas fa-hamburger" style="color: #06bbcc;"></i>
+</button>
+<div class="collapse navbar-collapse" id="navbarCollapse">
+  <div class="navbar-nav ms-auto p-4 p-lg-0">
+    <a href="/" class="nav-item nav-link">Home</a>
+    <a href="/about" class="nav-item nav-link">About</a>
+    <a href="/courses" class="nav-item nav-link">Courses</a>
+    <div class="nav-item dropdown">
+      <a
+        href="#"
+        class="nav-link dropdown-toggle"
+        data-bs-toggle="dropdown"
+        >Register</a
+      >
+      <div class="dropdown-menu fade-down m-0">
+        <a href="/login" class="dropdown-item"
+          ><i class="fa fa-sign-in" aria-hidden="true"></i>Login</a
+        >
+        <a href="/tlogin" class="dropdown-item"
+        ><i class="fa fa-sign-in" aria-hidden="true"></i>TeacherLogin</a
+      >
+        <a href="/signup" class="dropdown-item">Signup</a>
+      </div>
+    </div>
+    <a href="/contact" class="nav-item nav-link">Contact</a>
+    <a href="/help" class="nav-item nav-link">FAQs</a>
+  </div>
+</div>
+</nav>
