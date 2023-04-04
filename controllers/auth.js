@@ -8,7 +8,6 @@ const Teacher = require("../models/teacher");
 exports.getLogin = (req, res) => {
   res.render("login");
 };
-
 exports.postLogin = (req, res) => {
   const mail = req.body.email;
   const password = req.body.password;
@@ -27,7 +26,12 @@ exports.postLogin = (req, res) => {
             if (err) {
               console.log(err);
             }
-            res.redirect("/student/shome");
+            if(user.role==0){
+                res.redirect("/student/shome");
+            }
+            else if(user.role==1){
+                res.redirect('/teacher/home');
+            }
           });
         }
         res.redirect("/");

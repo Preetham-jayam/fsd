@@ -38,7 +38,6 @@ app.use(
   })
 );
 app.use((req, res, next) => {
-  // throw new Error('Sync Dummy');
   if (!req.session.user) {
     return next();
   }
@@ -62,11 +61,13 @@ const teacherRoutes = require("./routes/teacher");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
 const studRoutes = require("./routes/student");
-app.use(authRoutes);
+const courseRoutes=require('./routes/course');
 
+app.use(authRoutes);
 app.use("/teacher", teacherRoutes);
 app.use("/admin", adminRoutes);
 app.use(studRoutes);
+app.use(courseRoutes);
 
 // const dbna=path.join(__dirname,"data","fsd.db");
 
@@ -155,9 +156,9 @@ app.get("/about", function (req, res) {
   res.render("about");
 });
 
-app.get("/courses", function (req, res) {
-  res.render("teacher/courses");
-});
+// app.get("/courses", function (req, res) {
+//   res.render("teacher/courses");
+// });
 
 app.post("/admin", function (req, res) {
   res.render("admin/admin");
@@ -395,12 +396,11 @@ app.get("/student/account/course-list", (req, res) => {
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/Learning"
-  )
+  .connect("mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/Learning")
   .then((result) => {
     app.listen(3001, () => {
-      console.log("listening to port 3001");
+      console.log("App Listening to port 3001");
     });
+    console.log('MongoDB Connected...');
   })
   .catch((err) => console.log("MongoDB connection error:", err));

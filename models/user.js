@@ -16,9 +16,9 @@ const userSchema = new mongoose.Schema( {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Student",
     },
-    educator: {
+    teacher: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Educator",
+        ref: "Teacher",
     },
     role: {
         type: Number,

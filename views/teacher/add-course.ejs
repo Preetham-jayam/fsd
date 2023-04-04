@@ -52,7 +52,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                Welcome, <b>Dr.Bheemappa</b>!
+                Welcome, <b>Dr.<%=teacher.FullName%></b>!
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/teacher/profile">
@@ -79,6 +79,7 @@
 
 <form action="/teacher/addCourse" method="post" id="frmCourse" enctype="multipart/form-data">
   <div class="card">
+          <input type="hidden" name="Id" value="<%=teacher._id %>">
     <h5 class="card-header">New Course</h5>
     <div class="card-body">
       <div class="form-group">
