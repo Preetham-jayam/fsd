@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Eduphoria</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
+
+    <!-- Favicon -->
+    <link href="Img/favicon.ico" rel="icon" />
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icon Font Stylesheet -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" href="/bootstrap.min.css" />
+    <link rel="stylesheet" href="/font-awesome.css" />
+
+    <link href="../../preview.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav id="navbar_top"
+    class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
+  >
+    <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+      <h2 class="m-0"><span style="color: #06bbcc">Edu</span>Phoria</h2>
+    </a>
+
+    <form
+      style="align-items: center; display: flex"
+      class="d-flex"
+      method="post"
+      action="/course/search"
+    >
+      <input
+        name="cname"
+        class="form-control me-2"
+        type="search"
+        placeholder="Search Courses"
+        aria-label="Search"
+      />
+      <button class="btn" type="submit" style="color: #06bbcc">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+    <button
+      type="button"
+      class="navbar-toggler me-4"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+    >
+     
+      <i class="fas fa-hamburger" style="color: #06bbcc;"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto p-4 p-lg-0">
+        <a href="/student/shome" class="nav-item nav-link">Home</a>
+        <a href="/about" class="nav-item nav-link">About</a>
+        <a href="/courses" class="nav-item nav-link">Courses</a>
+        <a href="/contact" class="nav-item nav-link">Contact</a>
+        <a href="/help" class="nav-item nav-link">FAQs</a>
+        <div class="nav-item dropdown">
+          <a
+            href="#"
+            class="nav-link dropdown-toggle"
+            data-bs-toggle="dropdown"
+            ><i class="fas fa-user"></i>Welcome,<%= student.firstName%></a
+          >
+          <div class="dropdown-menu fade-down m-0">
+            <a href="/student/account/profile" class="dropdown-item "
+              ><i style="padding-right: 2px;" class="fas fa-power-off" aria-hidden="true"></i>Profile</a
+            >
+            <a href="/logout" class="dropdown-item"> <i class="fas fa-sign-out-alt "></i> Signout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+ 
+ <!-- Main Wrapper Starts -->
+ <div class="main-wrapper">
+    
+        
+
+    <!-- Course Details Section Starts-->
+<section class="course-details section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Course Header Starts -->
+                <div class="course-header box">
+                    <h2 class="text-capitalize" name="Title"><%=data.title%></h2>
+                    <div class="rating">
+                        <span class="average-rating">(4.5)</span>
+                        <span class="average-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+
+                        </span>
+                        <span class="reviews">(230 Reviews)</span>
+                        <ul>
+                            <li>Enrolled students - <span>220</span></li>
+                            <li>Created by - <span><a href="#">Dr.<%=teacher.FullName%></a></span></li>
+                            <li>Last Updated - <span>10/03/23</span></li>
+                            <li>Language - <span>English</span></li>
+                        </ul>
+                    </div>
+                    <!-- Course Header Ends-->
+                </div>
+                <!-- Course tabs start -->
+                <nav class="course-tabs">
+                    <div class="nav nav-tabs border-0" id="nav-tab" role="tablist" >
+                      <button class="btn-them nav-link active  " id="course-curriculum-tab" data-bs-toggle="tab" data-bs-target="#course-curriculum" type="button" role="tab" aria-controls="course-curriculum" aria-selected="true">Curriculum</button>
+                      <button class="btn-them nav-link" id="course-description-tab" data-bs-toggle="tab" data-bs-target="#course-description" type="button" role="tab" aria-controls="course-description" aria-selected="false">Description</button>
+                      <button class="btn-them nav-link" id="course-instructor-tab" data-bs-toggle="tab" data-bs-target="#course-instructor" type="button" role="tab" aria-controls="course-instructor" aria-selected="false">Instructor</button>
+                     
+
+                    </div>
+                  </nav>
+                 
+                <!-- Course tabs end -->
+                <!-- Tab panes start -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active " id="course-curriculum" role="tabpanel" aria-labelledby="course-curriculum-tab">
+                        <div class="course-curriculum box">
+                            <h3 class="text-capitalize mb-4">course curriculum</h3>
+                           <!-- Accordtion start -->
+                           <div class="accordion" id="accordion">
+                            <!-- Accordion item starts -->
+                            <%if(chapters.length == 0){%>
+                                <h5>Chapters are not added yet.....</h5>
+                            <%}%>
+                            <% chapters.forEach((chapter)=>{%>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-1">
+                                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#<%=chapter._id%>" aria-expanded="true" aria-controls="collapse-1">
+                                        <%=chapter.name%> <span><%=chapter.lessons.length%> Lessons | <%=chapter.lessons.length * 6%> min</span>
+                                      </button>
+                                    </h2>
+                                    <div id="<%=chapter._id%>" class="accordion-collapse collapse" aria-labelledby="heading-1" data-bs-parent="#accordion">
+                                      <div class="accordion-body">
+                                       <ul>
+                                        <%chapter.lessons.forEach((lesson)=>{%>
+                                            <li>
+                                                <i class="fas fa-play-circle"></i>
+                                               <%=lesson.title%>
+                                                <span>06:00</span>
+                                            </li>
+                                       <% })%>
+                                       </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                   <!-- Accordion item ends -->
+
+
+                            <%})%>        
+                    </div>
+                    <!-- Accordtion ends -->
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade " id="course-description" role="tabpanel" aria-labelledby="course-description-tab">
+                       <div class="course-description box">
+                        <h3 class="text-capitalize mb-4" >Description</h3>
+                        <span name="Description">
+                        <p><%=data.description%></p>
+                      </span>
+                       </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="course-instructor" role="tabpanel" aria-labelledby="course-instructor-tab">
+                        <div class="course-instructor box">
+                            <h3 class="mb-3 text-capitalize">instructor</h3>
+                            <div class="instructor-details">
+                                <div class="details-wrap d-flex align-items-center flex-wrap">
+                                    <div class="left-box me-4">
+                                        <div class="img-box">
+                                            <img src="/Img/Instructor/1.png"class="rounded-circle" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="right-box">
+                                        <h4>Dr.<%=teacher.FullName%> <span>Web Developer</span></h4>
+                                        <ul><li>
+                                            <i class="fas fa-star"></i>4.5
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-play-circle"></i> 10 Courses
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-certificate"></i> 200 Reviews
+                                        </li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <div class="text mb-0">
+                                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione vel expedita tenetur itaque officia perferendis facere, excepturi quasi quas ex modi numquam optio dolores consequatur reiciendis beatae aperiam maiores. Nesciunt expedita saepe inventore fugiat quos odio ex dolorum repudiandae similique quam! Ab incidunt accusamus consectetur excepturi, soluta fugit officia ad?</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                  
+                  </div>
+                <!-- Tab panes ends -->
+
+            </div>
+            <div class="col-lg-4">
+                <!-- Course sidebar start -->
+                <div class="course-sidebar box">
+                    <div class="img-box position-relative" data-bs-toggle="modal" data-bs-target="#video-modal">
+                        <img src="/<%=data.Imageurl%>" class="w-100" alt="<%=data.title%>">
+                        <div class="play-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <p class="text-center">Course Preview</p>
+                    </div>
+                    <div class="price d-flex align-items-center mb-3">
+                        <span class="price-old">
+                           ₹4999
+                        </span>
+                        <span class="price-new">₹<%=data.price%></span>
+                        <span class="price-discount">41% off</span>
+                    </div>
+                    <h3 class="mb-3">Course Feautures</h3>
+                    <ul class="feautures-list">
+                        <li><i class="fas fa-video"></i>Total 15 Lessons</li>
+                        <li><i class="fas fa-download"></i>Downloadable resources</li>
+                        <li><i class="far fa-newspaper"></i>10 articles</li>
+                        <li><i class="fas fa-mobile-alt"></i>Access on mobile</li>
+                        <li><i class="fas fa-trophy"></i>Certificate of Completion</li>
+                    </ul>
+                    <div class="btn-wrap">
+                        <form action="/student/enroll" method="post">
+                            <input type="hidden" name="studentId" value="<%=student._id%>">
+                            <input type="hidden" name="courseId" value="<%=data._id%>">
+                            <button type="submit" class="btn btn-theme btn-block">
+                                Enroll Now
+                              </button>
+                        </form>
+                        
+                      
+                    </div>
+                </div>
+                <!-- Course sidebar ends -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Course Details Section Ends-->
+
+   
+
+     </div>
+      <!-- Main Wrapper Ends -->
+
+      <!-- Modal -->
+<div class="modal fade video-modal js-course-preview-modal" id="video-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog model-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body p-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+              <div class="ratio ratio-16x9">
+                <video controls class="js-course-preview-video">
+                    <source src="/video/preview.mp4" type="video/mp4">
+                </video>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <script src="/js/bootnavbar.js"></script>
+<%-include('../partials/footer.ejs');%>

@@ -52,7 +52,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                Welcome, <b>Dr.Bheemappa</b>!
+                Welcome, <b>Dr.<%=teacher.FullName%></b>!
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/teacher/profile">
@@ -94,7 +94,7 @@
             
             <div class="form-group">
               <label for="txtPrice" >Fee:</label>
-              <input type="text" class="form-control" id="txtPrice" name="Price" value="<%=course.price%>"readonly>
+              <input type="text" class="form-control" id="txtPrice" name="Price" value="<%=course.price%>">
             </div>
             <!-- <div class="form-group">
               <label for="txtSaleCost" >SaleCost:</label>

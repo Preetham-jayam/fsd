@@ -1,8 +1,10 @@
-body {
-    font-family: "Nunito", sans-serif;
-  }
 
-  .sidenav {
+
+  body {
+    font-family: "Nunito", sans-serif;
+}
+
+.sidenav {
     height: 100%;
     width: 0;
     position: fixed;
@@ -13,193 +15,285 @@ body {
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
-  }
+}
 
-  .sidenav a {
+.sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
     color: black;
     display: block;
     transition: 0.3s;
-  }
+}
 
-  .sidenav a:hover {
+.sidenav a:hover {
     color: #f1f1f1;
-  }
+}
 
-  .sidenav .closebtn {
+.sidenav .closebtn {
     position: absolute;
     top: 0;
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
-  }
+}
 
-  @media screen and (max-height: 450px) {
+@media screen and (max-height: 450px) {
     .sidenav {
-      padding-top: 15px;
+        padding-top: 15px;
     }
     .sidenav a {
-      font-size: 18px;
+        font-size: 18px;
     }
-  }
+}
 
-  .btn-add {
+.btn-add {
     margin-top: 1%;
-  }
+}
 
-  .btn-dimen {
+.btn-dimen {
     margin-top: 15px;
     margin-bottom: 15px;
-  }
-  /* img {
-    border-radius: 50%;
-    align-self: center;
-  } */
-  p {
+}
+
+p {
     align-self: center;
     font-size: larger;
-  }
-  button {
+}
+
+button {
     align-items: center;
     align-self: center;
-  }
-        .item-container {
-        display: flex;
-        padding-left: 4%;
-        justify-content: space-between;
-    }
-    a {
-        text-decoration: none;  
-        color: black;
-    }
+}
 
-    a:link {
-        text-decoration: none;
-    }
-    
-    /* visited link */
-    a:visited {
-        text-decoration: none;
-    }
-    
-    /* mouse over link */
-    a:hover {
-        text-decoration: none;
-    }
-    
-    /* selected link */
-    a:active {
-        text-decoration: none;
-    }
+a {
+    text-decoration: none;  
+    color: black;
+}
 
-    .item-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+a:link {
+    text-decoration: none;
+}
 
-    .content-description {
-        line-height: 1.5em;
-        height: 3.1em;
-        overflow: hidden;
-    }
+/* visited link */
+a:visited {
+    text-decoration: none;
+}
 
-    .rating-number {
-        color: grey;
-    }
+/* mouse over link */
+a:hover {
+    text-decoration: none;
+}
 
-    .item-image {
-        width: 100%;
-        margin-right: 1%;
-    }
+/* selected link */
+a:active {
+    text-decoration: none;
+}
 
-    .img-box {
-        height: 160px;
-        width: 100%;
-        position: relative;
-    }
+.item-container {
+    display: flex;
+    padding-left: 4%;
+    justify-content: space-between;
+}
+a {
+    text-decoration: none;  
+    color: black;
+}
 
-    .item-length {
-        justify-content: row;
-    }
-
-    .star-rating li {
-        padding: 0;
-    }
-
-    .star-rating i {
-        font-size: 14px;
-        color: #ffc000;
-    }
-
-    .item-teacher {
-        color: darkslategrey;
-        font-weight: 600;
-    }
-
-    .item-real-price {
-        color: #86bd57;
-        font-weight: 600;
-    }
-    .item-price {
-        flex-direction: column;
-    }
-    .select-option {
-        padding: 0.5em;
-        border-radius: 10px;
-        background-color: white;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .div-finish-course{
-        background-color: #eff184;
-    }   
-    .details .button-add{
-        margin-left: 90px;
-    }
-    .avgRating{
-        color: #ffc000;
-    }
-
-
-    .dropdown-menu {
-      margin-top: 0;
+a:link {
+    text-decoration: none;
   }
   
-  .dropdown-menu .dropdown-toggle::after {
-      vertical-align: middle;
-      border-left: 4px solid;
-      border-bottom: 4px solid transparent;
-      border-top: 4px solid transparent;
+  /* visited link */
+  a:visited {
+    text-decoration: none;
   }
   
-  .dropdown-menu .dropdown .dropdown-menu {
-      left: 100%;
-      top: 0%;
-      margin: 0 20px;
-      border-width: 0;
+  /* mouse over link */
+  a:hover {
+    text-decoration: none;
   }
   
-  .dropdown-menu .dropdown .dropdown-menu.left {
-      right: 100%;
-      left: auto;
+  /* selected link */
+  a:active {
+    text-decoration: none;
   }
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content-description {
+    line-height: 1.5em;
+    height: 3.1em;
+    overflow: hidden;
+}
+
+.rating-number {
+    color: grey;
+}
+
+.item-image {
+    width: 100%;
+    margin-right: 1%;
+}
+
+.img-box {
+    height: 160px;
+    width: 100%;
+    position: relative;
+}
+
+.item-length {
+    justify-content: row;
+}
+
+.star-rating li {
+    padding: 0;
+}
+
+.star-rating i {
+    font-size: 14px;
+    color: #ffc000;
+}
+
+.item-teacher {
+    color: darkslategrey;
+    font-weight: 600;
+}
+
+.item-real-price {
+    color: #86bd57;
+    font-weight: 600;
+}
+
+.item-price {
+
+    flex-direction: column;
+}
+
+.select-option {
+    padding: 0.5em;
+    border-radius: 10px;
+    background-color: white;
+
+    align-items: center;
+    justify-content: space-between;
+}
+.div-finish-course{
+    background-color: #eff184;
+}
+
+
+   
+/* Course card styling */
+.course-card {
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+background-color: white;
+border-radius: 10px;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+overflow: hidden;
+margin-bottom: 20px;
+transition: all 0.3s ease-in-out;
+}
+
+.course-card:hover {
+box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+transform: translateY(-5px);
+}
+
+.card-image {
+width: 100%;
+height: 200px;
+object-fit: cover;
+object-position: center;
+}
+
+.card-content {
+padding: 20px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+height: 100%;
+}
+
+.card-title {
+font-size: 24px;
+font-weight: 600;
+margin-bottom: 10px;
+}
+
+.card-description {
+font-size: 14px;
+color: #555;
+margin-bottom: 15px;
+}
+
+.card-rating {
+display: flex;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.card-rating i {
+color: #ffc000;
+font-size: 18px;
+margin-right: 5px;
+}
+
+.card-rating span {
+font-size: 16px;
+color: #555;
+}
+
+.card-teacher {
+
+color: #0d0c0c;
+margin: 5px;
+}
+
+.card-price {
+
+font-weight: 600;
+color: #86bd57;
+margin-bottom: 5px;
+}
+
+.card-actions {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 10px;
+}
+
+.card-button {
+
+
+border: none;
+padding: 10px 15px;
+border-radius: 5px;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease-in-out;
+}
+
+
+/* Responsive styles */
+@media only screen and (max-width: 768px) {
+.course-card {
+width: 45%;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.course-card {
+width: 100%;
+}
+}
   
-  .dropdown-menu>li a:hover,
-  .dropdown-menu>li.show {
-      background: #06bbcc;
-      color: white;
-  }
   
-  .dropdown-menu>li.show>a {
-      color: white;
-  }
-  
-  @media (min-width: 768px) {
-      .dropdown-menu .dropdown .dropdown-menu {
-          margin: 0;
-          border-width: 1px;
-      }
-  }

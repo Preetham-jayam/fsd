@@ -56,7 +56,7 @@
                   Profile
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/">
+                <a class="dropdown-item" href="/logout">
                   <i class="fa fa-sign-out" aria-hidden="true"></i>
                   Sign Out
                 </a>
@@ -90,57 +90,37 @@
       <div class="row col-md-12 justify-content-center">
         <div class="col-md-1 carousel-title"></div>
         <div class="col-md-10 carousel-title">
-          <div>
-            <hr />
-        </div>
           <div class="col-md-1"></div>
         </div>
       </div>
-      <% for(const fod of courses){%>
-        <div class="row col-md-12 justify-content-center">
-          <div class="col-md-1"></div>
-         
-          <div class="col-md-10">
-              <div class="item-container">
-                  <div class="item-image col-md-3">
-                    <img class="img-thumbnail item-image" src='/<%=fod.Imageurl%>'
-                      alt="Can not display" style="width: 250px;">
+      <div class="container">
+        <div class="row">
+          <% for(var i=0;i < courses.length ;i++){%>
+          <div class="col-lg-4 col-md-6 col-sm-12 course-card mb-4">
+            <div class="card box-shadow card-actions">
+              <img class="card-img-top card-image" src="/<%=courses[i].Imageurl%>" alt="Course Image">
+              <div class="card-body card-content">
+                <div class=" justify-content-center align-items-center"><div class="card-title">Title:<%=courses[i].title%></div></div>
+                <h5 class="card-teacher">Course Name:<%=courses[i].name%></h5>
+                <h5 class="card-teacher">Teacher:<%=teacher.FullName%></h5>
+                <h5 class="card-teacher">Course Price:₹<%=courses[i].price%></h5>
+      
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="/teacher/courseDetails/<%=courses[i]._id%>" class="btn btn-sm btn-outline-warning card-button">View Details</a>
+                    <a href="/teacher/course/edit/<%=courses[i]._id%>" class="btn btn-sm  btn-outline-success card-button">Edit</a>
+
                   </div>
-                <div class="item-content col-md-6">
-                  <div>
-                     <a href="/teacher/courseDetails/<%=fod._id%>">
-                      <h3><%=fod.title%></h3></a>
-                  </div>
-                  <div>
-                    <%=fod.name%>
-                  </div>
-                 
-                  <div class="item-teacher">Dr.<%=teacher.FullName%> </div>
-                  <div >
-                    <p class="avgRating ">4.5 (5 Ratings)</p>
-                  </div>
-                </div>
-                <div>
-                  <div class="item-price col-md-1">
-                    <div class="item-real-price">
-                      <h4>₹<%=fod.price%></h4>
-                    </div>
-                    <div><strike>₹5999</strike></div>
-                  </div>
-                </div>
-                <div class="col-md-1">
-                  <div><a type="button" href="/teacher/course/edit/<%=fod._id%>" class="btn p-2 btn-success btn-dimen">Edit</a></div>
-                  <div><a href="/teacher/course/delete/<%=fod._id%>" type="button" class="btn btn-danger">Disable</a></div>
                 </div>
               </div>
-              </a>
-              
-            <div>
-              <hr />
             </div>
-           
+          </div>
+          <% if ((i+1) % 3 == 0) { %>
+            <div class="w-100"></div>
+          <% } %>
+          <%}%>
         </div>
-        <%}%>
+      </div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

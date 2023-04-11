@@ -12,42 +12,63 @@
         </div>
       </div>
       
-      <% for(const fod of model){  %>   
+      <% users.forEach((user)=>{ %>
 
-            <div class="row col-md-12 justify-content-center">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                <div class="item-container">
-                    <div class="item-image col-md-3">
-                    <img class="img-thumbnail item-image" src="https://cdn.vectorstock.com/i/preview-1x/23/68/graduates-student-vector-8962368.webp"  style="width:200px"
-                        alt="Can not display">
-                    </div>
-                    <div class="item-content col-md-6">
-                    <div>
+        <% if(user.student){%>
+
+        <div class="row col-md-12 justify-content-center">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+            <div class="item-container">
+                <div class="item-image col-md-3">
+                <img class="img-thumbnail item-image" src="/img/student.avif"  style="width:200px"
+                    alt="Can not display">
+                </div>
+                <div class="item-content col-md-6">
+                <div> 
+                    <h3><%=user.student.firstName%></h3>  
+                </div>
+                  <div> <b>Firstname:</b> <%= user.student.firstName%></div>
+                <div> <b>Lastname:</b> <%= user.student.lastName%></div>
+                <div> <b>PhoneNo:</b> <%= user.student.phoneNo%></div>
+                <div><b>Address:</b> <%= user.student.address%></div>
+                <div><b>Type:</b>  <span>Student</span> </div>
+
+                <ul>
+                 
+                  <% courses.forEach((course)=>{%>
+                    <li><%=course.title%></li>
+
+                  <%})%>
+                </ul>
+                
+              
+                </div>
+                <div class="col-md-1">
+                        <div >
                         
-                        <h3><%=fod.firstname%></h3>
-                        
-                    </div>
-                    
-                    <div> <b>Id:</b>  <%=fod.sid%></div>
-                    <div> <b>Fisrtname:</b> <%= fod.firstname%></div>
-                    <div> <b>Lastname:</b> <%= fod.lastname%></div>
-                    <div> <b>PhoneNo:</b> <%= fod.PhoneNo%></div>
-                    <div><b>Email:</b> <%= fod.Email%></div>
-                    <div><b>Type:</b>  <span>Student</span> </div>
-                    
-                    </div>
-                    <div class="col-md-1">
-                            <div><button type="button" class="btn btn-danger">Block</button></div>
-                            <div><a href="/admin/student/delete/<%=fod.sid%>"><button type="button" class="btn btn-danger" style="margin-top: 20px;">Delete</button></a></div>
-                    
-                    </div>
+                          <%if(user.flag === 0 ) {%>
+                            <a href="/admin/block/<%=user._id%>"> <button id="block-btn" type="submit" class="btn btn-outline-danger" style="margin-top: 20px;">Block</button></a>
+                        <%} else {%>
+                            <a href="/admin/block/<%=user._id%>"> <button id="block-btn" type="submit" class="btn btn-outline-success" style="margin-top: 20px;">UnBlock</button></a>
+                        <%}%>
+                        </div>
+                        <div><a href="/admin/student/delete/<%=user._id%>"><button type="button" class="btn btn-danger" style="margin-top: 20px;">Delete</button></a></div>
+                
                 </div>
-                </a>
-                <div>
-                    <hr />
-                </div>
-                </div>
-        <% } %> 
+            </div>
+            </a>
+            <div>
+                <hr />
+            </div>
+            </div>
+        <%}%>
+
+      <% }) %>   
+
+      
+
+           
+        
 <%-include('../partials/adminfooter.ejs');%>
 

@@ -55,7 +55,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                Welcome, <b>Dr.Bheemappa</b>!
+                Welcome, <b>Dr.<%=teacher.FullName%></b>!
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/teacher/profile">
@@ -79,7 +79,7 @@
 
 
 
-      <form method="post" id="frmCourse" enctype="multipart/form-data" action="/teacher/course/upload/<%=data._id%>?newlesson=new&newChapter=new">
+      <form method="post" id="frmCourse" enctype="multipart/form-data" action="/teacher/course/upload/<%=data._id%>">
         <div class="card">
           <h3 class="card-header">Upload</h3>
           <div class="card-body">
@@ -94,7 +94,9 @@
                       <div class="input-group">
                       <select name="chapter" id="txtChapter" style="width: 100%;height: 35px;">
                           <option value="new" id="new" selected>New Chapter</option>
-                          <option value="IdChapter" id="IdChapter">Chaptername</option>
+                          <% chapters.forEach(chapter => { %>
+                            <option value="<%=chapter._id%>" id="<%=chapter._id%>"><%=chapter.name%></option>
+                          <%})%>
                       </select>
                       </div>
                   </div>
@@ -111,7 +113,11 @@
                       <div class="input-group">
                       <select name="lesson" id="txtLesson" style="width: 100%;height: 35px;">
                          <option value="new" data-tag="new" selected>New Lesson</option>
-                          <option value="idLesson" data-tag="idChapter">Lesson name</option>
+                  
+                          <% lessons.forEach(lesson => { %>
+                            <option value="<%=lesson._id%>" data-tag="<%=lesson.chapter%>"><%=lesson.title%></option>
+                          <%})%>
+                        
                       </select>
                       </div>
                   </div>
@@ -122,8 +128,8 @@
               </div>
             </div>
             <div class="form-group file-loading">
-              <label for="fuVideo">Video:</label>
-              <input id="fuVideo" name="fuVideo" type="file" class="file" data-allowed-file-extensions='["mp4", "mov", "avi"]'>
+              <label for="Video">Video:</label>
+              <input id="Video" name="fuVideo" type="file" class="file" data-allowed-file-extensions='["mp4", "mov", "avi"]'>
             </div>
           </div>
           <div class="card-footer text-muted">
@@ -155,7 +161,9 @@
     });
 });
 
+
 </script>
+
 <script>
 $('#frmCourse').on('submit',function(e){
   e.preventDefault();
@@ -183,9 +191,54 @@ $('#frmCourse').on('submit',function(e){
         return;
       }
   };
- 
   $('#frmCourse').off('submit').submit();
 });
+  $('#txtChapter').on('change', function() {
+    let selected = $(this).val();
+    let url;
+    $("#txtLesson option").each(function(){
+        let element =  $(this) ;
+        if (element.data("tag") != selected && element.data("tag") !="new"){
+            element.removeClass('visible');
+            element.addClass('hidden');
+            element.hide() ;
+        }else{
+            element.removeClass('hidden');
+            element.addClass('visible');
+            element.show();
+        }
+    });
+  if(selected=="new"){
+      $('#txtNameChapter').removeClass('hidden');
+      $('#txtNameChapter').addClass('visible');
+      $('#txtNameChapter').show();
+      $('#txtNameLesson').removeClass('hidden');
+      $('#txtNameLesson').addClass('visible');
+      $('#txtNameLesson').show();
+      
+      $('frmCourse').attr('action',url);
+    }else{
+      $('#txtNameChapter').removeClass('visible');
+      $('#txtNameChapter').addClass('hidden');
+      $('#txtNameChapter').hide();
+    };
+    $('#frmCourse').attr('action',)
+    let txtLesson = $('#txtLesson',);
+    txtLesson.prop('selectedIndex',txtLesson.find("option.visible:eq(0)").index());
+}).triggerHandler('change');
+$('#txtLesson').on('change', function() {
+      let selected = $(this).val();
+  if(selected=="new"){
+        $('#txtNameLesson').removeClass('hidden');
+        $('#txtNameLesson').addClass('visible');
+        $('#txtNameLesson').show();
+      }else{
+        $('#txtNameLesson').removeClass('visible');
+        $('#txtNameLesson').addClass('hidden');
+        $('#txtNameLesson').hide();
+    }
+}).triggerHandler('change');
+
 
 </script>
 

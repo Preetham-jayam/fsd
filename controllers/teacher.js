@@ -1,6 +1,11 @@
 const Course=require('../models/course');
 const Teacher=require('../models/teacher');
 const User=require('../models/user');
+const Chapter=require('../models/chapter');
+const Lesson=require('../models/lesson');
+const bcrypt=require('bcryptjs');
+const path=require('path');
+
 
 
 exports.getAddCourse = (req,res)=>{
@@ -10,45 +15,6 @@ exports.getAddCourse = (req,res)=>{
     })
    
 };
-// exports.postAddCourse=(req,res,next)=>{
-//     const title=req.body.title;
-//     const name=req.body.nameCourse;
-//     const description=req.body.Description;
-//     const cost=req.body.Price;
-//     const salecost=req.body.salePrice;
-//     const category=req.body.category;
-//     const Image=req.file;
-//     const imageUrl=Image.path;
-   
-//     const course=new Course({
-//         title:title,
-//         name:name,
-//         description:description,
-//         price:cost,
-//         Imageurl:imageUrl,
-//         teacher:req.body.Id    
-//     });
-//     course
-//        .save()
-//        .then(result=>{
-//         console.log('Course created');
-//         User.findByIdAndUpdate(req.body.Id)
-//         .populate('teacher')
-//         .exec()
-//         .then((user)=>{
-//             Teacher.findByIdAndUpdate(req.body.Id)
-//             .then(teacher=>{
-//                 teacher.courses.push(result._id);
-//                 teacher.save();
-//             })
-//            user.save();
-//            return res.redirect('/teacher/home');
-//         })
-//        })
-//        .catch(err=>{
-//         console.log(err);
-//        })
-//     };
 
 exports.postAddCourse = (req, res, next) => {
     const title = req.body.title;
@@ -83,7 +49,6 @@ exports.postAddCourse = (req, res, next) => {
       return User.findById(req.body.Id).populate('teacher').exec();
     })
     .then(user => {
-    //   user.save();
       return res.redirect('/teacher/home');
     })
     .catch(err => {
@@ -103,36 +68,201 @@ exports.getHomepage= (req,res,next)=>{
 };
 
 exports.getSingleCourse=(req,res,next)=>{
-    const id=req.params.id;
-    Course.findById(id)
-    .populate('teacher')
-     .then(course=>{
-        res.render('teacher/coursedetail',{data:course,teacher:course.teacher});
-     })
-     .catch(err => console.log(err));
+        const id=req.params.cid;
+        Teacher.findById(req.session.user.teacher)
+         .then((teacher)=>{
+            Course.findById(id)
+            .populate({
+              path: 'chapters',
+              populate: {
+                path: 'lessons',
+                model: 'Lesson'
+              }
+            })
+            .then(course=>{
+              const chapters = course.chapters || [];
+              const lessons = chapters.reduce((acc, chapter) => acc.concat(chapter.lessons), []);
+              console.log(course.chapters);
+                res.render('teacher/coursedetail',{data:course,chapters:chapters,teacher:teacher,lessons:lessons});
+            })
+            .catch(err => console.log(err));
+        
+          })  
+         
 };
 
 exports.upload=(req,res,next)=>{
-    const id=req.params.id;
-    Course.findById(id)
-     .then(course=>{
-        res.render('teacher/courseupload',{data:course});
-     })
-     .catch(err => console.log(err));
+    const id=req.params.cid;
+    Teacher.findById(req.session.user.teacher)
+    .then((teacher)=>{
+      Course.findById(id)
+      .populate({
+        path: 'chapters',
+        populate: {
+          path: 'lessons',
+          model: 'Lesson'
+        }
+      })
+       .then(course=>{
+        const chapters = course.chapters || [];
+        const lessons = chapters.reduce((acc, chapter) => acc.concat(chapter.lessons), []);
+        console.log(course.chapters);
+          res.render('teacher/courseupload',{data:course,chapters:chapters,teacher:teacher,lessons:lessons});
+       })
+       .catch(err => console.log(err));
    
+    })   
 };
 
+exports.postUpload=(req,res)=>{
+  const courseId=req.params.cid;
+  const course=Course.findById(courseId);
+ var chapterId = req.body.chapter;
+ var lessonId = req.body.lesson;
+  var newChapterName = req.body.newNameChapter;
+ var newLessonName = req.body.newNameLesson;
+  if (chapterId === 'new') {
+    const newChapter = new Chapter({
+      name: newChapterName,
+      course: courseId,
+      lessons: []
+    });
+    Course.findById(courseId)
+    .then((course)=>{
+      course.chapters.push(newChapter);
+      return course.save();
+    })
+   
+
+    newChapter.save()
+      .then(chapter => {
+        chapterId = chapter._id;
+
+        // Handle new lesson creation
+        if (lessonId === 'new') {
+          const newLesson = new Lesson({
+            title: newLessonName,
+            chapter: chapterId,
+            videoUrl: req.file.path
+          });
+
+          newLesson.save()
+            .then(lesson => {
+              // Add lesson to chapter and save chapter
+              chapter.lessons.push(lesson._id);
+              chapter.save()
+                .then(() => {
+                  res.redirect(`/teacher/courseDetails/${courseId}`);
+                })
+                .catch(error => {
+                  console.log(error);
+                  res.status(500).send('Error saving chapter');
+                });
+            })
+            .catch(error => {
+              console.log(error);
+              res.status(500).send('Error saving lesson');
+            });
+        } else { // Handle existing lesson update
+          Lesson.findByIdAndUpdate(lessonId, { $set: { videoUrl: req.file.path } })
+            .then(() => {
+              res.redirect(`/teacher/courseDetails/${courseId}`);
+            })
+            .catch(error => {
+              console.log(error);
+              res.status(500).send('Error updating lesson');
+            });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(500).send('Error saving chapter');
+      });
+  }else { // Handle existing chapter update
+    Chapter.findByIdAndUpdate(chapterId)
+      .then(function(chapter) {
+        if (lessonId === 'new') { // Handle new lesson creation
+          const newLesson = new Lesson({
+            title: newLessonName,
+            chapter: chapterId,
+            videoUrl: req.file.path
+          });
+
+          newLesson.save()
+          .then(lesson => {
+            // Add lesson to chapter and save chapter
+            chapter.lessons.push(lesson._id);
+            chapter.save()
+              .then(() => {
+                res.redirect(`/teacher/courseDetails/${courseId}`);
+              })
+              .catch(error => {
+                console.log(error);
+                res.status(500).send('Error saving chapter');
+              });
+          })
+          .catch(error => {
+            console.log(error);
+            res.status(500).send('Error saving lesson');
+          });
+      } else {
+        // Handle existing lesson update
+        Lesson.findByIdAndUpdate(lessonId, { $set: { videoUrl: req.file.path } })
+          .then(() => {
+            res.redirect(`/teacher/courseDetails/${courseId}`);
+          })
+          .catch(error => {
+            console.log(error);
+            res.status(500).send('Error updating lesson');
+          });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).send('Error updating chapter');
+    });
+    
+  }
+                };
+
+// exports.upload = (req, res, next) => {
+//     const courseId = req.params.id;
+  
+//     Course.findById(courseId)
+//       .populate({
+//         path: 'chapters',
+//         populate: { path: 'lessons' }
+//       })
+//       .then(course => {
+//         res.render('teacher/courseupload', { data: course, chapters: course.chapters });
+//       })
+//       .catch(err => console.log(err));
+//   };
+// exports.upload = (req, res, next) => {
+//   const courseId = req.params.id;
+
+//   Course.findById(courseId)
+//     .populate({
+//       path: 'chapters',
+//       populate: { path: 'lessons' }
+//     })
+//     .then(course => {
+//       res.render('teacher/courseupload', { data: course, chapters: course.chapters });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// };
+
+  
+
 exports.getCourseEdit=(req,res,next)=>{
-    const id=req.params.id;
-    Course.findById(id)
-     .then(course=>{
-        res.render('teacher/course-edit',{course:course});
-     })
-     .catch(err => console.log(err)); 
+    const course=req.course;
+    res.render('teacher/course-edit',{course:course,teacher:course.teacher});
 };
 
 exports.postEditCourse=(req,res,next)=>{
-    const id=req.params.id;
+    const id=req.params.cid;
     const newtitle=req.body.title;
     const newname=req.body.nameCourse;
     const description=req.body.Description;
@@ -156,12 +286,85 @@ exports.postEditCourse=(req,res,next)=>{
     .catch(err => console.log(err));
 };
 
-exports.getQuizPage=(req,res,next)=>{
-    const id=req.params.id;
-    Course.findById(id)
-     .then(course=>{
-        res.render('teacher/teacher-quiz',{course:course});
-     })
-     .catch(err => console.log(err)); 
+exports.getProfileEdit=(req,res)=>{
+  Teacher.findById(req.session.user.teacher)
+   .then(result=>{
+       res.render('teacher/teacher-profile',{user: req.session.user,teacher:result});
+   })
+   .catch(err => console.log(err));
+};
 
+exports.postProfileEdit=(req,res)=>{
+  const id=req.session.user.teacher;
+  const name=req.body.FullName;
+  const Instname=req.body.Instname;
+  const email=req.body.email;
+  const userid=req.body.userId;
+  User.findById(userid)
+  .then((user)=>{
+    user.email=email;
+    return user.save();
+  })
+  .catch(err => console.log(err));
+
+  Teacher.findById(id)
+  .then((teacher)=>{
+    teacher.FullName=name;
+    teacher.InstName=Instname;
+    return teacher.save();
+  })
+  .then((teacher)=>{
+    console.log("Teacher Details Updated");
+    res.redirect('/teacher/profile');
+  })
+  .catch(err => console.log(err));
+}
+
+exports.getPasswordEdit=(req,res)=>{
+  Teacher.findById(req.session.user.teacher)
+  .then(result=>{
+      res.render('teacher/edit-password',{user: req.session.user,teacher:result});
+  })
+  .catch(err => console.log(err));
+
+}
+
+exports.postPasswordedit=(req,res)=>{
+  const currentPassword = req.body.CurrentPassword;
+  const newPassword = req.body.NewPassword;
+  const retypeNewPassword = req.body.RetypeNewPassword;
+  const userid=req.body.userId;
+  User.findById(userid)
+  .then((user)=>{
+   // Compare the current password provided by the user with the hash stored in the database
+   bcrypt.compare(currentPassword, user.password, function(err, result) {
+    if (err) {
+     console.log(err);
+    }
+    if (!result) {
+      console.log('Current password is incorrect');
+    }
+
+    // Update the user's password
+    user.password = newPassword;
+
+    // Save the user
+    user.save(function(err) {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      return res.status(200).send('Password updated successfully');
+      
+    });
+    res.redirect('/teacher/profile');
+  });
+  })
+  .catch(err => console.log(err));
+
+}
+
+exports.getQuizPage=(req,res,next)=>{
+        const course=req.course;
+        res.render('teacher/teacher-quiz',{course:course});
+    
 };

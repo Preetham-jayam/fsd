@@ -30,12 +30,12 @@
  <!-- Customized Bootstrap Stylesheet -->
  <link rel="stylesheet" href="/bootstrap.min.css" />
  <link rel="stylesheet" href="/font-awesome.css" />
- <link href="/preview.css" rel="stylesheet" /> 
+ <link href="/details.css" rel="stylesheet" /> 
  <link rel="stylesheet" href="/admindb.css"> 
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark " id="navbar" style="background-color: #06bbcc;">
-        <a class="navbar-brand" href="/teacher">
+        <a class="navbar-brand" href="/">
           <i class="fa fa-home fa-lg"></i>
         </a>
         <a class="navbar-brand" href="/teacher">Eduphoria</a>
@@ -47,24 +47,23 @@
           <ul class="navbar-nav mr-auto"> 
           </ul>
           
-          
           <ul class="navbar-nav ml-auto">
           <ul class="navbar-nav  mr-sm-2">
           </ul>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-user" aria-hidden="true"></i>
+                <i class="fas fa-user" aria-hidden="true"></i>
                 Welcome, <b>Dr.<%=teacher.FullName%></b>!
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/teacher/profile">
-                  <i class="fa fa-user" aria-hidden="true"></i>
+                  <i class="fas fa-user" aria-hidden="true"></i>
                   Profile
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/">
-                  <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                   Sign Out
                 </a>
               </div>
@@ -74,7 +73,6 @@
           </ul>
         </div>
       </nav>
-
   
      <!-- Main Wrapper Starts -->
      <div class="main-wrapper">
@@ -114,7 +112,7 @@
                       <button class="btn-them nav-link active  " id="course-curriculum-tab" data-bs-toggle="tab" data-bs-target="#course-curriculum" type="button" role="tab" aria-controls="course-curriculum" aria-selected="true">Curriculum</button>
                       <button class="btn-them nav-link" id="course-description-tab" data-bs-toggle="tab" data-bs-target="#course-description" type="button" role="tab" aria-controls="course-description" aria-selected="false">Description</button>
                       <button class="btn-them nav-link" id="course-instructor-tab" data-bs-toggle="tab" data-bs-target="#course-instructor" type="button" role="tab" aria-controls="course-instructor" aria-selected="false">Instructor</button>
-                      <button class="btn-them nav-link" id="course-reviews-tab" data-bs-toggle="tab" data-bs-target="#course-reviews" type="button" role="tab" aria-controls="course-reviews" aria-selected="false">Reviews</button>
+                      
 
                     </div>
                   </nav>
@@ -128,46 +126,34 @@
                             <!-- Accordtion start -->
                             <div class="accordion" id="accordion">
                                 <!-- Accordion item starts -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading-1">
-                                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-                                        Language Basics <span>2 Lessons | 30 min</span>
-                                      </button>
-                                    </h2>
-                                    <div id="collapse-1" class="accordion-collapse collapse show" aria-labelledby="heading-1" data-bs-parent="#accordion">
-                                      <div class="accordion-body">
-                                       <ul>
-                                        <li>
-                                            <i class="fas fa-play-circle"></i>
-                                            Lexical structure
-                                            <span>06:00</span>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-play-circle"></i>
-                                            Values
-                                            <span>06:00</span>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-play-circle"></i>
-                                            Types
-                                            <span>06:00</span>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-play-circle"></i>
-                                            Variables
-                                            <span>06:00</span>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-play-circle"></i>
-                                            Objects
-                                            <span>06:00</span>
-                                        </li>
-                                       </ul>
+                                <%if(chapters.length == 0){%>
+                                    <h5>Chapters are not added yet.....</h5>
+                                <%}%>
+                                <% chapters.forEach((chapter)=>{%>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading-1">
+                                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#<%=chapter._id%>" aria-expanded="true" aria-controls="collapse-1">
+                                            <%=chapter.name%> <span><%=chapter.lessons.length%> Lessons | <%=chapter.lessons.length * 6%> min</span>
+                                          </button>
+                                        </h2>
+                                        <div id="<%=chapter._id%>" class="accordion-collapse collapse" aria-labelledby="heading-1" data-bs-parent="#accordion">
+                                          <div class="accordion-body">
+                                           <ul>
+                                            <%chapter.lessons.forEach((lesson)=>{%>
+                                                <li>
+                                                    <i class="fas fa-play-circle"></i>
+                                                   <%=lesson.title%>
+                                                    <span>06:00</span>
+                                                </li>
+                                           <% })%>
+                                           </ul>
+                                          </div>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </div>
-                                   <!-- Accordion item ends --> 
-                               
+                                       <!-- Accordion item ends -->
+
+
+                                <%})%>        
                         </div>
                         <!-- Accordtion ends -->
                                
@@ -218,140 +204,9 @@
 
                     </div>
 
-                    <div class="tab-pane fade " id="course-reviews" role="tabpanel" aria-labelledby="course-reviews-tab">
-                        <div class="course-reviews box">
-                            <div class="rating-summary">
-                                <h3 class="mb-4 text-capitalize">Students feedback</h3>
-                                <div class="row">
-                                    <div class="col-md-4 d-flex align-items-center justify-content-center text-center">
-                                        <div class="rating-box">
-                                            <div class="average-rating">4.5</div>
-                                            <div class="average-stars">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                            </div>
-                                            <div class="reviews">230</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="rating-bars">
-                                            <div class="rating-bars-item">
-                                                <div class="star-text">5 star</div>
-                                                <div class="progress">
-                                                    <div class="progess-bar" style="width: 50%;"></div>
-                                                </div>
-                                                <div class="percent">50%</div>
-                                            </div>
-                                            <div class="rating-bars-item">
-                                                <div class="star-text">4 star</div>
-                                                <div class="progress">
-                                                    <div class="progess-bar" style="width: 30%;"></div>
-                                                </div>
-                                                <div class="percent">30%</div>
-                                            </div>
-                                            <div class="rating-bars-item">
-                                                <div class="star-text">3 star</div>
-                                                <div class="progress">
-                                                    <div class="progess-bar" style="width: 10%;"></div>
-                                                </div>
-                                                <div class="percent">10%</div>
-                                            </div>
-                                            <div class="rating-bars-item">
-                                                <div class="star-text">2 star</div>
-                                                <div class="progress">
-                                                    <div class="progess-bar" style="width: 7%;"></div>
-                                                </div>
-                                                <div class="percent">7%</div>
-                                            </div>
-                                            <div class="rating-bars-item">
-                                                <div class="star-text">1 star</div>
-                                                <div class="progress">
-                                                    <div class="progess-bar" style="width: 3%;"></div>
-                                                </div>
-                                                <div class="percent">3%</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    
 
-                            <div class="reviews-filter">
-                                <h3 class="mb-4 text-capitalize">reviews</h3>
-                                <form action="">
-                                    <div class="form-group">
-                                        <i class="fas fa-chevron-down select-icon"></i>
-                                        <select name="" id="" class="form-control">
-                                            <option value="">All Reviews</option>
-                                            <option value="1">1 star</option>
-                                            <option value="2">2 star</option>
-                                            <option value="3">3 star</option>
-                                            <option value="4">4 star</option>
-                                            <option value="5">5 star</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
-
-
-                            <div class="reviews-list">
-                                <div class="reviews-item">
-                                    <div class="img-box">
-                                        <img src="/Img/review/1.png" alt="">
-                                    </div>
-                                    <h4>Vikram</h4>
-                                    <div class="stars-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="date">1 week ago</span>
-
-                                    </div>
-                                    <p>Great work I learnt lot of things about javascript in this course</p>
-                                </div>
-                                <div class="reviews-item">
-                                    <div class="img-box">
-                                        <img src="/Img/review/1.png" alt="">
-                                    </div>
-                                    <h4>Vikram</h4>
-                                    <div class="stars-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="date">1 week ago</span>
-
-                                    </div>
-                                    <p>Great work I learnt lot of things about javascript in this course</p>
-                                </div>
-                                <div class="reviews-item">
-                                    <div class="img-box">
-                                        <img src="/Img/review/1.png" alt="">
-                                    </div>
-                                    <h4>Vikram</h4>
-                                    <div class="stars-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="date">1 week ago</span>
-
-                                    </div>
-                                    <p>Great work I learnt lot of things about javascript in this course</p>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-theme">More Reviews</button>
-
-
-                        </div>
-
-                    </div>
+                    
                   </div>
                 <!-- Tab panes ends -->
 

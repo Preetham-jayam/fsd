@@ -80,13 +80,13 @@
               href="#"
               class="nav-link dropdown-toggle"
               data-bs-toggle="dropdown"
-              ><i class="fas fa-user"></i>Welcome,<%=student.firstName%></a
+              ><i class="fas fa-user"></i>Welcome,<%= student.firstName%></a
             >
             <div class="dropdown-menu fade-down m-0">
-              <a href="/student/account/profile" class="dropdown-item"
-                ><i class="fa fa-sign-in" aria-hidden="true"></i>Profile</a
+              <a href="/student/account/profile" class="dropdown-item "
+                ><i style="padding-right: 2px;" class="fas fa-power-off" aria-hidden="true"></i>Profile</a
               >
-              <a href="/" class="dropdown-item"> <i class="fa fa-signout"></i> Signout</a>
+              <a href="/logout" class="dropdown-item"> <i class="fas fa-sign-out-alt "></i> Signout</a>
             </div>
           </div>
         </div>

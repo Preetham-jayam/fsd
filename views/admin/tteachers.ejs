@@ -12,7 +12,7 @@
         </div>
       </div>
       
-      <% for(const fod of model){%>
+      <% teachers.forEach((teacher)=>{ %>
 
             <div class="row col-md-12 justify-content-center">
                 <div class="col-md-1"></div>
@@ -27,15 +27,19 @@
                     <div class="item-content col-md-6">
                     <div>
                        
-                        <h3><%=fod.Fullname%></h3>
+                        <h3><%=teacher.FullName%></h3>
                         
                     </div>
                     
-                    <div> <b>Id:</b>  <%=fod.tid%></div>
-                    <div> <b>Institute Name:</b> <%= fod.Instname%></div>
-                    <div> <b>PhoneNo:</b> <%= fod.PhoneNo%></div>
-                    <div><b>Email:</b> <%= fod.Email%></div>
+                    <div> <b>Institute Name:</b> <%= teacher.InstName%></div>
+                    <div> <b>PhoneNo:</b> <%= teacher.phoneNo%></div>
                     <div><b>Type:</b>  <span>Teacher</span> </div>
+                    <div><h4>Teacher Courses</h4></div>
+                    <ul>
+                    <% courses.forEach((course)=>{%>
+                            <li><%=course.name%></li>
+                    <%})%>
+                </ul>
                     
                     </div>
                     <div class="col-md-1">
@@ -49,6 +53,6 @@
                     <hr />
                 </div>
                 </div>
-        <%}%>
+        <%})%>
 <%-include('../partials/adminfooter.ejs');%>
 

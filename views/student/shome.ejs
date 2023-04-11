@@ -1,58 +1,63 @@
-<%-include('../partials/signedinnav.ejs')%>;
+<%-include('../partials/signedinnav.ejs')%>
 
 <div class="container">
     <div class="text-center m-3" >
         <h1 class="bg-white text-center px-3">
           Enrolled courses...
         </h1>
-
       </div>
-
-      <div class="row g-4 justify-content-center" style="width: 100%">
-        <div
-          class="course-card col-lg-4 col-md-6 "
-         
-        >
-          <div class="course-item  border-top">
-            <div class="position-relative overflow-hidden">
-              <img class="img-fluid" src="../Img/courses/courseimg/1.jpg" alt="" />
-              <div
-                class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-              >
-                <a
-                  href="/courseContent"
-                  class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-                  style="border-radius: 30px"
-                  >Open course</a
-                >
-              </div>
-            </div>
-            <div class="text-center p-4 pb-0 price">
-              <h3 class="mb-0">₹2999.00</h3>
-              <div class="mb-3 rating">
-                <small class="fa fa-star orange"></small>
-                <small class="fa fa-star orange"></small>
-                <small class="fa fa-star orange"></small>
-                <small class="fa fa-star orange"></small>
-                <small class="fa fa-star-half orange"></small>
-                <small>(123)</small>
-              </div>
-              <h5 class="mb-4 title">JavaScript for Beginners</h5>
-            </div>
-            <div class="d-flex border-top">
-              <small class="flex-fill text-center border-end py-2 instructor"
-                ><i class="fa fa-user-tie text-primary me-2"></i>Dr.Bheemappa</small
-              >
-              <small class="flex-fill text-center border-end py-2 duration"
-                ><i class="fa fa-clock text-primary me-2"></i>2 Hrs</small
-              >
-              <small class="flex-fill text-center py-2 students"
-                ><i class="fa fa-user text-primary me-2"></i>245 Students</small
-              >
-            </div>
+        <div class="container">
+          <div class="row g-4 justify-content-center" style="width: 100%">
+            <%if(scourses.length > 0){%>
+              <%for(let i=0; i < scourses.length ;i++){%>
+                <div class="course-card col-lg-4 col-md-6 ">
+                  <div class="course-item  border-top">
+                    <div class="position-relative overflow-hidden">
+                      <img class="img-fluid" src="/<%=scourses[i].Imageurl%>" alt="Image" />
+                      <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
+                        <a
+                          href="/student/courseContent/<%=scourses[i]._id%>"
+                          class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
+                          style="border-radius: 30px"
+                          >Open Course</a
+                        >
+                      </div>
+                    </div>
+                    <div class="text-center p-4 pb-0 price">
+                      <h3 class="mb-0">₹<%=scourses[i].price%>.00</h3>
+                      <div class="mb-3 rating">
+                        <small class="fa fa-star orange"></small>
+                        <small class="fa fa-star orange"></small>
+                        <small class="fa fa-star orange"></small>
+                        <small class="fa fa-star orange"></small>
+                        <small class="fa fa-star-half orange"></small>
+                        <small>(123)</small>
+                      </div>
+                      <h5 class="mb-4 title"><%=scourses[i].title%></h5>
+                    </div>
+                    <div class="d-flex border-top">
+                      <small class="flex-fill text-center border-end py-2 instructor"
+                        ><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=teachers[i].FullName%></small
+                      >
+                      <small class="flex-fill text-center border-end py-2 duration"
+                        ><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small
+                      >
+                      <small class="flex-fill text-center py-2 students"
+                        ><i class="fa fa-user text-primary me-2"></i>458 Students</small
+                      >
+                    </div>
+                  </div>
+                </div> 
+              <%}%>
+              <%}else  {%>
+                
+                <h2>No Courses Found....</h2>
+            <%}%>
           </div>
-        </div>
+          
+          
       </div>
+</div>
 
   
   <div class="text-center m-3" >
@@ -61,273 +66,58 @@
     </h1>
   </div>
 
-  <div class="row g-4 justify-content-center" style="width: 100%">
-    <div
-      class="course-card col-lg-4 col-md-6"
-    
-    >
-      <div class="course-item border-top">
-        <div class="position-relative overflow-hidden">
-          <img class="img-fluid" src="../Img/courses/courseimg/1.jpg" alt="" />
-          <div
-            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-          >
-            <a
-              href="/courses/course1"
-              class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-              style="border-radius: 30px"
-              >Read More</a
-            >
-          </div>
-        </div>
-        <div class="text-center p-4 pb-0 price">
-          <h3 class="mb-0">₹2999.00</h3>
-          <div class="mb-3 rating">
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star-half orange"></small>
-            <small>(123)</small>
-          </div>
-          <h5 class="mb-4 title">JavaScript for Beginners</h5>
-        </div>
-        <div class="d-flex border-top">
-          <small class="flex-fill text-center border-end py-2 instructor"
-            ><i class="fa fa-user-tie text-primary me-2"></i>Dr.Bheemappa</small
-          >
-          <small class="flex-fill text-center border-end py-2 duration"
-            ><i class="fa fa-clock text-primary me-2"></i>2 Hrs</small
-          >
-          <small class="flex-fill text-center py-2 students"
-            ><i class="fa fa-user text-primary me-2"></i>245 Students</small
-          >
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="course-card col-lg-4 col-md-6"
-     
-    >
-      <div class="course-item border-top">
-        <div class="position-relative overflow-hidden">
-          <img class="img-fluid" src="../Img/courses/courseimg/2.jpg" alt="" />
-          <div
-            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-          >
-            <a
-              href="/courses/course2"
-              class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-              style="border-radius: 30px"
-              >Read More</a
-            >
-          </div>
-        </div>
-        <div class="text-center p-4 pb-0 price">
-          <h3 class="mb-0">₹2999.00</h3>
-          <div class="mb-3 rating">
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star-half orange"></small>
-            <small>(123)</small>
-          </div>
-          <h5 class="mb-4 title">Object Oriented Programming Java</h5>
-        </div>
-        <div class="d-flex border-top">
-          <small class="flex-fill text-center border-end py-2 instructor"
-            ><i class="fa fa-user-tie text-primary me-2"></i>Dr.Shatanaa</small
-          >
-          <small class="flex-fill text-center border-end py-2 duration"
-            ><i class="fa fa-clock text-primary me-2"></i>12 Hrs</small
-          >
-          <small class="flex-fill text-center py-2 students"
-            ><i class="fa fa-user text-primary me-2"></i>585 Students</small
-          >
-        </div>
-      </div>
-    </div>
-    <div
-      class="course-card col-lg-4 col-md-6"
-     
-    >
-      <div class="course-item border-top">
-        <div class="position-relative overflow-hidden">
-          <img class="img-fluid" src="../Img/courses/courseimg/3.jpg" alt="" />
-          <div
-            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-          >
-            <a
-              href="/courses/course3"
-              class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-              style="border-radius: 30px"
-              >Read More</a
-            >
-          </div>
-        </div>
-        <div class="text-center p-4 pb-0 price">
-          <h3 class="mb-0">₹2999.00</h3>
-          <div class="mb-3 rating">
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star-half orange"></small>
-            <small>(123)</small>
-          </div>
-          <h5 class="mb-4 title">MYSQL For Beginners</h5>
-        </div>
-        <div class="d-flex border-top">
-          <small class="flex-fill text-center border-end py-2 instructor"
-            ><i class="fa fa-user-tie text-primary me-2"></i
-            >Dr.Priyambada</small
-          >
-          <small class="flex-fill text-center border-end py-2 duration"
-            ><i class="fa fa-clock text-primary me-2"></i>3 Hrs</small
-          >
-          <small class="flex-fill text-center py-2 students"
-            ><i class="fa fa-user text-primary me-2"></i>276 Students</small
-          >
-        </div>
-      </div>
-    </div>
-    <div
-      class="course-card col-lg-4 col-md-6"
-     
-    >
-      <div class="course-item border-top">
-        <div class="position-relative overflow-hidden">
-          <img class="img-fluid" src="../Img/courses/courseimg/4.jpg" alt="" />
-          <div
-            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-          >
-            <a
-              href="/courses/course4"
-              class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-              style="border-radius: 30px"
-              >Read More</a
-            >
-          </div>
-        </div>
-        <div class="text-center p-4 pb-0 price">
-          <h3 class="mb-0">₹2999.00</h3>
-          <div class="mb-3 rating">
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star-half orange"></small>
-            <small>(123)</small>
-          </div>
-          <h5 class="mb-4 title">Data Structures And Algorithms</h5>
-        </div>
-        <div class="d-flex border-top">
-          <small class="flex-fill text-center border-end py-2 instructor"
-            ><i class="fa fa-user-tie text-primary me-2"></i>Dr.Manipriya</small
-          >
-          <small class="flex-fill text-center border-end py-2 duration"
-            ><i class="fa fa-clock text-primary me-2"></i>2 Hrs</small
-          >
-          <small class="flex-fill text-center py-2 students"
-            ><i class="fa fa-user text-primary me-2"></i>342 Students</small
-          >
-        </div>
-      </div>
-    </div>
-    <div
-      class="course-card col-lg-4 col-md-6"
-     
-    >
-      <div class="course-item border-top">
-        <div class="position-relative overflow-hidden">
-          <img class="img-fluid" src="../Img/courses/courseimg/5.jpg" alt="" />
-          <div
-            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-          >
-            <a
-              href="/courses/course5"
-              class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-              style="border-radius: 30px"
-              >Read More</a
-            >
-          </div>
-        </div>
-        <div class="text-center p-4 pb-0 price">
-          <h3 class="mb-0">₹2999.00</h3>
-          <div class="mb-3 rating">
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star-half orange"></small>
-            <small>(123)</small>
-          </div>
-          <h5 class="mb-4 title">
-            Web Design & Development Course For Beginners
-          </h5>
-        </div>
-        <div class="d-flex border-top">
-          <small class="flex-fill text-center border-end py-2 instructor"
-            ><i class="fa fa-user-tie text-primary me-2"></i>Dr.Himangshu</small
-          >
-          <small class="flex-fill text-center border-end py-2 duration"
-            ><i class="fa fa-clock text-primary me-2"></i>12 Hrs</small
-          >
-          <small class="flex-fill text-center py-2 students"
-            ><i class="fa fa-user text-primary me-2"></i>456 Students</small
-          >
-        </div>
-      </div>
-    </div>
-    <div
-      class="course-card col-lg-4 col-md-6"
-    >
-      <div class="course-item border-top">
-        <div class="position-relative overflow-hidden">
-          <img class="img-fluid" src="../Img/courses/courseimg/6.jpg" alt="" />
-          <div
-            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-          >
-            <a
-              href="/courses/course6"
-              class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-              style="border-radius: 30px"
-              >Read More</a
-            >
-          </div>
-        </div>
-        <div class="text-center p-4 pb-0 price">
-          <h3 class="mb-0">₹2999.00</h3>
-          <div class="mb-3 rating">
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star orange"></small>
-            <small class="fa fa-star-half orange"></small>
-            <small>(123)</small>
-          </div>
-          <h5 class="mb-4 title">Express Js for Beginners</h5>
-        </div>
-        <div class="d-flex border-top">
-          <small class="flex-fill text-center border-end py-2 instructor"
-            ><i class="fa fa-user-tie text-primary me-2"></i>Dr.ChandraMohan
-            D</small
-          >
-          <small class="flex-fill text-center border-end py-2 duration"
-            ><i class="fa fa-clock text-primary me-2"></i>3 Hrs</small
-          >
-          <small class="flex-fill text-center py-2 students"
-            ><i class="fa fa-user text-primary me-2"></i>278 Students</small
-          >
-        </div>
-      </div>
+  <div class="container">
+    <div class="row g-4 justify-content-center" style="width: 100%">
+      <%if(courses.length > 0){%>
+        <%for(let i=0; i < courses.length ;i++){%>
+          <div class="course-card col-lg-4 col-md-6 ">
+            <div class="course-item  border-top">
+              <div class="position-relative overflow-hidden">
+                <img class="img-fluid" src="/<%=courses[i].Imageurl%>" alt="Image" />
+                <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
+                  <a
+                    href="/student/courseDetails/<%=courses[i]._id%>"
+                    class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
+                    style="border-radius: 30px"
+                    >Read More</a
+                  >
+                </div>
+              </div>
+              <div class="text-center p-4 pb-0 price">
+                <h3 class="mb-0">₹<%=courses[i].price%>.00</h3>
+                <div class="mb-3 rating">
+                  <small class="fa fa-star orange"></small>
+                  <small class="fa fa-star orange"></small>
+                  <small class="fa fa-star orange"></small>
+                  <small class="fa fa-star orange"></small>
+                  <small class="fa fa-star-half orange"></small>
+                  <small>(123)</small>
+                </div>
+                <h5 class="mb-4 title"><%=courses[i].title%></h5>
+              </div>
+              <div class="d-flex border-top">
+                <small class="flex-fill text-center border-end py-2 instructor"
+                  ><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=teachers[i].FullName%></small
+                >
+                <small class="flex-fill text-center border-end py-2 duration"
+                  ><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small
+                >
+                <small class="flex-fill text-center py-2 students"
+                  ><i class="fa fa-user text-primary me-2"></i>458 Students</small
+                >
+              </div>
+            </div>
+          </div> 
+        <%}%>
+        <%}else  {%>
+          
+          <h2>No Courses Found....</h2>
+      <%}%>
     </div>
   </div>
 
 
 
-</div>
+
 
 <%-include('../partials/footer.ejs')%>;

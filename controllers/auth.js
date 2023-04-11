@@ -32,13 +32,17 @@ exports.postLogin = (req, res) => {
             else if(user.role==1){
                 res.redirect('/teacher/home');
             }
+
+            else if(user.email =='admin@gmail.com' && user.password =='admin'){
+              res.redirect('/admin/admindb');
+            }
           });
         }
-        res.redirect("/");
+        res.redirect("/login");
       })
       .catch((err) => {
         console.log(err);
-        res.redirect("/");
+        res.redirect("/login");
       });
   });
 };
@@ -61,7 +65,7 @@ exports.postSignUp = (req, res, next) => {
   User.findOne({ email: email })
     .then((userDoc) => {
       if (userDoc) {
-        res.redirect("/signup");
+        res.redirect("/login");
       }
       return bcrypt
         .hash(pwd, 12)

@@ -2,20 +2,16 @@ const mongoose = require('mongoose');
 
 const lessonSchema = new mongoose.Schema({
   number: {
-    type: Number,
-    required: true
+    type: Number
   },
   title: {
-    type: String,
-    required: true
+    type: String
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   videoUrl: {
-    type: String,
-    required: true
+    type: String
   },
   chapter: {
     type: mongoose.Schema.Types.ObjectId,

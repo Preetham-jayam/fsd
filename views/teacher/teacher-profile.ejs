@@ -71,7 +71,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                Welcome, <b>Dr.Bheemappa</b>!
+                Welcome, <b>Dr.<%=teacher.FullName%></b>!
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/teacher/profile">
@@ -92,7 +92,7 @@
       </nav>
 
 
-      <form id="usrform" method="POST" action="">
+      <form id="usrform" method="POST" action="/teacher/profile">
         <div class="container">
           <div class="row">
             <div class="col-4">
@@ -101,7 +101,7 @@
                   <div class="card mb-3">
                     <ul class="list-group list-group-flush">
                       <img src="/Img/instructor/1.png" alt="Avatar" style="width:200px">
-                      <p>Dr.Bheemappa</p>
+                      <p>Dr.<%=teacher.FullName%></p>
                       <a class="list-group-item list-group-item-action active" href="/teacher/profile">Profile</a>
                       <a class="list-group-item list-group-item-action" href="/teacher/edit-password">Account</a>
                     </ul>
@@ -111,23 +111,21 @@
             </div>
             <div class="col-8" >
               <div class="container-fluid mt-4">
+                <input type="hidden" value="<%=user._id%>" name="userId">
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput" placeholder="FullName" value="Dr.Bheemappa" name="FullName">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="FullName" value="<%=teacher.FullName%>" name="FullName">
                   <label for="floatingInput">FullName</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="Username" value="Bheemappa" name="Username" readonly>
-                  <label for="floatingInput">Username</label>
+                  <input type="text" class="form-control" id="floatingInput" placeholder="Instname" value="<%=teacher.InstName%>" name="Instname" >
+                  <label for="floatingInput">Institutename</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="Email" value="Bheemappa@gmail.com" readonly>
+                  <input type="email" class="form-control" id="floatingInput" placeholder="Email" value="<%=user.email%>" name="email" >
                   <label for="floatingInput">Email</label>
                 </div>
-                <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="Permission" value="Teacher" readonly>
-                  <label for="floatingInput">Permission</label>
-                </div>
-                <button type="submit" class="btn btn-outline-success" formaction="/teacher/profile/edit">
+                
+                <button type="submit" class="btn btn-outline-success" >
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Save
               </button>
