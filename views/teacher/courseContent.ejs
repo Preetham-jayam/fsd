@@ -23,12 +23,12 @@
           <div class="tab-pane fade show active" id="course-overview" role="tabpanel" aria-labelledby="course-overview-tab">
             <div class="container">
               <h3><%=data.title%></h3>
-              <div class="d-flex py-2" >
+              <div class=" py-2 " style="display: flex; justify-content: space-between; color: #000;" >
               <div class="ratings px-2" >
                 <span style="color: gold;">4.5  <i class="fas fa-star"></i> </span><br> <p>5 Ratings</p>
               </div>
               <div class="students px-2">
-                <span style="font-weight: 1000;color: #000;"><%=data.students.length%></span>
+                <span style="font-weight: 1000;color: #000; margin-right: 2px;"><%=data.students.length%></span>
                 <br>Students
               </div>
               <div class="hours px-2">
@@ -36,14 +36,15 @@
                 <br>total
               </div>
             </div>
-              <div class="instructor d-flex">
+              <div class="instructor d-flex" style="justify-content: space-between; color: #000;">
                 <div class="px-3">
                    <a href=""><h5>Dr.<%=teacher.FullName%></h5></a>
                    <p>Web Developer</p></div>
                    <div class="px-3"><p> <i class="fas fa-code"></i> Updated on March 2023</p></div>
+                   <div class="px-3"><p> <i class="fas fa-university"></i> Institute : <%=teacher.InstName%></p></div>
               </div>
 
-              <div class="p-4" style="border: .0625rem solid black; list-style: square;">
+              <div class="p-4" style="border: .0625rem solid black;  list-style: square;">
                      <h2>What you'll Learn</h2>
                      <ul>
                       <li>Lorem ipsum dolor sit amet.</li>
@@ -84,6 +85,9 @@
               <!-- Accordtion start -->
               <div class="accordion" id="accordion">
                 <!-- Accordion item starts -->
+                <%if(chapters.length==0){%>
+                  <h2>Chapters are yet to be added...</h2>
+                <%}%>
                 <% chapters.forEach((chapter)=>{%>
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="heading-1">

@@ -48,7 +48,7 @@ exports.enrolledcourse = (req, res) => {
       }
       if (course.students.some((student) => student._id.toString() === studentId)) {
         console.log('Student is already enrolled in course');
-        res.redirect('/student/courseContent/:courseId');
+        res.redirect("/student/courseContent/'+courseId'");
         return;
       }
       return Promise.all([
