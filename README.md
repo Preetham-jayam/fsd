@@ -52,3 +52,20 @@ Individual Contribution:
    About Page
    Contact Page
    Help(Faq's) Page
+
+
+
+
+
+
+
+
+Teacher Details:
+1.krish@gmail.com,krishna@123
+2.teacher@gmail.com,teacher@123
+
+Student:
+1.jayam@gmail.com,jayam@123
+
+admin:
+11.admin@gmail.com,admin@123

@@ -44,9 +44,9 @@
                    <div class="px-3"><p> <i class="fas fa-university"></i> Institute : <%=teacher.InstName%></p></div>
               </div>
 
-              <div class="p-4" style="border: .0625rem solid black;  list-style: square;">
+              <div class="p-4" style="border: .0625rem solid black;  ">
                      <h2>What you'll Learn</h2>
-                     <ul>
+                     <ul style="list-style-type: disc;">
                       <li>Lorem ipsum dolor sit amet.</li>
                       <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, veniam.</li>
                       <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, explicabo.</li>
@@ -133,11 +133,17 @@
                 </div>
                 <!-- Accordion item ends -->
                 <%})%> 
+
+
                
 
                 
                 
               </div>
+              <div class="accordion" id="accordion">
+                <a href="/student/quiz/<%=data._id%>">Quiz</a>
+              </div>
+
               <!-- Accordtion ends -->
             </div>
           </div>

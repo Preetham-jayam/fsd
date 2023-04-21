@@ -27,24 +27,40 @@ exports.getcoursebyId = (req, res, next) => {
 
 exports.getAllCourses= (req, res) => {
     Course.find({})
+    .populate('teacher')
       .then((courses) => {
-        console.log(courses.length);
-        let teachers = [];
-        courses.forEach((course) => {
-          teachers.push(Teacher.findById(course.teacher));
-        });
-  
-        Promise.all(teachers)
-          .then((teacherResults) => {
-            res.render('teacher/courses', { courses: courses, teachers: teacherResults });
-          })
-          .catch((err) => {
-            console.log(err);
-  
-          });
+            res.render('teacher/courses', { courses: courses });
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+  exports.getCourses = (req, res, next) => {
+    const sort = req.query.sort;
+  
+    let promise;
+    if (sort === 'price:asc') {
+      promise = Course.find().populate('teacher')
+      .sort({ price: 1 }).exec();
+    } else if (sort === 'price:desc') {
+      promise = Course.find().populate('teacher').sort({ price: -1 }).exec();
+    } 
+    else if(sort=='title:asc'){
+      promise=Course.find()
+      .populate('teacher')
+      .sort({ title: 'asc' })
+      .exec()
+    }
+    else {
+      promise = Course.find().populate('teacher').exec();
+    }
+  
+    promise
+      .then(courses => {
+        res.render('teacher/courses', { courses: courses });
+      })
+      .catch(error => {
+        next(error);
       });
   };
 
@@ -62,21 +78,9 @@ exports.SearchCourse = (req, res) => {
       {name: { $regex: exp}} ,
       {price: !isNaN(price) ? price : 0} 
       ]})
+      .populate('teacher')
       .then((courses) => {
-        console.log(courses.length);
-        let teachers = [];
-        courses.forEach((course) => {
-          teachers.push(Teacher.findById(course.teacher));
-        });
-  
-        Promise.all(teachers)
-          .then((teacherResults) => {
-            res.render('teacher/courses', { courses: courses, teachers: teacherResults });
-          })
-          .catch((err) => {
-            console.log(err);
-  
-          });
+            res.render('teacher/courses', { courses: courses });
       })
       .catch((err) => {
         console.log(err);

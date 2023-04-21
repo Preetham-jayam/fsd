@@ -1,6 +1,4 @@
 const bcrypt = require("bcryptjs");
-const { check, validationResult } = require("express-validator");
-const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Student = require("../models/student");
 const Teacher = require("../models/teacher");
@@ -12,13 +10,20 @@ exports.postLogin = (req, res) => {
   const mail = req.body.email;
   const password = req.body.password;
   User.findOne({ email: mail }).then((user) => {
+   
     if (!user) {
       return res.redirect("/login");
     }
     bcrypt
       .compare(password, user.password)
       .then((doMatch) => {
+
         if (doMatch) {
+          if(user.flag === 1) {
+            return res.status(403).json({
+                error: "You are blocked by the admin"
+            })
+        }
           req.session.isLoggedIn = true;
           req.session.user = user;
           console.log(user);
@@ -32,12 +37,16 @@ exports.postLogin = (req, res) => {
             else if(user.role==1){
                 res.redirect('/teacher/home');
             }
-
-            else if(user.email =='admin@gmail.com' && user.password =='admin'){
+            else if(user.role ==2)
+            {
               res.redirect('/admin/admindb');
             }
+
+            
           });
         }
+      console.log(mail);
+
         res.redirect("/login");
       })
       .catch((err) => {

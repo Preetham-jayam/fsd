@@ -28,7 +28,7 @@
   </head>
   <body>
     <nav class="adminav navbar navbar-expand-lg navbar-dark " id="navbar" style="background-color: #06bbcc;">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="/admin/admindb">
           <i class="fa fa-home fa-lg"></i>
         </a>
         <a class="navbar-brand" href="/admin/admindb">Eduphoria</a>
@@ -40,7 +40,7 @@
           <ul class="navbar-nav mr-auto"> 
           </ul>
 
-          <form class="form-inline my-2 my-lg-0" method="POST" action="/search/users">
+          <form class="form-inline my-2 my-lg-0" method="POST" action="/admin/search/users">
             <input type="hidden" name="users" value="">
             <input class="form-control mr-sm-2" type="search" name="searchValue" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
@@ -81,7 +81,7 @@
       <a href="/admin/all/teachers">Teacher</a>
       <a href="/admin/all/students">Student</a>
       <a href="/admin/admindb">Profile</a>
-      <a href="/">Signout</a>
+      <a href="/logout">Signout</a>
     </div>
 
     <span style="font-size: 30px; cursor: pointer" onmouseenter="openNav();">

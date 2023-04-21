@@ -1,8 +1,9 @@
 <%-include('../partials/signedinnav.ejs')%>;
 <style>
     img {
-      border-radius: 50%;
+      border-radius: 25%;
       align-self: center;
+      height: 300px;
     }
     p {
       align-self: center;
@@ -18,47 +19,57 @@
   </style>
 
 
-<form method="POST" action="">
+<form method="POST" action="/student/profile/edit" enctype="multipart/form-data">
     <div class="container">
       <div class="row">
-        <div class="col-4">
+        <div class="col-lg-4">
           <div class="container-fluid mt-4">
             <div class="row">
               <div class="card mb-3">
                 <ul class="list-group list-group-flush">
-                  <img src="/Img/avatar.png" alt="Avatar" style="width:200px">
-                  <p>Abhishikth Boda</p>
-                  <a class="list-group-item list-group-item-action" href="/student/account/course-list">My Learning</a>
-                  <a class="list-group-item list-group-item-action " href="/student/account/profile">Profile</a>
-                  <a class="list-group-item list-group-item-action" href="">Account</a>
+                  <img src="/<%=student.Imageurl%>" alt="Avatar" style="width:200px">
+                    <input type="file" name="profile" placeholder="Choose Image">
+                  <p><%=student.firstName%></p>
+                  <a class="list-group-item list-group-item-action" href="/student/course-list">My Learning</a>
+                  <a class="list-group-item list-group-item-action " href="/student/profile">Profile</a>
+                  <a class="list-group-item list-group-item-action" href="/student/account">Account</a>
                 </ul>
               </div>
             </div>
           </div>
         </div>
-       
-          <div class="container-fluid mt-4">
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInput" placeholder="FullName" value="Abhishikth Boda" name="FullName">
-              <label for="floatingInput">FullName</label>
+        
+          <div class="col-lg-8">
+            <div class="container-fluid mt-4">
+              <input type="hidden" name="sid" value="<%=student._id%>">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="FirstName" value="<%=student.firstName%>" name="fname">
+                <label for="floatingInput">FirstName</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="FirstName" value="<%=student.lastName%>" name="lname">
+                <label for="floatingInput">LastName</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="PhoneNo" value="<%=student.phoneNo%>" name="phno">
+                <label for="floatingInput">PhoneNo</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Address" value="<%=student.address%>" name="address">
+                <label for="floatingInput">Address</label>
+              </div>
+              
+              
+              <button type="submit" class="btn btn-outline-success" >
+              <i class="fa fa-check" aria-hidden="true"></i>
+              Save
+            </button>
             </div>
-            <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="Username" value="Abhishikth" name="Username" readonly>
-              <label for="floatingInput">Username</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="Email" value="AbhishikthBoda@gmail.com" readonly>
-              <label for="floatingInput">Email</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="Permission" value="student" readonly>
-              <label for="floatingInput">Permission</label>
-            </div>
-            <button type="submit" class="btn btn-outline-success" >
-            <i class="fa fa-check" aria-hidden="true"></i>
-            Save
-          </button>
+
           </div>
+        </div>
+       
+          
         </div>
       </div>
     </div>

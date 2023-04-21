@@ -17,9 +17,31 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  Imageurl:{
+    type:String
+  },
   courses: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course'
+  }],
+  quizzes: [{
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course'
+    },
+    quiz: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Quiz'
+    },
+    marks: {
+      type: Number
+    },
+    totalMarks: {
+      type: Number
+    },
+    answers: [{
+      type: String
+    }]
   }]
 },
   {timestamps:true} 

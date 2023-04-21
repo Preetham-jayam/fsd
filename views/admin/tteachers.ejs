@@ -5,54 +5,80 @@
        
         <div class="col-md-1 carousel-title "> </div>
         <div class="col-md-10 carousel-title btn-add">
+            <a class="btn btn-success mr-sm-2" href="/admin/all/pending">
+                <i class="fa fa-sign-in" aria-hidden="true"></i>
+               Open Pending Requests
+              </a>
           <div>
             <hr />
           </div>
           <div class="col-md-1"></div>
         </div>
       </div>
-      
-      <% teachers.forEach((teacher)=>{ %>
-
-            <div class="row col-md-12 justify-content-center">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                <div class="item-container">
-                    <div class="item-image col-md-3">
-                     
-                        <img class="img-thumbnail item-image" src="https://img1.cgtrader.com/items/4259557/bf9d20c4fa/large/3d-avatar-profession-as-teacher-3d-model-bf9d20c4fa.jpg"  style="width:200px"
-                        alt="Can not display">
-                  
-                    </div>
-                    <div class="item-content col-md-6">
-                    <div>
-                       
-                        <h3><%=teacher.FullName%></h3>
-                        
-                    </div>
-                    
-                    <div> <b>Institute Name:</b> <%= teacher.InstName%></div>
-                    <div> <b>PhoneNo:</b> <%= teacher.phoneNo%></div>
-                    <div><b>Type:</b>  <span>Teacher</span> </div>
-                    <div><h4>Teacher Courses</h4></div>
+      <div class="container">
+        <% var i = 0; %>
+        <% users.forEach((user) => { %>
+          <% if (user.teacher) { %>
+            <% if(user.teacher.flag ==1){%>
+            <% if (i % 3 === 0) { %>
+              <div class="row">
+            <% } %>
+            
+            <div class="col-md-4">
+              <div class="card h-100 shadow mb-3">
+                <img class="card-img-top img-thumbnail" src="https://img1.cgtrader.com/items/4259557/bf9d20c4fa/large/3d-avatar-profession-as-teacher-3d-model-bf9d20c4fa.jpg" style="height: 250px;" alt="Can not display">
+                <div class="card-body d-flex flex-column">
+                  <h3 class="card-title"><%=user.teacher.FullName%></h3>
+                  <ul class="list-unstyled">
+                    <li><b>FullName:</b><%=user.teacher.FullName%></li>
+                    <li><b>Institute Name:</b> <%= user.teacher.InstName%></li>
+                    <li><b>PhoneNo:</b> <%= user.teacher.phoneNo%></li>
+                    <li><b>Type:</b> <span>Teacher</span></li>
+                    <li><b>Teacher Courses:</b></li>
                     <ul>
-                    <% courses.forEach((course)=>{%>
-                            <li><%=course.name%></li>
-                    <%})%>
-                </ul>
-                    
+                      <% user.teacher.courses.forEach((course) => { %>
+                        <li><%= course.title %></li>
+                      <% }) %>
+                    </ul>
+                  </ul>
+                  <div class="mt-auto">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <% if (user.flag === 0) { %>
+                          <a href="/admin/block/<%= user._id %>"> 
+                            <button id="block-btn" type="submit" class="btn btn-outline-danger">Block</button>
+                          </a>
+                        <% } else { %>
+                          <a href="/admin/block/<%= user._id %>"> 
+                            <button id="block-btn" type="submit" class="btn btn-outline-success">UnBlock</button>
+                          </a>
+                        <% } %>
+                      </div>
+                      <div>
+                        <a href="/admin/delete/<%= user._id %>">
+                          <button type="button" class="btn btn-danger">Delete</button>
+                        </a>
+                      </div>
                     </div>
-                    <div class="col-md-1">
-                            <div><button type="button" class="btn btn-danger">Block</button></div>
-                            <div><button type="button" class="btn btn-danger" style="margin-top: 20px;">Delete</button></div>
-                    
-                    </div>
+                  </div>
                 </div>
-                </a>
-                <div>
-                    <hr />
-                </div>
-                </div>
-        <%})%>
+              </div>
+            </div>
+            
+            <% i++; %>
+            <% if (i % 3 === 0) { %>
+              </div>
+            <% } %>
+            <% } %>
+          <% } %>
+        <% }) %>   
+      
+        <% if (i % 3 !== 0) { %>
+          </div>
+        <% } %>
+      </div>
+      
+      
+      
 <%-include('../partials/adminfooter.ejs');%>
 

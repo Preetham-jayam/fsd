@@ -71,19 +71,19 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
           <a href="/student/shome" class="nav-item nav-link">Home</a>
-          <a href="/about" class="nav-item nav-link">About</a>
-          <a href="/courses" class="nav-item nav-link">Courses</a>
-          <a href="/contact" class="nav-item nav-link">Contact</a>
-          <a href="/help" class="nav-item nav-link">FAQs</a>
+          <a href="/student/about" class="nav-item nav-link">About</a>
+          <a href="/student/courses" class="nav-item nav-link">Courses</a>
+          <a href="/student/contact" class="nav-item nav-link">Contact</a>
+          <a href="/student/help" class="nav-item nav-link">FAQs</a>
           <div class="nav-item dropdown">
             <a
               href="#"
               class="nav-link dropdown-toggle"
               data-bs-toggle="dropdown"
-              ><i class="fas fa-user"></i>Welcome,<%= student.firstName%></a
+              ><i class="fas fa-user"></i>Welcome,<%=student.firstName%></a
             >
             <div class="dropdown-menu fade-down m-0">
-              <a href="/student/account/profile" class="dropdown-item "
+              <a href="/student/profile" class="dropdown-item "
                 ><i style="padding-right: 2px;" class="fas fa-power-off" aria-hidden="true"></i>Profile</a
               >
               <a href="/logout" class="dropdown-item"> <i class="fas fa-sign-out-alt "></i> Signout</a>
@@ -93,3 +93,4 @@
       </div>
     </nav>
  
+

@@ -15,7 +15,6 @@ const fileStorage = multer.diskStorage({
   const imageUpload = multer({ dest: 'uploads/images' });
   const videoUpload = multer({ dest: 'uploads/videos' });   
 
-
 router.param('cid',courseController.getcoursebyId);
 router.get('/home',isAuth,teacherController.getHomepage);
 router.get('/addCourse',isAuth,teacherController.getAddCourse);
@@ -26,6 +25,7 @@ router.post('/course/upload/:cid',videoUpload.single('fuVideo'),isAuth,teacherCo
 router.get('/course/edit/:cid',isAuth,teacherController.getCourseEdit);
 router.post('/course/edit/:cid',isAuth,teacherController.postEditCourse);
 router.get('/quiz/:cid',isAuth,teacherController.getQuizPage);
+router.post('/quiz/:cid',isAuth,teacherController.PostaddQuestion);
 router.get('/profile',isAuth,teacherController.getProfileEdit);
 router.post('/profile',isAuth,teacherController.postProfileEdit);
 router.get('/edit-password',isAuth,teacherController.getPasswordEdit);

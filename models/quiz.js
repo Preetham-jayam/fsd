@@ -6,6 +6,10 @@ const quizSchema = new mongoose.Schema({
     required: true
   },
   questions: [{
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      auto: true
+    },
     question: {
       type: String,
       required: true
@@ -17,6 +21,10 @@ const quizSchema = new mongoose.Schema({
     answer: {
       type: String,
       required: true
+    },
+    Marks:{
+      type:Number,
+      required:true
     }
   }],
   course: {

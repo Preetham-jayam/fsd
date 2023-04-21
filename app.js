@@ -5,17 +5,10 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const multer = require("multer");
 const MongoDbStore = require("connect-mongodb-session")(session);
+const flash=require('connect-flash');
 const User = require("./models/user");
 const MONGODB_URI =
   "mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/Learning";
-// const fileStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "images");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.filename + "-" + file.originalname);
-//   },
-// });
 
 const app = express();
 const store = new MongoDbStore({
@@ -28,9 +21,8 @@ app.use(express.static(__dirname + "/public"));
 app.use("/images", express.static(__dirname + "/images"));
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
-
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(multer({ storage: fileStorage }).single('fuVideo'));
+
 app.use(
   session({
     secret: "my secret",
@@ -55,6 +47,7 @@ app.use((req, res, next) => {
       next(new Error(err));
     });
 });
+app.use(flash());
 app.set("views", "./views");
 app.set("view engine", "ejs");
 
@@ -71,55 +64,9 @@ app.use(studRoutes);
 app.use(courseRoutes);
 
 
-app.get("/", function (req, res) {
-  res.render("index");
-});
-app.get("/about", function (req, res) {
-  res.render("about");
-});
-
-
-app.get("/help", function (req, res) {
-  res.render("help");
-});
-app.get("/contact", function (req, res) {
-  res.render("contact");
-});
-
-app.get("/courses/course1", (req, res) => {
-  res.render("courses/course1");
-});
-app.get("/courses/course2", (req, res) => {
-  res.render("courses/course2");
-});
-app.get("/courses/course3", (req, res) => {
-  res.render("courses/course3");
-});
-app.get("/courses/course4", (req, res) => {
-  res.render("courses/course4");
-});
-app.get("/courses/course5", (req, res) => {
-  res.render("courses/course5");
-});
-app.get("/courses/course6", (req, res) => {
-  res.render("courses/course6");
-});
-app.get("/signedin", (req, res) => {
-  res.render("partials/signedinnav");
-});
-
-
-app.get("/courseContent", function (req, res) {
-  res.render("teacher/courseContent");
-});
 
 
 
-
-
-app.get("/student/account/profile", (req, res) => {
-  res.render("student/sprofile");
-});
 app.get("/student/account/course-list", (req, res) => {
   res.render("student/scourselist");
 });

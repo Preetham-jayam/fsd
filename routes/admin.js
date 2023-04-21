@@ -1,14 +1,19 @@
 const express=require('express');
 const router=express.Router();
-
+const isAuth = require("../middleware/isAuth");
 const adminController=require('../controllers/admin');
 const userController=require('../controllers/user');
 router.param('uid',userController.getUserById);
-router.get('/admindb',adminController.getDashboard);
-router.get('/all/students',adminController.getAllStudents);
-router.get('/all/teachers',adminController.getAllTeachers);
-router.get('/all/courses',adminController.getAllCourses);
-router.get('/block/:id',adminController.BlockUser);
-router.get('/student/delete/:uid',adminController.DeleteUser);
+router.get('/admindb',isAuth,adminController.getDashboard);
+router.get('/detail/course/:id',adminController.getSingleCourse);
+router.get('/all/students',isAuth,adminController.getAllStudents);
+router.get('/all/teachers',isAuth,adminController.getAllTeachers);
+router.get('/all/pending',isAuth,adminController.pendingTeachers);
+router.get('/accept/:id',isAuth,adminController.acceptTeacher);
+router.get('/all/courses',isAuth,adminController.getAllCourses);
+router.get('/block/:id',isAuth,adminController.BlockUser);
+router.get('/delete/:uid',isAuth,adminController.DeleteUser);
+router.post('/search/users',isAuth,adminController.searchAdmin);
+router.post('/profile/edit/:id',isAuth,adminController.postProfileEdit);
 
 module.exports=router;

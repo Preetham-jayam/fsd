@@ -7,6 +7,7 @@
         </h1>
       </div>
         <div class="container">
+          <input type="hidden" name="sid" value="<%=student._id%>">
           <div class="row g-4 justify-content-center" style="width: 100%">
             <%if(scourses.length > 0){%>
               <%for(let i=0; i < scourses.length ;i++){%>
@@ -43,7 +44,7 @@
                         ><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small
                       >
                       <small class="flex-fill text-center py-2 students"
-                        ><i class="fa fa-user text-primary me-2"></i>458 Students</small
+                        ><i class="fa fa-user text-primary me-2"></i><%=scourses[i].students.length%> Students</small
                       >
                     </div>
                   </div>
@@ -59,62 +60,66 @@
       </div>
 </div>
 
+<hr style="border-top: 4px dotted #8c8b8b;
+border-bottom: 4px dotted #fff;">
   
   <div class="text-center m-3" >
     <h1 class="bg-white text-center px-3">
-      Most Popular Courses
+      Explore other Courses 
     </h1>
+    <p>Recommended for You</p>
   </div>
 
   <div class="container">
     <div class="row g-4 justify-content-center" style="width: 100%">
-      <%if(courses.length > 0){%>
-        <%for(let i=0; i < courses.length ;i++){%>
-          <div class="course-card col-lg-4 col-md-6 ">
-            <div class="course-item  border-top">
-              <div class="position-relative overflow-hidden">
-                <img class="img-fluid" src="/<%=courses[i].Imageurl%>" alt="Image" />
-                <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                  <a
-                    href="/student/courseDetails/<%=courses[i]._id%>"
-                    class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-                    style="border-radius: 30px"
-                    >Read More</a
-                  >
-                </div>
-              </div>
-              <div class="text-center p-4 pb-0 price">
-                <h3 class="mb-0">₹<%=courses[i].price%>.00</h3>
-                <div class="mb-3 rating">
-                  <small class="fa fa-star orange"></small>
-                  <small class="fa fa-star orange"></small>
-                  <small class="fa fa-star orange"></small>
-                  <small class="fa fa-star orange"></small>
-                  <small class="fa fa-star-half orange"></small>
-                  <small>(123)</small>
-                </div>
-                <h5 class="mb-4 title"><%=courses[i].title%></h5>
-              </div>
-              <div class="d-flex border-top">
-                <small class="flex-fill text-center border-end py-2 instructor"
-                  ><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=teachers[i].FullName%></small
-                >
-                <small class="flex-fill text-center border-end py-2 duration"
-                  ><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small
-                >
-                <small class="flex-fill text-center py-2 students"
-                  ><i class="fa fa-user text-primary me-2"></i>458 Students</small
-                >
-              </div>
-            </div>
-          </div> 
-        <%}%>
-        <%}else  {%>
+      <% if(courses.length > 0) { %>
+        <% for(let i=0; i < courses.length ;i++) { %>
+          <% let isEnrolled = false; %>
+          <% for (let j=0; j< scourses.length; j++) { %>
+            <% if (scourses[j]._id.toString() === courses[i]._id.toString()) { %>
+              <% isEnrolled = true; %>
+              <% break; %>
+            <% } %>
+          <% } %>
           
-          <h2>No Courses Found....</h2>
-      <%}%>
-    </div>
-  </div>
+          <% if (!isEnrolled) { %>
+              <div class="course-card col-lg-4 col-md-6 ">
+                <div class="course-item  border-top">
+                  <div class="position-relative overflow-hidden">
+                    <img class="img-fluid" src="/<%=courses[i].Imageurl%>" alt="Image" />
+                    <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
+                      <a href="/student/courseDetails/<%=courses[i]._id%>" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px">Read More</a>
+                    </div>
+                  </div>
+                  <div class="text-center p-4 pb-0 price">
+                    <h3 class="mb-0">₹<%=courses[i].price%>.00</h3>
+                    <div class="mb-3 rating">
+                      <small class="fa fa-star orange"></small>
+                      <small class="fa fa-star orange"></small>
+                      <small class="fa fa-star orange"></small>
+                      <small class="fa fa-star orange"></small>
+                      <small class="fa fa-star-half orange"></small>
+                      <small>(123)</small>
+                    </div>
+                    <h5 class="mb-4 title"><%=courses[i].title%></h5>
+                  </div>
+                  <div class="d-flex border-top">
+                    <small class="flex-fill text-center border-end py-2 instructor"><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=teachers[i].FullName%></small>
+                    <small class="flex-fill text-center border-end py-2 duration"><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small>
+                    <small class="flex-fill text-center py-2 students"><i class="fa fa-user text-primary me-2"></i><%=courses[i].students.length%> Students</small>
+                  </div>
+                </div>
+              </div> 
+           
+         
+              <% } %>
+              <% } %>
+            <% } else { %>
+              <h2>No Courses Found....</h2>
+            <% } %>
+          </div>
+        </div>
+  
 
 
 

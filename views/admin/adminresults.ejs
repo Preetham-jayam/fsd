@@ -1,0 +1,131 @@
+<%-include("../partials/adminheader.ejs");%>
+
+<h1 class="display-3 text-center" style="font-size: 3rem;">Search User Details</h1>
+<div class="row col-md-12 justify-content-center btn-add">
+       
+    <div class="col-md-1 carousel-title "> </div>
+    <div class="col-md-10 carousel-title btn-add">
+      <div>
+        <hr />
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+  </div>
+
+  <% users.forEach((user)=>{%>
+
+    
+      <div class="container">
+        <% if(user.role ==0) {%>
+          <div class="row ">
+            <div class="col-md-4">
+              <div class="card h-100 shadow mb-3">
+                <img class="card-img-top img-thumbnail" src="https://img.freepik.com/premium-vector/happy-smiling-young-man-avatar-3d-portrait-man-cartoon-character-people-vector-illustration_653240-187.jpg?w=740" style="height: 250px;" alt="Can not display">
+                <div class="card-body d-flex flex-column">
+                  <h3 class="card-title"><%= user.student.firstName %></h3>
+                  <ul class="list-unstyled">
+                    <li><b>Email:</b> <%= user.email %></li>
+                    <li><b>Firstname:</b> <%= user.student.firstName %></li>
+                    <li><b>Lastname:</b> <%= user.student.lastName %></li>
+                    <li><b>PhoneNo:</b> <%= user.student.phoneNo %></li>
+                    <li><b>Address:</b> <%= user.student.address %></li>
+                    <li><b>Type:</b> <span>Student</span></li>
+                    <li><b>Courses:</b></li>
+                    <ul>
+                      <% user.student.courses.forEach((course) => { %>
+                        <li><%= course.title %></li>
+                      <% }) %>
+                    </ul>
+                  </ul>
+                  <div class="mt-auto">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <% if (user.flag === 0) { %>
+                          <a href="/admin/block/<%= user._id %>"> 
+                            <button id="block-btn" type="submit" class="btn btn-outline-danger">Block</button>
+                          </a>
+                        <% } else { %>
+                          <a href="/admin/block/<%= user._id %>"> 
+                            <button id="block-btn" type="submit" class="btn btn-outline-success">UnBlock</button>
+                          </a>
+                        <% } %>
+                      </div>
+                      <div>
+                        <a href="/admin/delete/<%= user._id %>">
+                          <button type="button" class="btn btn-danger">Delete</button>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+       
+      
+        
+          </div>
+      </div>
+      
+    <%}%>
+    <div class="container">
+      <%if(user.role==1){%>
+      <div class="row">
+            <div class="col-md-4">
+              <div class="card h-100 shadow mb-3">
+                <img class="card-img-top img-thumbnail" src="https://img1.cgtrader.com/items/4259557/bf9d20c4fa/large/3d-avatar-profession-as-teacher-3d-model-bf9d20c4fa.jpg" style="height: 250px;" alt="Can not display">
+                <div class="card-body d-flex flex-column">
+                  <h3 class="card-title"><%=user.teacher.FullName%></h3>
+                  <ul class="list-unstyled">
+                    <li><b>Email:</b> <%= user.email %></li>
+                    <li><b>FullName:</b><%=user.teacher.FullName%></li>
+                    <li><b>Institute Name:</b> <%= user.teacher.InstName%></li>
+                    <li><b>PhoneNo:</b> <%= user.teacher.phoneNo%></li>
+                    <li><b>Type:</b> <span>Teacher</span></li>
+                    <li><b>Teacher Courses:</b></li>
+                    <ul>
+                      <% user.teacher.courses.forEach((course) => { %>
+                        <li><%= course.title %></li>
+                      <% }) %>
+                    </ul>
+                  </ul>
+                  <div class="mt-auto">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <% if (user.flag === 0) { %>
+                          <a href="/admin/block/<%= user._id %>"> 
+                            <button id="block-btn" type="submit" class="btn btn-outline-danger">Block</button>
+                          </a>
+                        <% } else { %>
+                          <a href="/admin/block/<%= user._id %>"> 
+                            <button id="block-btn" type="submit" class="btn btn-outline-success">UnBlock</button>
+                          </a>
+                        <% } %>
+                      </div>
+                      <div>
+                        <a href="/admin/delete/<%= user._id %>">
+                          <button type="button" class="btn btn-danger">Delete</button>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+    <%}%>
+
+  <%})%>
+
+
+
+
+
+
+
+
+<%-include('../partials/adminfooter.ejs');%>

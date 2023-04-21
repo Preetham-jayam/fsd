@@ -1,7 +1,5 @@
 <%-include("../partials/adminheader.ejs");%>
 <h1 class="display-3 text-center" style="font-size: 3rem;">Course Details</h1>
-    
-  
     <div class="row col-md-12 justify-content-center btn-add">
        
         <div class="col-md-1 carousel-title "> </div>
@@ -22,14 +20,13 @@
               <div class="card-body card-content">
                 <h5 class="card-title">Title:<%=courses[i].title%></h5>
                 <h5 class="card-teacher">Course Name:<%=courses[i].name%></h5>
-                <h5 class="card-teacher">Teacher:<%=teachers[i].FullName%></h5>
+                <h5 class="card-teacher">Teacher:<%=courses[i].teacher.FullName%></h5>
                 <h5 class="card-price">Course Price:₹<%=courses[i].price%></h5>
       
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
                     <a href="/admin/detail/course/<%=courses[i]._id%>" class="btn btn-sm btn-outline-warning card-button">View Details</a>
-                    <a href="/admin/course/edit/<%=courses[i]._id%>" class="btn btn-sm  btn-outline-success card-button">Edit</a>
-                    <a href="/admin/course/delete/<%=courses[i]._id%>" class="btn btn-sm  btn-outline-danger card-button">Disable</a>
+                    <a href="/admin/course/delete/<%=courses[i]._id%>" class="btn btn-sm  btn-outline-danger card-button">Delete</a>
                   </div>
                 </div>
               </div>

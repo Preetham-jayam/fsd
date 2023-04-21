@@ -3,6 +3,7 @@ const Teacher = require("../models/teacher");
 const User = require("../models/user");
 const Chapter = require("../models/chapter");
 const Lesson = require("../models/lesson");
+const Quiz = require("../models/quiz");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 
@@ -20,8 +21,6 @@ exports.postAddCourse = (req, res, next) => {
   const courseName = req.body.nameCourse;
   const description = req.body.Description;
   const cost = req.body.Price;
-  const salecost = req.body.salePrice;
-  const category = req.body.category;
   const image = req.file;
   const imageUrl = image.path;
   const teacher = req.body.Id;
@@ -193,7 +192,7 @@ exports.postUpload = (req, res) => {
   } else {
     // Handle existing chapter update
     Chapter.findByIdAndUpdate(chapterId)
-      .then((chapter) =>{
+      .then((chapter) => {
         if (lessonId === "new") {
           // Handle new lesson creation
           const newLesson = new Lesson({
@@ -326,7 +325,6 @@ exports.postPasswordedit = (req, res) => {
   const userid = req.body.userId;
   User.findById(userid)
     .then((user) => {
-      // Compare the current password provided by the user with the hash stored in the database
       bcrypt.compare(currentPassword, user.password, function (err, result) {
         if (err) {
           console.log(err);
@@ -335,17 +333,16 @@ exports.postPasswordedit = (req, res) => {
           console.log("Current password is incorrect");
         }
 
-        // Update the user's password
-        user.password = newPassword;
-
-        // Save the user
-        user.save(function (err) {
-          if (err) {
-            return res.status(500).send(err);
-          }
-          return res.status(200).send("Password updated successfully");
+        return bcrypt.hash(newPassword, 12).then((hashespwd) => {
+          user.password = hashespwd;
+          user.save().then((err) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log("Password updated successfully");
+          });
+          res.redirect("/teacher/profile");
         });
-        res.redirect("/teacher/profile");
       });
     })
     .catch((err) => console.log(err));
@@ -354,4 +351,83 @@ exports.postPasswordedit = (req, res) => {
 exports.getQuizPage = (req, res, next) => {
   const course = req.course;
   res.render("teacher/teacher-quiz", { course: course });
+};
+
+exports.PostaddQuestion = (req, res) => {
+  Quiz.findOne({ course: req.body.IdCourse })
+    .then((quiz) => {
+      if (quiz) {
+        const newQuestion = {
+          question: req.body.question,
+          options: [
+            req.body.option1,
+            req.body.option2,
+            req.body.option3,
+            req.body.option4,
+          ],
+          answer: req.body.answer,
+          Marks: req.body.marks,
+        };
+        quiz.questions.push(newQuestion);
+        quiz
+          .save()
+          .then(() => {
+            console.log(quiz);
+            res.redirect("/teacher/quiz/" + req.body.IdCourse);
+          })
+          .catch((err) => {
+            console.log(err);
+            res.redirect("/teacher/courseDetails/" + req.body.IdCourse);
+          });
+      } else {
+        const quiz = new Quiz({
+          title: req.body.title,
+          questions: [
+            {
+              question: req.body.question,
+              options: [
+                req.body.option1,
+                req.body.option2,
+                req.body.option3,
+                req.body.option4,
+              ],
+              answer: req.body.answer,
+              Marks: req.body.marks,
+            },
+          ],
+          course: req.body.IdCourse,
+        });
+        console.log(quiz.questions.answer)
+        quiz
+          .save()
+          .then((quiz) => {
+            Course.findById(req.body.IdCourse)
+              .then((course) => {
+                course.quizzes.push(quiz._id);
+                course
+                  .save()
+                  .then(() => {
+                    console.log(quiz);
+                    res.redirect("/teacher/quiz/" + req.body.IdCourse);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    res.redirect("/teacher/courseDetails/" + req.body.IdCourse);
+                  });
+              })
+              .catch((err) => {
+                console.log(err);
+                res.redirect("/teacher/courseDetails/" + req.body.IdCourse);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.redirect("/teacher/courseDetails/" + req.body.IdCourse);
+          });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect("/teacher/courseDetails/" + req.body.IdCourse);
+    });
 };

@@ -1,6 +1,44 @@
 const Student = require("../models/student");
 const Course=require('../models/course');
 const Teacher=require('../models/teacher');
+const User = require("../models/user");
+const Quiz=require('../models/quiz');
+const bcrypt=require('bcryptjs');
+const mongoose=require('mongoose');
+const ObjectId = new mongoose.Types.ObjectId;
+exports.getIndex=(req,res)=>{
+  Course.find({})
+      .then((courses) => {
+        let teachers = [];
+        courses.forEach((course) => {
+          teachers.push(Teacher.findById(course.teacher));
+        });
+  
+        Promise.all(teachers)
+          .then((teacherResults) => {
+            res.render('index', { courses: courses, teachers: teacherResults });
+          })
+          .catch((err) => {
+            console.log(err);
+  
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+};
+
+exports.getAboutpage=(req,res)=>{
+  res.render('about');
+};
+
+exports.getContactPage=(req,res)=>{
+  res.render('contact');
+};
+
+exports.getHelpPage=(req,res)=>{
+  res.render('help');
+};
 
 exports.getHomepage = (req, res, next) => {
   Student.findById(req.session.user.student)
@@ -48,7 +86,7 @@ exports.enrolledcourse = (req, res) => {
       }
       if (course.students.some((student) => student._id.toString() === studentId)) {
         console.log('Student is already enrolled in course');
-        res.redirect("/student/courseContent/'+courseId'");
+        res.redirect(`/student/courseContent/${courseId}`);
         return;
       }
       return Promise.all([
@@ -58,7 +96,7 @@ exports.enrolledcourse = (req, res) => {
     })
     .then(() => {
       console.log(`Student has been enrolled in course`);
-      res.redirect('/student/courseContent/:courseId');
+      res.redirect(`/student/courseContent/${courseId}`);
       
     })
     .catch((err) => {
@@ -91,8 +129,100 @@ exports.getCourseDetails=(req,res)=>{
 }
 
 exports.getProfile = (req, res, next) => {
-  res.render("student/sprofile");
+ User.findById(req.session.user)
+ .populate('student')
+ .then((user)=>{
+  res.render('student/sprofile',{user:user,student:user.student});
+
+ })
+
+  .catch(err => console.log(err));
 };
+
+exports.postProfileEdit=(req,res)=>{
+  const fname=req.body.fname;
+  const lname=req.body.lname;
+  const phno=req.body.phno;
+  const address=req.body.address;
+  const image=req.file;
+  const imageurl=image.path;
+  Student.findById(req.body.sid)
+  .then((student)=>{
+    student.firstName=fname;
+    student.lastName=lname;
+    student.phoneNo=phno;
+    student.address=address;
+    student.Imageurl=imageurl;
+    return student.save();
+  })
+  .then(()=>{
+    console.log('Student Detail Updated');
+    res.redirect('/student/profile');
+  })
+  .catch(err => console.log(err));
+
+};
+
+exports.getPasswordEdit=(req,res)=>{
+  User.findById(req.session.user)
+  .populate('student')
+  .then((student)=>{
+    res.render('student/saccount',{user:student,student:student.student});
+
+  })
+}
+exports.postPasswordedit = (req, res) => {
+  const currentPassword = req.body.CurrentPassword;
+  const newPassword = req.body.NewPassword;
+  const retypeNewPassword = req.body.RetypeNewPassword;
+  const userid = req.body.userId;
+  const email=req.body.mail;
+  User.findById(userid)
+    .then((user) => {
+      bcrypt.compare(currentPassword, user.password, function (err, result) {
+        if (err) {
+          console.log(err);
+        }
+        if (!result) {
+          console.log("Current password is incorrect");
+        }
+
+        return bcrypt.hash(newPassword,12)
+        .then((hashespwd)=>{
+          user.email=email;
+        user.password = hashespwd;
+        user.save()
+        .then((err) =>{
+          if (err) {
+            console.log(err);
+          }
+          console.log("Password updated successfully");
+        });
+        res.redirect("/student/account");
+
+        })
+
+       
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+
+
+exports.myLearning=(req,res)=>{
+  User.findById(req.session.user)
+  .populate({
+    path: 'student',
+    populate: {
+      path: 'courses',
+      model: 'Course'
+    }
+  })
+  .then((user)=>{
+    res.render('student/scourselist',{user:user,student:user.student,courses:user.student.courses});
+  })
+}
 
 exports.getCourseContent=(req,res)=>{
   const id=req.params.id;
@@ -114,4 +244,152 @@ exports.getCourseContent=(req,res)=>{
      .catch(err => console.log(err));
     });
 
+};
+
+exports.studentQuiz=(req,res)=>{
+  const id=req.params.id;
+  User.findById(req.session.user)
+  .populate('student')
+  .then((user)=>{
+    Course.findById(id)
+  .populate('quizzes')
+  .then((course)=>{
+    res.render('student/studentquiz',{student:user.student,course:course,quizzes:course.quizzes});
+  })
+
+  })
+  
+}
+// exports.postsubmitQuiz = (req, res, next)=> {
+//   const courseId = req.body.courseId;
+//   const studentId=req.body.studentId;
+//   const quizId =req.body.quizId;
+//   const studentAnswers = req.body.answers;
+//   console.log(quizId);
+
+//   Course.findById(courseId)
+//   .populate({
+//     path: 'quizzes',
+//     populate: {
+//       path: 'questions',
+//       populate: [
+//         { path: 'options' },
+//         { path: 'answer' },
+//         { path: 'Marks' }
+//       ]
+//     }
+//   })
+//     .then(course => {
+//       const quiz = course.quizzes[0];
+
+   
+//       let totalMarks = 0;
+//       let studentMarks = 0;
+
+//       quiz.questions.forEach(question => {
+//         totalMarks += question.Marks;
+//         console.log(studentAnswers[quizId][question._id]);
+//         console.log(question.answer);
+//         if (studentAnswers[quizId][question._id] === question.answer) {
+//           studentMarks += question.Marks;
+//         }
+//       });
+
+//       const studentQuiz = {
+//         course: courseId,
+//         quiz: quizId,
+//         marks: studentMarks,
+//         totalMarks: totalMarks,
+//         answers: studentAnswers
+//       };
+
+//       Student.findByIdAndUpdate(
+//         studentId,
+//         { $push: { quizzes: studentQuiz } },
+//         { new: true }
+//       )
+//         .populate('courses')
+//         .populate({
+//           path: 'quizzes.quiz',
+//           populate: { path: 'course' }
+//         })
+//         .exec((err, student) => {
+//           if (err) return next(err);
+//           res.render('student/studentResult', {
+//             title: 'Quiz Result',
+//             quiz: quiz,
+//             studentQuiz: studentQuiz,
+//             student: student
+//           });
+//         });
+//     })
+//     .catch(err => next(err));
+// };
+
+exports.postsubmitQuiz = function(req, res) {
+  const courseId = req.body.courseId;
+  const quizId = req.body.quizId;
+  console.log(quizId);
+  const answers = req.body.answers;
+  console.log(answers);
+  let marksObtained = 0;
+  let totalMarks = 0;
+  let correctAnswers = 0;
+  let incorrectAnswers = 0;
+
+  Quiz.findById(quizId)
+    .populate({
+      path: 'course',
+      select: 'students'
+    })
+    .then(quiz => {
+      if (!quiz) {
+        return res.status(404).json({ error: 'Quiz not found' });
+      }
+
+      if (!quiz.course.students.includes(req.user.student._id)) {
+        return res.status(401).json({ error: 'Unauthorized access' });
+      }
+
+      quiz.questions.forEach((question, index) => {
+        totalMarks += question.Marks;
+        if (question.answer === answers[question._id.toString()]) {
+          marksObtained += question.Marks;
+          correctAnswers += 1;
+        } else {
+          incorrectAnswers += 1;
+        }
+      });
+
+      const quizResult = {
+        course: courseId,
+        quiz: quizId,
+        marks: marksObtained,
+        totalMarks: totalMarks,
+        answers: answers
+      };
+
+      Student.findOneAndUpdate(
+        { _id: req.user._id, 'quizzes.quiz': quizId },
+        { $set: { 'quizzes.$.marks': marksObtained, 'quizzes.$.answers': answers } }
+      ).then(() => {
+        Student.findOneAndUpdate(
+          { _id: req.user._id, 'courses': courseId },
+          { $push: { quizzes: quizResult } }
+        ).then(() => {
+          return res.json({
+            marksObtained,
+            totalMarks,
+            correctAnswers,
+            incorrectAnswers
+          });
+        }).catch((error) => {
+          return res.status(500).json({ error: 'Unable to submit quiz' });
+        });
+      }).catch((error) => {
+        return res.status(500).json({ error: 'Unable to submit the quiz' });
+      });
+    }).catch((error) => {
+      return res.status(500).json({ error: 'Unable to submit a quiz' });
+    });
 };

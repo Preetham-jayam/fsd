@@ -93,10 +93,6 @@
         <input type="text" class="form-control" id="txtTitle" name="title" placeholder="what you want to share with everybody?">
       </div>
       <div class="form-group">
-        <label for="txtcategory">The course category is:</label>
-        <input type="text" class="form-control" id="txtcategory" name="category" placeholder="">
-      </div>
-      <div class="form-group">
         <label for="txtDescription">Description of course:</label>
         <textarea name="Description" id="txtDescription" class="form-control"rows="2"></textarea>
       </div>
@@ -110,10 +106,7 @@
         <input type="text" class="form-control" id="txtPrice" name="Price" placeholder="₹5999.00">
       </div>
       
-       <div class="form-group">
-        <label for="txtsale" >How much do you want to sale this Course?</label>
-        <input type="text" class="form-control" id="txtsale" name="salePrice" placeholder="₹4999.00">
-      </div>
+       
 
      
      
@@ -140,7 +133,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.tiny.cloud/1/wafynfll6yk0et81pwlvcwdx6r76d4pl4gy3397p9126dmzm/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
+<!-- <script>
   tinymce.init({
     selector: '#txtDescription',
     height: 300,
@@ -154,7 +147,7 @@
     placeholder: 'write description here',
     toolbar_mode:'scrolling'
   });
-</script>
+</script> -->
 
 <script>
   $('#frmCourse').on('submit', function (e) {

@@ -69,62 +69,67 @@
           </ul>
         </div>
       </nav>
-      <form action="" id="frmCourse"  enctype="multipart/form-data">
+      <form action="/teacher/quiz/<%=course._id%>" id="frmCourse" method="post">
         <div class="card">
-          <h3 class="card-header">Add Question</h3>
-          <div class="card-body">
-            <div class="form-group">
-              <input type="hidden" name="IdCourse" value="<%=course._id%>">
-              <label for="txtNameCourse">Course:</label>
-              <input type="text" class="form-control" id="txtNameCourse" name="nameCourse" value="<%=course.name%>" placeholder="" autofocus readonly>
-            </div>
-            
-            <div class="form-group">
-              <label for="Question">Question:</label>
-              <textarea type="text" class="form-control" id="Question" rows="3" name="title" value=""></textarea>
-            </div>
-            <div class="form-group">
-                <label for="Question">Marks:</label>
-                <input type="number" class="form-control" id="marks" placeholder="10" value="">
-              </div>
-            <div class="form-group">
-              <label for="qnoption">option 1:</label>
-              <input name="option1" id="qnoption" class="form-control">
-            </div>
-            
-            <div class="form-group">
-                <label for="qnoption">option 2:</label>
-                <input name="option2" id="qnoption" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="qnoption">option 3:</label>
-                <input name="option3" id="qnoption" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="qnoption">option 4:</label>
-                <input name="option4" id="qnoption" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="txtAnswer" >Answer:</label>
-                <div class="input-group">
-                <select name="status" id="txtAnswer" style="width:150px;height: 35px;">
-                        <option value="1">option 1</option>
-                        <option value="2">option 2</option>
-                        <option value="3">option 3</option>
-                        <option value="4">option 4</option>
-                </select>
+            <h3 class="card-header">Add Question</h3>
+            <div class="card-body">
+                <div class="form-group">
+                    <input type="hidden" name="IdCourse" value="<%=course._id%>">
+                    <label for="title">Course:</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<%=course.title%>" placeholder="" autofocus readonly>
                 </div>
-              </div>
-          </div>
-          <div class="card-footer text-muted">
-            <a class="btn btn-success" href="/teacher/courseDetails/<%=course._id%>">Go Back</a>
-            <button type="submit" class="btn btn-outline-success" style="float: right;">
-              <i class="fa fa-check" aria-hidden="true"></i>
-             Add
-            </button>
-          </div>
+                
+                <div class="form-group">
+                    <label for="Question">Question:</label>
+                    <textarea type="text" class="form-control" id="Question" name="question" rows="3" value=""></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="Marks">Marks:</label>
+                    <input type="number" class="form-control" id="marks" name="marks" placeholder="10" value="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="qnoption1">option 1:</label>
+                    <input name="option1" id="qnoption1" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="qnoption2">option 2:</label>
+                    <input name="option2" id="qnoption2" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="qnoption3">option 3:</label>
+                    <input name="option3" id="qnoption3" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="qnoption4">option 4:</label>
+                    <input name="option4" id="qnoption4" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="txtAnswer">Answer:</label>
+                    <div class="input-group">
+                      <select name="answer" id="txtAnswer" style="width:150px;height: 35px;">
+                        <option value="qnoption1">option 1</option>
+                        <option value="qnoption2">option 2</option>
+                        <option value="qnoption3">option 3</option>
+                        <option value="qnoption4">option 4</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-success" href="/teacher/courseDetails/<%=course._id%>">Go Back</a>
+                <button type="submit" class="btn btn-outline-success" style="float: right;">
+                    <i class="fa fa-check" aria-hidden="true"></i> Add
+                </button>
+            </div>
         </div>
-      </form>
+    </form>
+    
 
 </body>
 
@@ -141,20 +146,14 @@
     const question=$('#Question').val();
     const qnoption=$('#qnoption').val();
     let marks=$('#txtSaleCost').val();
-    if(question.length === 0 || title.length === 0 || SaleCost.length === 0){
+    if(question.length === 0 || title.length === 0 ){
        Swal.fire({
         icon: 'error',
         text: 'Empty data.',
       })
       return;
     }
-    if(isNaN(marks)){
-      Swal.fire({
-      icon: 'error',
-      text: 'Not a number at Marks data.',
-    })
-    return;
-    }
+    
       if(marks<=0 || marks >100){
        Swal.fire({
         icon: 'error',

@@ -1,0 +1,78 @@
+<%-include("../partials/adminheader.ejs");%>
+
+<h1 class="display-3 text-center" style="font-size: 3rem;">Pending Requests</h1>
+
+
+  
+  <% users.forEach((user)=>{ %>
+
+        
+                
+                    <div class="container">
+                        <% var i = 0; %>
+                        
+                          <% if (user.teacher) { %>
+                            <%if(user.teacher.flag == 0){ %>
+                            <% if (i % 3 === 0) { %>
+                              <div class="row">
+                            <% } %>
+                            
+                            <div class="col-md-4">
+                              <div class="card h-100 shadow mb-3">
+                                <img class="card-img-top img-thumbnail" src="https://img1.cgtrader.com/items/4259557/bf9d20c4fa/large/3d-avatar-profession-as-teacher-3d-model-bf9d20c4fa.jpg" style="height: 250px;" alt="Can not display">
+                                <div class="card-body d-flex flex-column">
+                                  <h3 class="card-title"><%=user.teacher.FullName%></h3>
+                                  <ul class="list-unstyled">
+                                    <li><b>FullName:</b><%=user.teacher.FullName%></li>
+                                    <li><b>Institute Name:</b> <%= user.teacher.InstName%></li>
+                                    <li><b>PhoneNo:</b> <%= user.teacher.phoneNo%></li>
+                                    <li><b>Type:</b> <span>Teacher</span></li>
+                                  <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                      <div>
+                                        <a href="/admin/accept/<%=user.teacher._id%>"> <button id="block-btn" type="submit" class="btn btn-outline-danger" >Accept</button></a>
+                                        <a href="/admin/decline/<%=user.teacher._id%>"> <button id="block-btn" type="submit" class="btn btn-outline-success" >Decline</button></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <% i++; %>
+                            <% if (i % 3 === 0) { %>
+                              </div>
+                            <% } %>
+                            <% } %>
+                          <% } %>
+                       
+                      
+                        <% if (i % 3 !== 0) { %>
+                          </div>
+                        <% } %>
+                      </div>
+                      
+               
+    
+
+    <%})%>
+
+    <div class="col-md-1">
+        <div>
+           
+        </div>
+       
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<%-include('../partials/adminfooter.ejs');%>

@@ -69,6 +69,14 @@
       </nav>
 
     <div class="row col-md-12 justify-content-center">
+      <% if(teacher.flag==0){%>
+        <div style="text-align: center;" >
+        <div><h1>Hello <%=teacher.FullName%></h1></div>
+        <div><h2>You are not approved by admin just wait some time.....</h2></div>
+        <img src="https://images.unsplash.com/photo-1509347667906-54410f16042d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHdhaXRpbmd8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60" alt="">
+      </div>
+      <%}%>
+      <% if(teacher.flag==1){%>
         <div class="col-md-1 carousel-title"></div>
         <div class="col-md-10 carousel-title">
           <h1>
@@ -121,6 +129,8 @@
           <%}%>
         </div>
       </div>
+      <%}%>
+
 </body>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

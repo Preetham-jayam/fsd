@@ -1,0 +1,103 @@
+<%-include('../partials/signedinnav.ejs')%>
+<style>
+    img {
+      
+        border-radius: 25%;
+      align-self: center;
+      height: 300px;
+    }
+    p {
+      align-self: center;
+      font-size: larger;
+    }
+    .col-8{
+      display: flex;
+    }
+    button{
+      align-items: center;
+      align-self: center;
+    }
+  </style>
+
+
+<form method="POST" action="/student/edit-password">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="container-fluid mt-4">
+            <div class="row">
+              <div class="card mb-3">
+                <ul class="list-group list-group-flush">
+                  <img src="/<%=student.Imageurl%>" alt="Avatar" style="width:200px">
+                  <p><%=student.firstName%></p>
+                  <a class="list-group-item list-group-item-action" href="/student/course-list">My Learning</a>
+                  <a class="list-group-item list-group-item-action " href="/student/profile">Profile</a>
+                  <a class="list-group-item list-group-item-action" href="/student/account">Account</a>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div class="col-lg-8">
+              
+              <div class="container-fluid mt-4">
+                <input type="hidden" value="<%=user._id%>" name="userId">
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" name="mail" id="floatingInput" placeholder="Email" value="<%=user.email%>">
+                    <label for="floatingInput">Email</label>
+                  </div>
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" id="currentpwd" placeholder="Enter Current Password" name="CurrentPassword">
+                  <label for="floatingInput">Enter Current Password</label>
+                  <i
+                  class="far fa-eye position-absolute top-50 end-0 translate-middle-y cursor-pointer"
+                  onclick="togglePasswordVisibility('currentpwd')"
+                ></i>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" id="pwd" placeholder="Enter New Password" name="NewPassword">
+                  <label for="floatingInput">Enter New Password</label>
+                  <i
+                  class="far fa-eye position-absolute top-50 end-0 translate-middle-y cursor-pointer"
+                  onclick="togglePasswordVisibility('pwd')"
+                ></i>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" id="confirmpwd" placeholder="Re-type New Password" name="RetypeNewPassword">
+                  <label for="floatingInput">Re-type New Password</label>
+                  <i
+                  class="far fa-eye position-absolute top-50 end-0 translate-middle-y cursor-pointer"
+                  onclick="togglePasswordVisibility('confirmpwd')"
+                ></i>
+                </div>
+                <button type="submit" class="btn btn-danger" > Change Password</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+       
+          
+        </div>
+      </div>
+    </div>
+    </form>
+
+    <script>
+      function togglePasswordVisibility(passwordId) {
+        const passwordInput = document.getElementById(passwordId);
+        const passwordIcon = passwordInput.nextElementSibling;
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          passwordIcon.classList.remove("far", "fa-eye");
+          passwordIcon.classList.add("far", "fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          passwordIcon.classList.remove("far", "fa-eye-slash");
+          passwordIcon.classList.add("far", "fa-eye");
+        }
+      }
+    </script>
+
+
+<%-include('../partials/footer.ejs')%>;

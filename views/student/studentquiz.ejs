@@ -1,0 +1,52 @@
+<%-include('../partials/signedinnav.ejs')%>
+
+  <input type="hidden" value="<%=student._id%>" name="studentId">
+
+  <div class="container">
+    <div class="headings" style="text-align: center;">
+      <h1>Attend Course and Take Quiz</h1>
+      
+    </div>
+    <hr>
+    <h2>Course Details</h2>
+  <h5><strong>Title:</strong> <%= course.title %></h5>
+  <h5><strong>Description:</strong> <%= course.description %></h5>
+  <hr>
+  <h2>Quiz Questions</h2>
+  <form id="quizForm" class="form-horizontal" action="/student/submitQuiz" method="post">
+    <% quizzes.forEach((quiz)=>{%>
+      <input type="hidden" name="quizId" value="<%=quiz._id%>">
+      
+    <% quiz.questions.forEach(function(question,i) { %>
+      <h3><%=i+1%>. <%= question.question %></h3> 
+      <% question.options.forEach(function(option, index) { %>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <div class="radio">
+              <label>
+                <input type="radio" id="option<%= index %>" name="answers[<%= question._id %>]" value="<%= option %>">
+                <%= option %>
+              </label>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+      <hr>
+      
+    <% }); %>
+    <%})%>
+    <input type="hidden" name="courseId" value="<%= course._id %>">
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit"  class="btn btn-primary">Submit Quiz</button>
+      </div>
+    </div>
+  </form>
+  
+  </div>
+  
+
+
+
+<%-include('../partials/footer.ejs')%>
+

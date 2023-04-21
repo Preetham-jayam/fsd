@@ -1,0 +1,25 @@
+<%-include('../partials/signedinnav.ejs')%>
+
+    <h1>Quiz Result</h1>
+    <p><strong>Student:</strong> <%= student.firstName %> <%= student.lastName %></p>
+    <p><strong>Course:</strong> <%= studentQuiz.quiz.course.name %></p>
+    <p><strong>Marks:</strong> <%= studentQuiz.marks %> / <%= studentQuiz.totalMarks %></p>
+    <h2>Questions</h2>
+    <% studentQuiz.quiz.questions.forEach(function(question, index) { %>
+      <div class="question">
+        <p><strong>Question <%= index+1 %>:</strong> <%= question.question %></p>
+        <ul>
+          <% question.options.forEach(function(option) { %>
+            <li>
+              <% if (option == question.answer) { %>
+                <span style="color:green;"><%= option %> (correct)</span>
+              <% } else { %>
+                <%= option %>
+              <% } %>
+            </li>
+          <% }) %>
+        </ul>
+        <p><strong>Your Answer:</strong> <%= studentQuiz.answers[question._id] %></p>
+      </div>
+    <% }) %>
+    <%-include('../partials/footer.ejs')%>

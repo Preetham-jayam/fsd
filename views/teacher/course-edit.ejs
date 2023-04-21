@@ -79,10 +79,10 @@
               <label for="txtNameCourse">Course:</label>
               <input type="text" class="form-control" id="txtNameCourse" name="nameCourse" value="<%=course.name%>" placeholder="" autofocus>
             </div>
-            <label for="fuImage">Image Course:</label>
+            <!-- <label for="fuImage">Image Course:</label>
             <div class="form-group file-loading">
               <input id="fuImage" name="fuImage" type="file" class="file" data-show-preview="false"  data-allowed-file-extensions='["jpg","png"]'>
-            </div>
+            </div> -->
             <div class="form-group">
               <label for="txtTitle">Title:</label>
               <input type="text" class="form-control" id="txtTitle" name="title" value="<%=course.title%>">
@@ -132,7 +132,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+<!-- 
 <script>
       tinymce.init({
         selector: '#txtDescription',
@@ -147,14 +147,14 @@
         icons: 'material',
         placeholder: 'write description here',
       });
-</script>
+</script> -->
 <script>
   $('#frmCourse').on('submit', function (e) {
     e.preventDefault();
     const nameCourse=$('#txtNameCourse').val();
     const title=$('#txtTitle').val();
     let SaleCost=$('#txtSaleCost').val();
-    if(nameCourse.length === 0 || title.length === 0 || SaleCost.length === 0){
+    if(nameCourse.length === 0 || title.length === 0 ){
        Swal.fire({
         icon: 'error',
         text: 'Empty data.',

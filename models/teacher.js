@@ -16,7 +16,11 @@ const teacherSchema = new mongoose.Schema({
   courses: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course'
-  }]
+  }],
+  flag:{
+    type:Number,
+    default:0
+  }
 },
   {timestamps:true}
 );
