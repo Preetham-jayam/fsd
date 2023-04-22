@@ -39,9 +39,12 @@ const studentSchema = new mongoose.Schema({
     totalMarks: {
       type: Number
     },
-    answers: [{
-      type: String
-    }]
+    answers: {
+      type: String,
+      set: function (value) {
+        return JSON.stringify(value);
+      }
+    }
   }]
 },
   {timestamps:true} 

@@ -1,25 +1,51 @@
 <%-include('../partials/signedinnav.ejs')%>
+<style>
+     .question {
+        margin-bottom: 20px;
+      }
 
-    <h1>Quiz Result</h1>
-    <p><strong>Student:</strong> <%= student.firstName %> <%= student.lastName %></p>
-    <p><strong>Course:</strong> <%= studentQuiz.quiz.course.name %></p>
-    <p><strong>Marks:</strong> <%= studentQuiz.marks %> / <%= studentQuiz.totalMarks %></p>
-    <h2>Questions</h2>
-    <% studentQuiz.quiz.questions.forEach(function(question, index) { %>
-      <div class="question">
-        <p><strong>Question <%= index+1 %>:</strong> <%= question.question %></p>
-        <ul>
-          <% question.options.forEach(function(option) { %>
-            <li>
-              <% if (option == question.answer) { %>
-                <span style="color:green;"><%= option %> (correct)</span>
-              <% } else { %>
-                <%= option %>
-              <% } %>
-            </li>
-          <% }) %>
-        </ul>
-        <p><strong>Your Answer:</strong> <%= studentQuiz.answers[question._id] %></p>
-      </div>
-    <% }) %>
+      .question p {
+        margin-bottom: 10px;
+      }
+
+      .question ol {
+        margin-bottom: 10px;
+      }
+
+      .question li {
+        margin-bottom: 5px;
+      }
+
+      .question .your-answer {
+        margin-top: 10px;
+      }
+
+      .question .correct-answer {
+        color: green;
+      }
+</style>
+<div class="container">
+  <h1 class="mt-3">Quiz Result</h1>
+  <p><strong>Student:</strong> <%= student.firstName %> <%= student.lastName %></p>
+  <p><strong>Course:</strong> <%= quiz.course.name %></p>
+  <p><strong>Marks:</strong> <%= totalScore %> / <%= totalMarks %></p>
+  <h2 class="mt-3">Questions</h2>
+  <% quiz.questions.forEach(function(question, index) { %>
+    <div class="question">
+      <p class="mb-1"><strong>Question <%= index+1 %>:</strong> <%= question.question %></p>
+      <ol>
+        <% question.options.forEach(function(option,i) { %>
+          <li>
+            <% if ((i+1) == question.answer.slice(8)) { %>
+              <span class="correct-answer"><%= option %> (correct)</span>
+            <% } else { %>
+              <%= option %>
+            <% } %>
+          </li>
+        <% }) %>
+      </ol>
+      <p class="your-answer"><strong>Your Answer:</strong> <%= submittedAnswers['question' + (index + 1)] %></p>
+    </div>
+  <% }) %>
+</div>
     <%-include('../partials/footer.ejs')%>

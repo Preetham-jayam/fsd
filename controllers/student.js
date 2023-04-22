@@ -260,136 +260,120 @@ exports.studentQuiz=(req,res)=>{
   })
   
 }
-// exports.postsubmitQuiz = (req, res, next)=> {
+
+// exports.postsubmitQuiz=(req,res)=>{
+//   const student=req.session.user.student;
+//   const quizresult=req.body;
+//   const quizId = req.body.quizId;
 //   const courseId = req.body.courseId;
-//   const studentId=req.body.studentId;
-//   const quizId =req.body.quizId;
-//   const studentAnswers = req.body.answers;
-//   console.log(quizId);
-
-//   Course.findById(courseId)
-//   .populate({
-//     path: 'quizzes',
-//     populate: {
-//       path: 'questions',
-//       populate: [
-//         { path: 'options' },
-//         { path: 'answer' },
-//         { path: 'Marks' }
-//       ]
-//     }
-//   })
-//     .then(course => {
-//       const quiz = course.quizzes[0];
-
+//   Quiz.findById(quizId)
+//     .populate('questions')
+//     .populate('course')
+//     .then((quiz) => {
    
-//       let totalMarks = 0;
-//       let studentMarks = 0;
+//       let totalScore = 0;
+//       let totalMarks=0;
+//       const submittedAnswers = {};
 
-//       quiz.questions.forEach(question => {
-//         totalMarks += question.Marks;
-//         console.log(studentAnswers[quizId][question._id]);
-//         console.log(question.answer);
-//         if (studentAnswers[quizId][question._id] === question.answer) {
-//           studentMarks += question.Marks;
+//       quiz.questions.forEach((question,i) => {
+       
+//         totalMarks+=question.Marks;
+//         const submittedAnswer = quizresult['question' + (i + 1)];
+//         const correctAnswer = question.answer;
+//         if (submittedAnswer == correctAnswer) {
+//           totalScore+=question.Marks;
 //         }
+//         submittedAnswers['question' + (i + 1)] = submittedAnswer;
 //       });
 
-//       const studentQuiz = {
+//       const quizResult = {
+//                 course: courseId,
+//                 quiz: quizId,
+//                 marks: totalScore,
+//                 totalMarks: totalMarks,
+//                 answers: submittedAnswers
+//               };
+
+//       const percentageScore = Math.round((totalScore / quiz.questions.length) * 100);
+//     Student.findById(student)
+//     .then((studentuser)=>{
+//       res.render('student/studentResult', {
+//         student:studentuser,
 //         course: courseId,
-//         quiz: quizId,
-//         marks: studentMarks,
-//         totalMarks: totalMarks,
-//         answers: studentAnswers
-//       };
+//         quiz: quiz,
+//         totalScore: totalScore,
+//         totalMarks:totalMarks,
+//         percentageScore: percentageScore,
+//         submittedAnswers: submittedAnswers
+//       });
 
-//       Student.findByIdAndUpdate(
-//         studentId,
-//         { $push: { quizzes: studentQuiz } },
-//         { new: true }
-//       )
-//         .populate('courses')
-//         .populate({
-//           path: 'quizzes.quiz',
-//           populate: { path: 'course' }
-//         })
-//         .exec((err, student) => {
-//           if (err) return next(err);
-//           res.render('student/studentResult', {
-//             title: 'Quiz Result',
-//             quiz: quiz,
-//             studentQuiz: studentQuiz,
-//             student: student
-//           });
-//         });
 //     })
-//     .catch(err => next(err));
+      
+//     });
 // };
-
-exports.postsubmitQuiz = function(req, res) {
-  const courseId = req.body.courseId;
-  const quizId = req.body.quizId;
-  console.log(quizId);
-  const answers = req.body.answers;
-  console.log(answers);
-  let marksObtained = 0;
-  let totalMarks = 0;
-  let correctAnswers = 0;
-  let incorrectAnswers = 0;
+exports.postsubmitQuiz = (req, res) => {
+  const studentId = req.session.user.student;
+  const quizResult = req.body;
+  const quizId = quizResult.quizId;
+  const courseId = quizResult.courseId;
 
   Quiz.findById(quizId)
-    .populate({
-      path: 'course',
-      select: 'students'
-    })
-    .then(quiz => {
-      if (!quiz) {
-        return res.status(404).json({ error: 'Quiz not found' });
-      }
+    .populate('questions')
+    .populate('course')
+    .then((quiz) => {
+      let totalScore = 0;
+      let totalMarks = 0;
+      const submittedAnswers = {};
 
-      if (!quiz.course.students.includes(req.user.student._id)) {
-        return res.status(401).json({ error: 'Unauthorized access' });
-      }
-
-      quiz.questions.forEach((question, index) => {
+      quiz.questions.forEach((question, i) => {
         totalMarks += question.Marks;
-        if (question.answer === answers[question._id.toString()]) {
-          marksObtained += question.Marks;
-          correctAnswers += 1;
-        } else {
-          incorrectAnswers += 1;
+        const submittedAnswer = quizResult['question' + (i + 1)];
+        const correctAnswer = question.answer;
+        if (submittedAnswer == correctAnswer) {
+          totalScore += question.Marks;
         }
+        submittedAnswers['question' + (i + 1)] = submittedAnswer;
       });
 
-      const quizResult = {
+      const percentageScore = Math.round((totalScore / quiz.questions.length) * 100);
+
+      const quizResultObject = {
         course: courseId,
         quiz: quizId,
-        marks: marksObtained,
+        marks: totalScore,
         totalMarks: totalMarks,
-        answers: answers
+        answers: submittedAnswers
       };
 
-      Student.findOneAndUpdate(
-        { _id: req.user._id, 'quizzes.quiz': quizId },
-        { $set: { 'quizzes.$.marks': marksObtained, 'quizzes.$.answers': answers } }
-      ).then(() => {
-        Student.findOneAndUpdate(
-          { _id: req.user._id, 'courses': courseId },
-          { $push: { quizzes: quizResult } }
-        ).then(() => {
-          return res.json({
-            marksObtained,
-            totalMarks,
-            correctAnswers,
-            incorrectAnswers
+      Student.findById(studentId)
+        .then((student) => {
+          student.quizzes.push(quizResultObject);
+          return student.save();
+        })
+        .then(() => {
+          return Student.findById(studentId)
+            .populate({
+              path: 'quizzes.quiz',
+              populate: {
+                path: 'course'
+              }
+            })
+            .populate('courses');
+        })
+        .then((student) => {
+          res.render('student/studentResult', {
+            student: student,
+            course: courseId,
+            quiz: quiz,
+            totalScore: totalScore,
+            totalMarks: totalMarks,
+            percentageScore: percentageScore,
+            submittedAnswers: submittedAnswers
           });
-        }).catch((error) => {
-          return res.status(500).json({ error: 'Unable to submit quiz' });
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send("An error occurred while saving quiz results.");
         });
-      }).catch((error) => {
-        return res.status(500).json({ error: 'Unable to submit the quiz' });
-      });
-    }).catch((error) => {
-      return res.status(500).json({ error: 'Unable to submit a quiz' });
     });
 };
