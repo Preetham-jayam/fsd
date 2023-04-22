@@ -261,56 +261,6 @@ exports.studentQuiz=(req,res)=>{
   
 }
 
-// exports.postsubmitQuiz=(req,res)=>{
-//   const student=req.session.user.student;
-//   const quizresult=req.body;
-//   const quizId = req.body.quizId;
-//   const courseId = req.body.courseId;
-//   Quiz.findById(quizId)
-//     .populate('questions')
-//     .populate('course')
-//     .then((quiz) => {
-   
-//       let totalScore = 0;
-//       let totalMarks=0;
-//       const submittedAnswers = {};
-
-//       quiz.questions.forEach((question,i) => {
-       
-//         totalMarks+=question.Marks;
-//         const submittedAnswer = quizresult['question' + (i + 1)];
-//         const correctAnswer = question.answer;
-//         if (submittedAnswer == correctAnswer) {
-//           totalScore+=question.Marks;
-//         }
-//         submittedAnswers['question' + (i + 1)] = submittedAnswer;
-//       });
-
-//       const quizResult = {
-//                 course: courseId,
-//                 quiz: quizId,
-//                 marks: totalScore,
-//                 totalMarks: totalMarks,
-//                 answers: submittedAnswers
-//               };
-
-//       const percentageScore = Math.round((totalScore / quiz.questions.length) * 100);
-//     Student.findById(student)
-//     .then((studentuser)=>{
-//       res.render('student/studentResult', {
-//         student:studentuser,
-//         course: courseId,
-//         quiz: quiz,
-//         totalScore: totalScore,
-//         totalMarks:totalMarks,
-//         percentageScore: percentageScore,
-//         submittedAnswers: submittedAnswers
-//       });
-
-//     })
-      
-//     });
-// };
 exports.postsubmitQuiz = (req, res) => {
   const studentId = req.session.user.student;
   const quizResult = req.body;
