@@ -54,8 +54,8 @@
   <div class="wrapper" style="margin-top: 80px; margin-bottom: 80px;">
     <img src="../Img/login.png" alt="" width="180" height="180">
     <header>Login </header>
-    <form method="post" action="/login">
-      <input type="email" placeholder="Email" name="email" autocomplete="off">
+    <form method="post" action="/login" id="frmRegister">
+      <input type="email" placeholder="Email" name="email" id="email" autocomplete="off">
       <div class="form-floating mb-3">
       <input type="password" id="password" placeholder="Password" name="password" autocomplete="off">
       <i style="margin-right: 5px; margin-bottom: 5px;" class="far fa-eye position-absolute top-50 end-0 translate-middle-y cursor-pointer" onclick="togglePasswordVisibility('password')"></i></div>
@@ -80,4 +80,28 @@
       }
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script>
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    $('#frmRegister').on('submit',function(e){
+          e.preventDefault();
+          const email=$('#email').val();
+          if(email.length==0){
+            Swal.fire({
+              icon:'error',
+              text:'Invalid email data',
+            })
+              return;
+          }
+          const password = $('#password').val();
+            if (password.length == 0) {
+              Swal.fire({
+                icon: 'error',
+                text: 'Invalid password data.',
+              })
+              return;
+            }
+          })
+  </script>
+
   <%-include("partials/footer.ejs") %>

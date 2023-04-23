@@ -109,6 +109,13 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
+              <% if (messages.success) { %>
+                <div class="alert alert-success"><%= messages.success %></div>
+              <% } %>
+              
+              <% if (messages.error) { %>
+                <div class="alert alert-danger"><%= messages.error %></div>
+              <% } %>
                 <!-- Course Header Starts -->
                 <div class="course-header box">
                     <h2 class="text-capitalize" name="Title"><%=data.title%></h2>

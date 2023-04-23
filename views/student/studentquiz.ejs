@@ -1,5 +1,17 @@
 <%-include('../partials/signedinnav.ejs')%>
-
+<style>
+  .hover-1 {
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0);
+  transition: 0.3s;
+  
+}
+.hover-1:hover {
+  color: #46cfbf;
+  background-position: 100% 100%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+  transform: translateY(2px);
+}
+</style>
   <input type="hidden" value="<%=student._id%>" name="studentId">
 
   <div class="container">
@@ -13,7 +25,11 @@
   <h5><strong>Description:</strong> <%= course.description %></h5>
   <hr>
   <h2>Quiz Questions</h2>
+  <br>
   <form id="quizForm" class="form-horizontal" action="/student/submitQuiz" method="post">
+    <%if(quizzes.length == 0){%>
+      <h3>Quiz questions not added yet</h3>
+    <%} else {%>
     <% quizzes.forEach((quiz)=>{%>
       <input type="hidden" name="quizId" value="<%=quiz._id%>">
       
@@ -23,14 +39,15 @@
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <div class="radio">
-              <label>
-                <input type="radio" id="option<%= index %>" name="question<%=i+1%>" value="qnoption<%= index+1 %>">
+              <label class="hover-1"style="font-size: 18px; padding: 2px;">
+                <input type="radio" id="option<%= index %>" name="question<%=i+1%>" value="qnoption<%= index+1 %>" required>
                 <%= option %>
               </label>
             </div>
           </div>
         </div>
       <% }); %>
+      <br>
       <hr>
       
     <% }); %>
@@ -42,6 +59,7 @@
       </div>
     </div>
   </form>
+    <%}%>
   
   </div>
   

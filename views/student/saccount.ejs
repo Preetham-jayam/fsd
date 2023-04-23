@@ -19,7 +19,13 @@
     }
   </style>
 
+<% if (messages.success) { %>
+  <div class="alert alert-success"><%= messages.success %></div>
+<% } %>
 
+<% if (messages.error) { %>
+  <div class="alert alert-danger"><%= messages.error %></div>
+<% } %>
 <form method="POST" action="/student/edit-password">
     <div class="container">
       <div class="row">

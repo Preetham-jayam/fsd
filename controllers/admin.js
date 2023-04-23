@@ -48,6 +48,8 @@ exports.postProfileEdit = (req, res) => {
       return admin.save();
     })
     .then(() => {
+      req.flash('success','Profile Edited Succesfully');
+
       res.redirect("/admin/admindb");
     })
     .catch((err) => console.log(err));
@@ -119,7 +121,7 @@ exports.acceptTeacher = (req, res) => {
       return teacher.save();
     })
     .then(() => {
-      req.flash("The teacher is accepted");
+      req.flash('success',"The teacher is accepted");
       res.redirect("/admin/all/teachers");
     })
     .catch((err) => {
@@ -135,7 +137,7 @@ exports.declineTeacher = (req, res) => {
       return teacher.save();
     })
     .then(() => {
-      req.flash("The teacher is rejected");
+      req.flash('error',"The teacher is rejected");
       res.redirect("/admin/all/teachers");
     })
     .catch((err) => {
@@ -168,8 +170,12 @@ exports.BlockUser = (req, res) => {
     })
     .then((updatedUser) => {
       if (updatedUser.flag === 1) {
+        req.flash('success','User Blocked Succesfully');
+       
         console.log("User blocked successfully.");
       } else {
+        req.flash('success','User UnBlocked Succesfully');
+
         console.log("User unblocked successfully.");
       }
       if (updatedUser.role == 0) {
@@ -195,6 +201,7 @@ exports.DeleteUser = (req, res) => {
             console.log("User Not Found");
           }
           console.log("User deleted successfully");
+          req.flash('success','Student Deleted Succesfully');
           res.redirect("/admindb/all/students");
         })
         .catch((err) => {
@@ -209,6 +216,7 @@ exports.DeleteUser = (req, res) => {
             console.log("User Not Found");
           }
           console.log("User Teacher deleted successfully");
+          req.flash('success','Teacher Deleted Succesfully');
           res.redirect("/admin/all/teachers");
         })
         .catch((err) => {
@@ -223,6 +231,7 @@ exports.deleteCourse = (req, res) => {
   const id = req.params.id;
   courseModel.findByIdAndDelete(id).then(() => {
     console.log("Course deleted");
+    req.flash('success','Course Deleted Succesfully');
     res.redirect("/admin/all/courses");
   });
 };
@@ -307,14 +316,17 @@ exports.postsendmail = (req, res, next) => {
         .sendMail(mailOptions)
         .then((info) => {
           console.log(`Email sent: ${info.response}`);
+          req.flash('success','Mail Sent to all users');
           res.redirect("/admin/all/students");
         })
         .catch((error) => {
+          req.flash("error", "Error occurred while sending email");
           console.log(`Error occurred while sending email: ${error}`);
           res.redirect("/admin/mail");
         });
     })
     .catch((error) => {
+      req.flash("error", "Error occurred while finding users");
       console.log(`Error occurred while finding users: ${error}`);
       res.redirect("/admin/mail");
     });

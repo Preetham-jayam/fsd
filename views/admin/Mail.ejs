@@ -1,6 +1,13 @@
 <%-include("../partials/adminheader.ejs");%>
 
 <div class="container">
+  <% if (messages.success) { %>
+    <div class="alert alert-success"><%= messages.success %></div>
+  <% } %>
+  
+  <% if (messages.error) { %>
+    <div class="alert alert-danger"><%= messages.error %></div>
+  <% } %>
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h2 class="text-center">Email Sending Form</h2>

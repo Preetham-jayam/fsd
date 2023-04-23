@@ -109,34 +109,7 @@ exports.SearchCourse = (req, res) => {
     });
 };
 
-exports.enrolledcourse = (req, res) => {
-  const { studentId, courseId } = req.body;
-  Student.findById(studentId, (err, student) => {
-    if (err || !student) {
-      console.error(`Error finding student`);
-      return;
-    }
-    const course = req.course;
-    if (student.courses.includes(courseId)) {
-      console.log("Student is already enrolled in course");
-      return;
-    }
-    student.courses.push(courseId);
-    course.students.push(student);
-    student.save((err) => {
-      if (err) {
-        console.error(`Error saving student`);
-        return;
-      }
-      course.save((err) => {
-        if (err) {
-          console.error(`Error saving course`);
-        }
-        console.log(`Student  has been enrolled in course ${course.title}`);
-      });
-    });
-  });
-};
+
 
 exports.getCheckoutPage = (req, res) => {
   res.render("checkout");

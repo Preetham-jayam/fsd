@@ -69,6 +69,13 @@
           </ul>
         </div>
       </nav>
+      <% if (messages.success) { %>
+        <div class="alert alert-success"><%= messages.success %></div>
+      <% } %>
+      
+      <% if (messages.error) { %>
+        <div class="alert alert-danger"><%= messages.error %></div>
+      <% } %>
 
       <form method="POST" action="/teacher/course/edit/<%=course._id%>"  id="frmCourse" enctype="multipart/form-data" >
         <div class="card">
@@ -79,10 +86,6 @@
               <label for="txtNameCourse">Course:</label>
               <input type="text" class="form-control" id="txtNameCourse" name="nameCourse" value="<%=course.name%>" placeholder="" autofocus>
             </div>
-            <!-- <label for="fuImage">Image Course:</label>
-            <div class="form-group file-loading">
-              <input id="fuImage" name="fuImage" type="file" class="file" data-show-preview="false"  data-allowed-file-extensions='["jpg","png"]'>
-            </div> -->
             <div class="form-group">
               <label for="txtTitle">Title:</label>
               <input type="text" class="form-control" id="txtTitle" name="title" value="<%=course.title%>">
@@ -93,13 +96,9 @@
             </div>
             
             <div class="form-group">
-              <label for="txtPrice" >Fee:</label>
+              <label for="txtPrice" >Price:</label>
               <input type="text" class="form-control" id="txtPrice" name="Price" value="<%=course.price%>">
             </div>
-            <!-- <div class="form-group">
-              <label for="txtSaleCost" >SaleCost:</label>
-              <input type="text" class="form-control" id="txtSaleCost" name="SaleCost" value="<%=course.salecost%>" placeholder="5.00">
-            </div> -->
             <div class="form-group">
               <label for="txtStatus" >Status:</label>
               <div class="input-group">
@@ -132,22 +131,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<!-- 
-<script>
-      tinymce.init({
-        selector: '#txtDescription',
-        height: 300,
-        plugins:'paste image link autolink lists table media',
-        menubar: false,
-        toolbar: [
-        'undo redo | fontselect fontsizeselect | bold italic underline strikethrough | numlist bullist alignleft aligncenter alignright | forecolor  backcolor | table link image media'
-        ],
-        fontsize_formats: '10pt 12pt 14pt 16pt 18pt 24pt 36pt',
-        elementpath: false,
-        icons: 'material',
-        placeholder: 'write description here',
-      });
-</script> -->
+
 <script>
   $('#frmCourse').on('submit', function (e) {
     e.preventDefault();

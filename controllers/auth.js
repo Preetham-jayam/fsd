@@ -9,7 +9,8 @@ exports.getLogin = (req, res) => {
 exports.postLogin = (req, res) => {
   const mail = req.body.email;
   const password = req.body.password;
-  User.findOne({ email: mail }).then((user) => {
+  User.findOne({ email: mail })
+  .then((user) => {
     if (!user) {
       req.flash("error", "User not Found");
       return res.redirect("/login");
@@ -40,7 +41,6 @@ exports.postLogin = (req, res) => {
           });
         }
         req.flash("error", "Password not matching");
-
         res.redirect("/login");
       })
       .catch((err) => {
@@ -112,6 +112,7 @@ exports.postSignUp = (req, res, next) => {
         })
         .then((result) => {
           console.log(result);
+          req.flash('success','Registration Succesfull Please Login to study ');
           return res.redirect("/login");
         });
     })

@@ -1,4 +1,11 @@
 <%-include("../partials/adminheader.ejs");%>
+<% if (messages.success) { %>
+  <div class="alert alert-success"><%= messages.success %></div>
+<% } %>
+
+<% if (messages.error) { %>
+  <div class="alert alert-danger"><%= messages.error %></div>
+<% } %>
 <h1 class="display-3 text-center" style="font-size: 3rem;">Student Details</h1>
 <div style="text-align: center; margin: 10px; margin-bottom:20px ;" >
 <a href="/admin/mail" class="btn btn-success">Make Announcements to Students</a>

@@ -21,7 +21,7 @@
       }
 
       .question .correct-answer {
-        color: green;
+        background-color: #AAFF00;
       }
 </style>
 <div class="container">
@@ -37,7 +37,7 @@
         <% question.options.forEach(function(option,i) { %>
           <li>
             <% if ((i+1) == question.answer.slice(8)) { %>
-              <span class="correct-answer"><%= option %> (correct)</span>
+              <span class="correct-answer"><%= option %> (correct)</span><i class="fa fa-check" style="padding-left: 10px;"></i>
             <% } else { %>
               <%= option %>
             <% } %>

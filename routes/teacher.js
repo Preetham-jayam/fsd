@@ -5,13 +5,17 @@ const courseController=require('../controllers/course');
 const isAuth = require("../middleware/isAuth");
 const multer = require("multer");
 const fileStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "images");
-    },
-    filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' +  path.extname(file.originalname));
-    },
-  });
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 15);
+    const extension = path.extname(file.originalname);
+    cb(null, `${file.fieldname}-${timestamp}-${randomString}${extension}`);
+  },
+});
+
   const imageUpload = multer({ dest: 'uploads/images' });
   const videoUpload = multer({ dest: 'uploads/videos' });   
 
