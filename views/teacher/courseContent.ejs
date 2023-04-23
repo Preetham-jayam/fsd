@@ -1,9 +1,36 @@
 <%-include('../partials/signedinnav.ejs')%>
+<style>
+  .review {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .review-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .review-image {
+    flex-shrink: 0;
+    margin-right: 1rem;
+  }
 
+  .review-image img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .review-content {
+    flex-grow: 1;
+  }
+</style>
 <section class="content section-padding">
   <div class="container">
     <div class="row d-flex">
-      <h1 style="text-decoration: underline; color: #06bbcc;"><%=data.title%></h1>
+      <h1 style="text-decoration: underline; color: #06bbcc">
+        <%=data.title%>
+      </h1>
       <div class="col-lg-8">
         <video
           class="video-play"
@@ -15,57 +42,231 @@
         </video>
         <nav class="course-tabs">
           <div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
-            <button class="nav-link active" style="background-color: #06bbcc; color: white; border-radius: 5%;"  id="course-overview-tab" data-bs-toggle="tab" data-bs-target="#course-overview" type="button" role="tab" aria-controls="course-overview" aria-selected="true">Overview</button>
-            <button class="nav-link " style="background-color: #06bbcc; color: white; border-radius: 5%;" id="course-description-tab" data-bs-toggle="tab" data-bs-target="#course-description" type="button" role="tab" aria-controls="course-description" aria-selected="false">Description</button>
+            <button
+              class="nav-link active"
+              style="background-color: #06bbcc; color: white; border-radius: 5%"
+              id="course-overview-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#course-overview"
+              type="button"
+              role="tab"
+              aria-controls="course-overview"
+              aria-selected="true"
+            >
+              Overview
+            </button>
+            <button
+              class="nav-link"
+              style="background-color: #06bbcc; color: white; border-radius: 5%"
+              id="course-description-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#course-description"
+              type="button"
+              role="tab"
+              aria-controls="course-description"
+              aria-selected="false"
+            >
+              Description
+            </button>
+            <button
+              class="nav-link"
+              style="background-color: #06bbcc; color: white; border-radius: 5%"
+              id="course-review-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#course-review"
+              type="button"
+              role="tab"
+              aria-controls="course-review"
+              aria-selected="false"
+            >
+              Reviews
+            </button>
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="course-overview" role="tabpanel" aria-labelledby="course-overview-tab">
+          <div
+            class="tab-pane fade show active"
+            id="course-overview"
+            role="tabpanel"
+            aria-labelledby="course-overview-tab"
+          >
             <div class="container">
               <h3><%=data.title%></h3>
-              <div class=" py-2 " style="display: flex; justify-content: space-between; color: #000;" >
-              <div class="ratings px-2" >
-                <span style="color: gold;">4.5  <i class="fas fa-star"></i> </span><br> <p>5 Ratings</p>
+              <div
+                class="py-2"
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  color: #000;
+                "
+              >
+                <div class="ratings px-2">
+                  <span style="color: gold"
+                    >4.5 <i class="fas fa-star"></i> </span
+                  ><br />
+                  <p>5 Ratings</p>
+                </div>
+                <div class="students px-2">
+                  <span
+                    style="font-weight: 1000; color: #000; margin-right: 2px"
+                    ><%=data.students.length%></span
+                  >
+                  <br />Students
+                </div>
+                <div class="hours px-2">
+                  <span style="font-weight: 1000; color: #000">10 Hours</span>
+                  <br />total
+                </div>
               </div>
-              <div class="students px-2">
-                <span style="font-weight: 1000;color: #000; margin-right: 2px;"><%=data.students.length%></span>
-                <br>Students
-              </div>
-              <div class="hours px-2">
-                <span style="font-weight: 1000;color: #000;">10 Hours</span>
-                <br>total
-              </div>
-            </div>
-              <div class="instructor d-flex" style="justify-content: space-between; color: #000;">
+              <div
+                class="instructor d-flex"
+                style="justify-content: space-between; color: #000"
+              >
                 <div class="px-3">
-                   <a href=""><h5>Dr.<%=teacher.FullName%></h5></a>
-                   <p>Web Developer</p></div>
-                   <div class="px-3"><p> <i class="fas fa-code"></i> Updated on March 2023</p></div>
-                   <div class="px-3"><p> <i class="fas fa-university"></i> Institute : <%=teacher.InstName%></p></div>
+                  <a href=""><h5>Dr.<%=teacher.FullName%></h5></a>
+                  <p>Web Developer</p>
+                </div>
+                <div class="px-3">
+                  <p><i class="fas fa-code"></i> Updated on March 2023</p>
+                </div>
+                <div class="px-3">
+                  <p>
+                    <i class="fas fa-university"></i> Institute :
+                    <%=teacher.InstName%>
+                  </p>
+                </div>
               </div>
 
-              <div class="p-4" style="border: .0625rem solid black;  ">
-                     <h2>What you'll Learn</h2>
-                     <ul style="list-style-type: disc;">
-                      <li>Lorem ipsum dolor sit amet.</li>
-                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, veniam.</li>
-                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, explicabo.</li>
-                      <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa, hic.</li>
-                     </ul>
+              <div class="p-4" style="border: 0.0625rem solid black">
+                <h2>What you'll Learn</h2>
+                <ul style="list-style-type: disc">
+                  <li>Lorem ipsum dolor sit amet.</li>
+                  <li>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Saepe, veniam.
+                  </li>
+                  <li>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quos, explicabo.
+                  </li>
+                  <li>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Ipsa, hic.
+                  </li>
+                </ul>
               </div>
-              
             </div>
           </div>
-          <div class="tab-pane fade" id="course-description" role="tabpanel" aria-labelledby="course-description-tab">
+          <div
+            class="tab-pane fade"
+            id="course-description"
+            role="tabpanel"
+            aria-labelledby="course-description-tab"
+          >
             <div class="container">
               <div class="row">
                 <p>
-                  Welcome to the <%=data.name%> Bootcamp, the only course you need to learn to code and become a <bold><%=data.name%> coder</bold> . With 1500+ ratings and a 4.5 average, my <%=data.name%> course is one of the HIGHEST RATED courses in the history of Eduphoria! 
+                  Welcome to the <%=data.name%> Bootcamp, the only course you
+                  need to learn to code and become a
+                  <bold><%=data.name%> coder</bold> . With 1500+ ratings and a
+                  4.5 average, my <%=data.name%> course is one of the HIGHEST
+                  RATED courses in the history of Eduphoria!
                 </p>
                 <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore laborum obcaecati cumque? Quam enim numquam doloribus obcaecati consequatur unde voluptatum voluptate rerum, officia architecto nemo? Nobis itaque ducimus dolor laudantium aliquid dignissimos dicta? Necessitatibus animi deleniti eligendi voluptatem inventore hic consequuntur, harum unde quae enim fugit, quas nihil. Quisquam, adipisci?
-                  <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi omnis iste tempore in maxime suscipit debitis corporis dignissimos deserunt velit eos quos quas, voluptates quam incidunt quo dolore. Hic suscipit rem nemo provident doloremque accusamus aut neque at accusantium ipsa natus voluptatem autem dolorem, vero quos praesentium similique sed corrupti veniam, in fuga placeat eum cumque! Similique expedita enim recusandae quas repellendus nemo laudantium eos animi reiciendis error excepturi deserunt laboriosam, voluptatum facere perspiciatis culpa praesentium temporibus sed quae consequatur, suscipit magni repellat ex? Labore, ut facere dolorum modi eaque impedit laudantium consequuntur quod totam expedita id, accusantium iusto voluptatibus.</p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Tempore laborum obcaecati cumque? Quam enim numquam doloribus
+                  obcaecati consequatur unde voluptatum voluptate rerum, officia
+                  architecto nemo? Nobis itaque ducimus dolor laudantium aliquid
+                  dignissimos dicta? Necessitatibus animi deleniti eligendi
+                  voluptatem inventore hic consequuntur, harum unde quae enim
+                  fugit, quas nihil. Quisquam, adipisci?
+                  <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Modi omnis iste tempore in maxime suscipit debitis corporis
+                    dignissimos deserunt velit eos quos quas, voluptates quam
+                    incidunt quo dolore. Hic suscipit rem nemo provident
+                    doloremque accusamus aut neque at accusantium ipsa natus
+                    voluptatem autem dolorem, vero quos praesentium similique
+                    sed corrupti veniam, in fuga placeat eum cumque! Similique
+                    expedita enim recusandae quas repellendus nemo laudantium
+                    eos animi reiciendis error excepturi deserunt laboriosam,
+                    voluptatum facere perspiciatis culpa praesentium temporibus
+                    sed quae consequatur, suscipit magni repellat ex? Labore, ut
+                    facere dolorum modi eaque impedit laudantium consequuntur
+                    quod totam expedita id, accusantium iusto voluptatibus.
+                  </p>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="course-review"
+            role="tabpanel"
+            aria-labelledby="course-review-tab"
+          >
+            <div class="course-review box">
+              <h3 class="text-capitalize mb-4">Reviews</h3>
+              <h2>Add a review</h2>
+
+              <form method="POST" action="/student/reviews/<%=data._id %>">
+                <div class="form-group">
+                  <label for="rating">Rating</label>
+                  <input
+                    type="hidden"
+                    value="<%=student._id%>"
+                    name="student"
+                  />
+                  <select
+                    class="form-control"
+                    id="rating"
+                    name="rating"
+                    required
+                  >
+                    <option value="">Select a rating</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very good</option>
+                    <option value="5">5 - Excellent</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="comment">Comment</label>
+                  <textarea
+                    class="form-control"
+                    id="comment"
+                    name="comment"
+                    rows="5"
+                    required
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+            <br /><br />
+            <hr />
+
+            <div class="row">
+              <div class="col-md-8">
+                <h2>Student Reviews</h2>
+
+                <% if (reviews.length === 0) { %>
+                <h2>No reviews yet.</h2>
+                <% } else { %> <% reviews.forEach(review => { %>
+                <div class="review-box">
+                  <div class="review">
+                    <div class="review-image">
+                      <img src="/Img/review/1.png" class="rounded-circle" />
+                    </div>
+                    <div class="review-content">
+                      <h4><b>Name:</b><%= review.student.firstName %></h4>
+                      <div style="color: #000;"><b>Rating:</b> <%= review.rating %></div>
+                      <div style="color: #000;"><b>Comment:</b><%= review.comment %></div>
+                    </div>
+                  </div>
+                </div>
+                <% }) %> <% } %>
               </div>
             </div>
           </div>
@@ -86,9 +287,8 @@
               <div class="accordion" id="accordion">
                 <!-- Accordion item starts -->
                 <%if(chapters.length==0){%>
-                  <h2>Chapters are yet to be added...</h2>
-                <%}%>
-                <% chapters.forEach((chapter)=>{%>
+                <h2>Chapters are yet to be added...</h2>
+                <%}%> <% chapters.forEach((chapter)=>{%>
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="heading-1">
                     <button
@@ -99,8 +299,11 @@
                       aria-expanded="true"
                       aria-controls="collapse-1"
                     >
-                    <%=chapter.name%> <br />
-                      <span><%=chapter.lessons.length%> Lessons | <%=chapter.lessons.length * 6%> min</span>
+                      <%=chapter.name%> <br />
+                      <span
+                        ><%=chapter.lessons.length%> Lessons |
+                        <%=chapter.lessons.length * 6%> min</span
+                      >
                     </button>
                   </h2>
                   <div
@@ -126,22 +329,20 @@
                           >
                         </li>
                         <% })%>
-                      
                       </ul>
                     </div>
                   </div>
                 </div>
                 <!-- Accordion item ends -->
-                <%})%> 
-
-
-               
-
-                
-                
+                <%})%>
               </div>
               <div class="accordion" id="accordion">
-                <a href="/student/quiz/<%=data._id%>">Quiz</a>
+                
+                <div class="accordion-body">
+                  <a href="/student/quiz/<%=data._id%>"><button style="display: block;" class="btn btn-primary">Attend Quiz</button></a>
+                  
+                </div>
+                
               </div>
 
               <!-- Accordtion ends -->

@@ -44,17 +44,40 @@
   </style>
 </head>
 <body>
+  <% if (messages.success) { %>
+    <div class="alert alert-success"><%= messages.success %></div>
+  <% } %>
+  
+  <% if (messages.error) { %>
+    <div class="alert alert-danger"><%= messages.error %></div>
+  <% } %>
   <div class="wrapper" style="margin-top: 80px; margin-bottom: 80px;">
     <img src="../Img/login.png" alt="" width="180" height="180">
     <header>Login </header>
     <form method="post" action="/login">
       <input type="email" placeholder="Email" name="email" autocomplete="off">
-      <input type="password" placeholder="Password" name="password" autocomplete="off">
+      <div class="form-floating mb-3">
+      <input type="password" id="password" placeholder="Password" name="password" autocomplete="off">
+      <i style="margin-right: 5px; margin-bottom: 5px;" class="far fa-eye position-absolute top-50 end-0 translate-middle-y cursor-pointer" onclick="togglePasswordVisibility('password')"></i></div>
       <button class="login" type="submit">Login</button>
     </form>
     <div class="sign-txt">
       Not yet a member? <a href="/signup">Sign up now</a>
     </div>
   </div>
-
+  <script>
+    function togglePasswordVisibility(passwordId) {
+      const passwordInput = document.getElementById(passwordId);
+      const passwordIcon = passwordInput.nextElementSibling;
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        passwordIcon.classList.remove("far", "fa-eye");
+        passwordIcon.classList.add("far", "fa-eye-slash");
+      } else {
+        passwordInput.type = "password";
+        passwordIcon.classList.remove("far", "fa-eye-slash");
+        passwordIcon.classList.add("far", "fa-eye");
+      }
+    }
+  </script>
   <%-include("partials/footer.ejs") %>

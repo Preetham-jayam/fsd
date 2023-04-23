@@ -10,46 +10,42 @@ exports.postLogin = (req, res) => {
   const mail = req.body.email;
   const password = req.body.password;
   User.findOne({ email: mail }).then((user) => {
-   
     if (!user) {
+      req.flash("error", "User not Found");
       return res.redirect("/login");
     }
     bcrypt
       .compare(password, user.password)
       .then((doMatch) => {
-
         if (doMatch) {
-          if(user.flag === 1) {
+          if (user.flag === 1) {
+            req.flash("error", "You are blocked by admin");
             return res.status(403).json({
-                error: "You are blocked by the admin"
-            })
-        }
+              error: "You are blocked by the admin",
+            });
+          }
           req.session.isLoggedIn = true;
           req.session.user = user;
           return req.session.save((err) => {
             if (err) {
               console.log(err);
             }
-            if(user.role==0){
-                res.redirect("/student/shome");
+            if (user.role == 0) {
+              res.redirect("/student/shome");
+            } else if (user.role == 1) {
+              res.redirect("/teacher/home");
+            } else if (user.role == 2) {
+              res.redirect("/admin/admindb");
             }
-            else if(user.role==1){
-                res.redirect('/teacher/home');
-            }
-            else if(user.role ==2)
-            {
-              res.redirect('/admin/admindb');
-            }
-
-            
           });
         }
-      console.log(mail);
+        req.flash("error", "Password not matching");
 
         res.redirect("/login");
       })
       .catch((err) => {
         console.log(err);
+        req.flash("error", "User not found");
         res.redirect("/login");
       });
   });

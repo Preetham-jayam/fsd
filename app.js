@@ -47,7 +47,12 @@ app.use((req, res, next) => {
       next(new Error(err));
     });
 });
+
 app.use(flash());
+app.use(function(req, res, next) {
+  res.locals.messages = req.flash();
+  next();
+});
 app.set("views", "./views");
 app.set("view engine", "ejs");
 

@@ -1,91 +1,80 @@
 const Student = require("../models/student");
-const Course=require('../models/course');
-const Teacher=require('../models/teacher');
+const Course = require("../models/course");
+const Teacher = require("../models/teacher");
+
 const User = require("../models/user");
-const Quiz=require('../models/quiz');
-const bcrypt=require('bcryptjs');
-const mongoose=require('mongoose');
-const ObjectId = new mongoose.Types.ObjectId;
-exports.getIndex=(req,res)=>{
+const Quiz = require("../models/quiz");
+const Review = require("../models/review");
+const review = require("../models/review");
+const bcrypt = require("bcryptjs");
+const mongoose = require("mongoose");
+const ObjectId = new mongoose.Types.ObjectId();
+exports.getIndex = (req, res) => {
   Course.find({})
-      .then((courses) => {
-        let teachers = [];
-        courses.forEach((course) => {
-          teachers.push(Teacher.findById(course.teacher));
-        });
-  
-        Promise.all(teachers)
-          .then((teacherResults) => {
-            res.render('index', { courses: courses, teachers: teacherResults });
-          })
-          .catch((err) => {
-            console.log(err);
-  
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    .populate("teacher")
+    .then((courses) => {
+      res.render("index", { courses: courses });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
-exports.getAboutpage=(req,res)=>{
-  res.render('about');
+exports.getAboutpage = (req, res) => {
+  res.render("about");
 };
 
-exports.getContactPage=(req,res)=>{
-  res.render('contact');
+exports.getContactPage = (req, res) => {
+  res.render("contact");
 };
 
-exports.getHelpPage=(req,res)=>{
-  res.render('help');
+exports.getHelpPage = (req, res) => {
+  res.render("help");
 };
 
 exports.getHomepage = (req, res, next) => {
   Student.findById(req.session.user.student)
-  .populate('courses')
-  .then((result) => {
-    Course.find({})
-      .then((courses) => {
-        console.log(courses.length);
-        let teachers = [];
-        courses.forEach((course) => {
-          teachers.push(Teacher.findById(course.teacher));
-        });
-  
-        Promise.all(teachers)
-          .then((teacherResults) => {
-            console.log(result);
-            res.render("student/shome", { user: req.session.user, student:result,courses: courses, teachers: teacherResults,scourses:result.courses});
-            
-          })
-          .catch((err) => {
-            console.log(err);
-  
+    .populate({
+      path: "courses",
+      populate: {
+        path: "teacher",
+        model: "Teacher",
+      },
+    })
+    .then((result) => {
+      Course.find({})
+        .populate("teacher")
+        .then((courses) => {
+          res.render("student/shome", {
+            user: req.session.user,
+            student: result,
+            courses: courses,
+            scourses: result.courses,
           });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    
-  });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
 };
-
 
 exports.enrolledcourse = (req, res) => {
   const { studentId, courseId } = req.body;
   Student.findById(studentId)
     .then((student) => {
       if (!student) {
-        throw new Error(`Student not found`);
+        console.log(`Student not found`);
       }
-      return Course.findById(courseId).populate('students');
+      return Course.findById(courseId).populate("students");
     })
     .then((course) => {
       if (!course) {
-        throw new Error(`Course not found`);
+        console.log(`Course not found`);
       }
-      if (course.students.some((student) => student._id.toString() === studentId)) {
-        console.log('Student is already enrolled in course');
+      if (
+        course.students.some((student) => student._id.toString() === studentId)
+      ) {
+        console.log("Student is already enrolled in course");
         res.redirect(`/student/courseContent/${courseId}`);
         return;
       }
@@ -97,86 +86,96 @@ exports.enrolledcourse = (req, res) => {
     .then(() => {
       console.log(`Student has been enrolled in course`);
       res.redirect(`/student/courseContent/${courseId}`);
-      
     })
     .catch((err) => {
       console.error(`Error enrolling student in course: ${err.message}`);
     });
 };
 
-
-exports.getCourseDetails=(req,res)=>{
-  const id=req.params.id;
+exports.getCourseDetails = (req, res) => {
+  const id = req.params.id;
   Student.findById(req.session.user.student).then((result) => {
     Course.findById(id)
-    .populate('teacher')
-    .populate({
-      path: 'chapters',
-      populate: {
-        path: 'lessons',
-        model: 'Lesson'
-      }
-    })
-     .then(course=>{
-              const chapters = course.chapters || [];
-              const lessons = chapters.reduce((acc, chapter) => acc.concat(chapter.lessons), []);
-        res.render('student/courseDetails',{data:course,teacher:course.teacher,student:result,chapters:chapters,lessons:lessons});
-     })
-     .catch(err => console.log(err));
-    });
-    
-
-}
+      .populate("teacher")
+      .populate({
+        path: "chapters",
+        populate: {
+          path: "lessons",
+          model: "Lesson",
+        },
+      })
+      .then((course) => {
+        Review.find({ course: id })
+          .populate("student")
+          .then((reviews) => {
+            const chapters = course.chapters || [];
+            const lessons = chapters.reduce(
+              (acc, chapter) => acc.concat(chapter.lessons),
+              []
+            );
+            res.render("student/courseDetails", {
+              data: course,
+              teacher: course.teacher,
+              student: result,
+              chapters: chapters,
+              lessons: lessons,
+              reviews: reviews,
+            });
+          });
+      })
+      .catch((err) => console.log(err));
+  });
+};
 
 exports.getProfile = (req, res, next) => {
- User.findById(req.session.user)
- .populate('student')
- .then((user)=>{
-  res.render('student/sprofile',{user:user,student:user.student});
-
- })
-
-  .catch(err => console.log(err));
-};
-
-exports.postProfileEdit=(req,res)=>{
-  const fname=req.body.fname;
-  const lname=req.body.lname;
-  const phno=req.body.phno;
-  const address=req.body.address;
-  const image=req.file;
-  const imageurl=image.path;
-  Student.findById(req.body.sid)
-  .then((student)=>{
-    student.firstName=fname;
-    student.lastName=lname;
-    student.phoneNo=phno;
-    student.address=address;
-    student.Imageurl=imageurl;
-    return student.save();
-  })
-  .then(()=>{
-    console.log('Student Detail Updated');
-    res.redirect('/student/profile');
-  })
-  .catch(err => console.log(err));
-
-};
-
-exports.getPasswordEdit=(req,res)=>{
   User.findById(req.session.user)
-  .populate('student')
-  .then((student)=>{
-    res.render('student/saccount',{user:student,student:student.student});
+    .populate("student")
+    .then((user) => {
+      res.render("student/sprofile", { user: user, student: user.student });
+    })
 
-  })
-}
+    .catch((err) => console.log(err));
+};
+
+exports.postProfileEdit = (req, res) => {
+  const fname = req.body.fname;
+  const lname = req.body.lname;
+  const phno = req.body.phno;
+  const address = req.body.address;
+  const image = req.file;
+  const imageurl = image.path;
+  Student.findById(req.body.sid)
+    .then((student) => {
+      student.firstName = fname;
+      student.lastName = lname;
+      student.phoneNo = phno;
+      student.address = address;
+      student.Imageurl = imageurl;
+      return student.save();
+    })
+    .then(() => {
+      console.log("Student Detail Updated");
+      res.redirect("/student/profile");
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getPasswordEdit = (req, res) => {
+  User.findById(req.session.user)
+    .populate("student")
+    .then((student) => {
+      res.render("student/saccount", {
+        user: student,
+        student: student.student,
+      });
+    });
+};
 exports.postPasswordedit = (req, res) => {
   const currentPassword = req.body.CurrentPassword;
   const newPassword = req.body.NewPassword;
   const retypeNewPassword = req.body.RetypeNewPassword;
   const userid = req.body.userId;
-  const email=req.body.mail;
+  const email = req.body.mail;
   User.findById(userid)
     .then((user) => {
       bcrypt.compare(currentPassword, user.password, function (err, result) {
@@ -187,79 +186,92 @@ exports.postPasswordedit = (req, res) => {
           console.log("Current password is incorrect");
         }
 
-        return bcrypt.hash(newPassword,12)
-        .then((hashespwd)=>{
-          user.email=email;
-        user.password = hashespwd;
-        user.save()
-        .then((err) =>{
-          if (err) {
-            console.log(err);
-          }
-          console.log("Password updated successfully");
+        return bcrypt.hash(newPassword, 12).then((hashespwd) => {
+          user.email = email;
+          user.password = hashespwd;
+          user.save().then((err) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log("Password updated successfully");
+          });
+          res.redirect("/student/account");
         });
-        res.redirect("/student/account");
-
-        })
-
-       
       });
     })
     .catch((err) => console.log(err));
 };
 
-
-
-exports.myLearning=(req,res)=>{
+exports.myLearning = (req, res) => {
   User.findById(req.session.user)
-  .populate({
-    path: 'student',
-    populate: {
-      path: 'courses',
-      model: 'Course'
-    }
-  })
-  .then((user)=>{
-    res.render('student/scourselist',{user:user,student:user.student,courses:user.student.courses});
-  })
-}
-
-exports.getCourseContent=(req,res)=>{
-  const id=req.params.id;
-  Student.findById(req.session.user.student).then((result) => {
-    Course.findById(id)
-    .populate('teacher')
     .populate({
-      path: 'chapters',
+      path: "student",
       populate: {
-        path: 'lessons',
-        model: 'Lesson'
-      }
+        path: "courses",
+        model: "Course",
+      },
     })
-     .then(course=>{
-              const chapters = course.chapters || [];
-              const lessons = chapters.reduce((acc, chapter) => acc.concat(chapter.lessons), []);
-        res.render('teacher/courseContent',{user: req.session.user,data:course,teacher:course.teacher,student:result,chapters:chapters,lessons:lessons});
-     })
-     .catch(err => console.log(err));
+    .then((user) => {
+      res.render("student/scourselist", {
+        user: user,
+        student: user.student,
+        courses: user.student.courses,
+      });
     });
-
 };
 
-exports.studentQuiz=(req,res)=>{
-  const id=req.params.id;
-  User.findById(req.session.user)
-  .populate('student')
-  .then((user)=>{
+exports.getCourseContent = (req, res) => {
+  const id = req.params.id;
+  Student.findById(req.session.user.student).then((result) => {
     Course.findById(id)
-  .populate('quizzes')
-  .then((course)=>{
-    res.render('student/studentquiz',{student:user.student,course:course,quizzes:course.quizzes});
-  })
+      .populate("teacher")
+      .populate({
+        path: "chapters",
+        populate: {
+          path: "lessons",
+          model: "Lesson",
+        },
+      })
+      .then((course) => {
+        Review.find({ course: id })
+          .populate("student")
+          .then((reviews) => {
+            const chapters = course.chapters || [];
+            const lessons = chapters.reduce(
+              (acc, chapter) => acc.concat(chapter.lessons),
+              []
+            );
+            res.render("teacher/courseContent", {
+              user: req.session.user,
+              data: course,
+              teacher: course.teacher,
+              student: result,
+              chapters: chapters,
+              lessons: lessons,
+              reviews: reviews,
+            });
+          });
+      })
+      .catch((err) => console.log(err));
+  });
+};
 
-  })
-  
-}
+exports.studentQuiz = (req, res) => {
+  const id = req.params.id;
+  User.findById(req.session.user)
+    .populate("student")
+    .then((user) => {
+      Course.findById(id)
+        .populate("quizzes")
+        .then((course) => {
+          res.render("student/studentquiz", {
+            student: user.student,
+            course: course,
+            quizzes: course.quizzes,
+          });
+        });
+    });
+};
 
 exports.postsubmitQuiz = (req, res) => {
   const studentId = req.session.user.student;
@@ -268,8 +280,8 @@ exports.postsubmitQuiz = (req, res) => {
   const courseId = quizResult.courseId;
 
   Quiz.findById(quizId)
-    .populate('questions')
-    .populate('course')
+    .populate("questions")
+    .populate("course")
     .then((quiz) => {
       let totalScore = 0;
       let totalMarks = 0;
@@ -277,22 +289,24 @@ exports.postsubmitQuiz = (req, res) => {
 
       quiz.questions.forEach((question, i) => {
         totalMarks += question.Marks;
-        const submittedAnswer = quizResult['question' + (i + 1)];
+        const submittedAnswer = quizResult["question" + (i + 1)];
         const correctAnswer = question.answer;
         if (submittedAnswer == correctAnswer) {
           totalScore += question.Marks;
         }
-        submittedAnswers['question' + (i + 1)] = submittedAnswer;
+        submittedAnswers["question" + (i + 1)] = submittedAnswer;
       });
 
-      const percentageScore = Math.round((totalScore / quiz.questions.length) * 100);
+      const percentageScore = Math.round(
+        (totalScore / quiz.questions.length) * 100
+      );
 
       const quizResultObject = {
         course: courseId,
         quiz: quizId,
         marks: totalScore,
         totalMarks: totalMarks,
-        answers: submittedAnswers
+        answers: submittedAnswers,
       };
 
       Student.findById(studentId)
@@ -303,27 +317,45 @@ exports.postsubmitQuiz = (req, res) => {
         .then(() => {
           return Student.findById(studentId)
             .populate({
-              path: 'quizzes.quiz',
+              path: "quizzes.quiz",
               populate: {
-                path: 'course'
-              }
+                path: "course",
+              },
             })
-            .populate('courses');
+            .populate("courses");
         })
         .then((student) => {
-          res.render('student/studentResult', {
+          res.render("student/studentResult", {
             student: student,
             course: courseId,
             quiz: quiz,
             totalScore: totalScore,
             totalMarks: totalMarks,
             percentageScore: percentageScore,
-            submittedAnswers: submittedAnswers
+            submittedAnswers: submittedAnswers,
           });
         })
         .catch((error) => {
           console.error(error);
           res.status(500).send("An error occurred while saving quiz results.");
         });
+    });
+};
+
+exports.postAddreview = (req, res) => {
+  const { rating, comment, student } = req.body;
+  const course = req.params.id;
+
+  const reviews = new review({ course, student, rating, comment });
+
+  reviews
+    .save()
+    .then(() => {
+      req.flash("success", "Review added successfully");
+      res.redirect(`/student/courseContent/${course}`);
+    })
+    .catch((err) => {
+      req.flash("error", "Unable to add review");
+      res.redirect(`/student/courseContent/${course}`);
     });
 };

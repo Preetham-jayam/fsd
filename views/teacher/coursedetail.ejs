@@ -32,13 +32,39 @@
  <link rel="stylesheet" href="/font-awesome.css" />
  <link rel="stylesheet" href="/admindb.css"> 
  <link href="/details.css" rel="stylesheet" /> 
+ <style>
+  .review {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .review-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .review-image {
+    flex-shrink: 0;
+    margin-right: 1rem;
+  }
+
+  .review-image img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .review-content {
+    flex-grow: 1;
+  }
+</style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark " id="navbar" style="background-color: #06bbcc;">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="/teacher/home">
           <i class="fa fa-home fa-lg"></i>
         </a>
-        <a class="navbar-brand" href="/teacher">Eduphoria</a>
+        <a class="navbar-brand" href="/teacher/home">Eduphoria</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -96,9 +122,9 @@
                             <i class="fas fa-star-half-alt"></i>
 
                         </span>
-                        <span class="reviews">(230 Reviews)</span>
+                        <span class="reviews">(<%=reviews.length%> Reviews)</span>
                         <ul>
-                            <li>Enrolled students - <span>220</span></li>
+                            <li>Enrolled students - <span><%=data.students.length%></span></li>
                             <li>Created by - <span><a href="#">Dr.<%=teacher.FullName%></a></span></li>
                             <li>Last Updated - <span>10/03/23</span></li>
                             <li>Language - <span>English</span></li>
@@ -112,6 +138,7 @@
                       <button class="btn-them nav-link active  " id="course-curriculum-tab" data-bs-toggle="tab" data-bs-target="#course-curriculum" type="button" role="tab" aria-controls="course-curriculum" aria-selected="true">Curriculum</button>
                       <button class="btn-them nav-link" id="course-description-tab" data-bs-toggle="tab" data-bs-target="#course-description" type="button" role="tab" aria-controls="course-description" aria-selected="false">Description</button>
                       <button class="btn-them nav-link" id="course-instructor-tab" data-bs-toggle="tab" data-bs-target="#course-instructor" type="button" role="tab" aria-controls="course-instructor" aria-selected="false">Instructor</button>
+                      <button class="btn-them nav-link" id="course-reviews-tab" data-bs-toggle="tab" data-bs-target="#course-reviews" type="button" role="tab" aria-controls="course-reviews" aria-selected="false">Reviews</button>
                       
 
                     </div>
@@ -203,6 +230,38 @@
                         </div>
 
                     </div>
+
+                    <div class="tab-pane fade " id="course-reviews" role="tabpanel" aria-labelledby="course-reviews-tab">
+                      <div class="course-reviews box">
+                          <div class="rating-summary">
+                              <h3 class="mb-4 text-capitalize">Students feedback</h3>
+                              <div class="row">
+                                  <div class="col-md-8">
+                                   
+                    
+                                    <% if (reviews.length === 0) { %>
+                                    <h2>No reviews yet.</h2>
+                                    <% } else { %> <% reviews.forEach(review => { %>
+                                    <div class="review-box">
+                                      <div class="review">
+                                        <div class="review-image">
+                                          <img src="/Img/review/1.png" class="rounded-circle" />
+                                        </div>
+                                        <div class="review-content">
+                                          <h4><b>Name:</b><%= review.student.firstName %></h4>
+                                          <div style="color: #000;"><b>Rating:</b> <%= review.rating %></div>
+                                          <div style="color: #000;"><b>Comment:</b><%= review.comment %></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <% }) %> <% } %>
+                                  </div>
+                                </div>
+                          </div>
+
+                      </div>
+
+                  </div>
 
                     
 

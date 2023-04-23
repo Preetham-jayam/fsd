@@ -30,6 +30,7 @@ router.get('/student/courseDetails/:id',isAuth,studentController.getCourseDetail
 router.post('/student/enroll',isAuth,studentController.enrolledcourse);
 router.get('/student/quiz/:id',isAuth,studentController.studentQuiz);
 router.post('/student/submitQuiz',isAuth,studentController.postsubmitQuiz);
+router.post('/student/reviews/:id',isAuth,studentController.postAddreview);
 
 
 module.exports=router;

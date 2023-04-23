@@ -38,7 +38,7 @@
                     </div>
                     <div class="d-flex border-top">
                       <small class="flex-fill text-center border-end py-2 instructor"
-                        ><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=teachers[i].FullName%></small
+                        ><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=scourses[i].teacher.FullName%></small
                       >
                       <small class="flex-fill text-center border-end py-2 duration"
                         ><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small
@@ -104,7 +104,7 @@ border-bottom: 4px dotted #fff;">
                     <h5 class="mb-4 title"><%=courses[i].title%></h5>
                   </div>
                   <div class="d-flex border-top">
-                    <small class="flex-fill text-center border-end py-2 instructor"><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=teachers[i].FullName%></small>
+                    <small class="flex-fill text-center border-end py-2 instructor"><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=courses[i].teacher.FullName%></small>
                     <small class="flex-fill text-center border-end py-2 duration"><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small>
                     <small class="flex-fill text-center py-2 students"><i class="fa fa-user text-primary me-2"></i><%=courses[i].students.length%> Students</small>
                   </div>

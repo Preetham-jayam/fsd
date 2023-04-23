@@ -120,9 +120,9 @@
                             <i class="fas fa-star-half-alt"></i>
 
                         </span>
-                        <span class="reviews">(230 Reviews)</span>
+                        <span class="reviews">(<%=reviews.length%> Reviews)</span>
                         <ul>
-                            <li>Enrolled students - <span>220</span></li>
+                            <li>Enrolled students - <span><%=data.students.length%></span></li>
                             <li>Created by - <span><a href="#">Dr.<%=teacher.FullName%></a></span></li>
                             <li>Last Updated - <span>10/03/23</span></li>
                             <li>Language - <span>English</span></li>
@@ -226,6 +226,8 @@
                         </div>
 
                     </div>
+
+                    
 
                   
                   </div>

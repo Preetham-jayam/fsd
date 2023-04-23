@@ -3,8 +3,18 @@ const courseModel = require("../models/course");
 const teacherModel = require("../models/teacher");
 const Chapter = require("../models/chapter");
 const Lesson = require("../models/lesson");
+const review = require("../models/review");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+const mailTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "eduphoriaiiits@gmail.com",
+    pass: "ddscdxfocuuyksob",
+  },
+});
 
 exports.getDashboard = (req, res) => {
   User.findOne({ role: 2 })
@@ -116,6 +126,22 @@ exports.acceptTeacher = (req, res) => {
       console.log(err);
     });
 };
+exports.declineTeacher = (req, res) => {
+  const id = req.params.id;
+  teacherModel
+    .findById(id)
+    .then((teacher) => {
+      teacher.flag = 2;
+      return teacher.save();
+    })
+    .then(() => {
+      req.flash("The teacher is rejected");
+      res.redirect("/admin/all/teachers");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 exports.getAllCourses = (req, res) => {
   courseModel
@@ -193,6 +219,14 @@ exports.DeleteUser = (req, res) => {
   });
 };
 
+exports.deleteCourse = (req, res) => {
+  const id = req.params.id;
+  courseModel.findByIdAndDelete(id).then(() => {
+    console.log("Course deleted");
+    res.redirect("/admin/all/courses");
+  });
+};
+
 exports.searchAdmin = (req, res) => {
   const search = req.body;
   const regex = new RegExp(search.searchValue, "i");
@@ -222,7 +256,6 @@ exports.searchAdmin = (req, res) => {
 
 exports.getSingleCourse = (req, res, next) => {
   const id = req.params.id;
-
   courseModel
     .findById(id)
     .populate("teacher")
@@ -234,18 +267,55 @@ exports.getSingleCourse = (req, res, next) => {
       },
     })
     .then((course) => {
-      const chapters = course.chapters || [];
-      const lessons = chapters.reduce(
-        (acc, chapter) => acc.concat(chapter.lessons),
-        []
-      );
-
-      res.render("admin/admincoursedetail", {
-        data: course,
-        chapters: chapters,
-        teacher: course.teacher,
-        lessons: lessons,
-      });
+      review
+        .find({ course: id })
+        .populate("student")
+        .then((reviews) => {
+          const chapters = course.chapters || [];
+          const lessons = chapters.reduce(
+            (acc, chapter) => acc.concat(chapter.lessons),
+            []
+          );
+          res.render("admin/admincoursedetail", {
+            data: course,
+            teacher: course.teacher,
+            chapters: chapters,
+            lessons: lessons,
+            reviews: reviews,
+          });
+        });
     })
     .catch((err) => console.log(err));
+};
+
+exports.sendmail = (req, res) => {
+  res.render("admin/Mail", { title: "Send Mail" });
+};
+
+exports.postsendmail = (req, res, next) => {
+  const { subject, message } = req.body;
+  User.find({ role: 0 }, "email")
+    .then((users) => {
+      const emailList = users.map((user) => user.email);
+      const mailOptions = {
+        from: "eduphoriaiiits@gmail.com",
+        to: emailList.join(","),
+        subject: subject,
+        text: message,
+      };
+      mailTransporter
+        .sendMail(mailOptions)
+        .then((info) => {
+          console.log(`Email sent: ${info.response}`);
+          res.redirect("/admin/all/students");
+        })
+        .catch((error) => {
+          console.log(`Error occurred while sending email: ${error}`);
+          res.redirect("/admin/mail");
+        });
+    })
+    .catch((error) => {
+      console.log(`Error occurred while finding users: ${error}`);
+      res.redirect("/admin/mail");
+    });
 };

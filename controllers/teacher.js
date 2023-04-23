@@ -2,6 +2,7 @@ const Course = require("../models/course");
 const Teacher = require("../models/teacher");
 const User = require("../models/user");
 const Chapter = require("../models/chapter");
+const Review = require("../models/review");
 const Lesson = require("../models/lesson");
 const Quiz = require("../models/quiz");
 const bcrypt = require("bcryptjs");
@@ -70,8 +71,9 @@ exports.getHomepage = (req, res, next) => {
 
 exports.getSingleCourse = (req, res, next) => {
   const id = req.params.cid;
-  Teacher.findById(req.session.user.teacher).then((teacher) => {
+  Teacher.findById(req.session.user.teacher).then((result) => {
     Course.findById(id)
+      .populate("teacher")
       .populate({
         path: "chapters",
         populate: {
@@ -80,18 +82,22 @@ exports.getSingleCourse = (req, res, next) => {
         },
       })
       .then((course) => {
-        const chapters = course.chapters || [];
-        const lessons = chapters.reduce(
-          (acc, chapter) => acc.concat(chapter.lessons),
-          []
-        );
-        console.log(course.chapters);
-        res.render("teacher/coursedetail", {
-          data: course,
-          chapters: chapters,
-          teacher: teacher,
-          lessons: lessons,
-        });
+        Review.find({ course: id })
+          .populate("student")
+          .then((reviews) => {
+            const chapters = course.chapters || [];
+            const lessons = chapters.reduce(
+              (acc, chapter) => acc.concat(chapter.lessons),
+              []
+            );
+            res.render("teacher/coursedetail", {
+              data: course,
+              teacher: course.teacher,
+              chapters: chapters,
+              lessons: lessons,
+              reviews: reviews,
+            });
+          });
       })
       .catch((err) => console.log(err));
   });
@@ -397,7 +403,7 @@ exports.PostaddQuestion = (req, res) => {
           ],
           course: req.body.IdCourse,
         });
-        console.log(quiz.questions.answer)
+        console.log(quiz.questions.answer);
         quiz
           .save()
           .then((quiz) => {

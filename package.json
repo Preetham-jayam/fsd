@@ -28,6 +28,8 @@
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.3",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.1",
+    "nodemailer-sendgrid-transport": "^0.2.0",
     "sqlite3": "^5.1.6",
     "sweetalert": "^2.1.2"
   }
