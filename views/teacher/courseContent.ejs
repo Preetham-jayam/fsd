@@ -26,6 +26,13 @@
   }
 </style>
 <section class="content section-padding">
+  <% if (messages.success) { %>
+    <div class="alert alert-success"><%= messages.success %></div>
+  <% } %>
+  
+  <% if (messages.error) { %>
+    <div class="alert alert-danger"><%= messages.error %></div>
+  <% } %>
   <div class="container">
     <div class="row d-flex">
       <h1 style="text-decoration: underline; color: #06bbcc">
@@ -315,19 +322,21 @@
                     <div class="accordion-body">
                       <ul>
                         <%chapter.lessons.forEach((lesson)=>{%>
-                        <li>
-                          <a
-                            href=""
-                            data-video="/<%=lesson.videoUrl%>"
-                            onclick="playVideo(event)"
-                            ><i
-                              style="color: #06bbcc"
-                              class="fas fa-play-circle"
-                            ></i>
-                            <%=lesson.title%>
-                            <span>06:00</span></a
-                          >
-                        </li>
+                          <li>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="lesson-<%=lesson._id%>-checkbox" 
+                               <% if (lesson.checked==1) {
+                                 %> checked 
+                                 <% } %> >
+                              <label class="form-check-label" for="lesson-<%=lesson._id%>-checkbox">
+                                <a href="" data-video="/<%=lesson.videoUrl%>" onclick="playVideo(event,'<%=lesson._id%>')">
+                                  <i style="color: #06bbcc" class="fas fa-play-circle"></i>
+                                  <%=lesson.title%>
+                                  <span>06:00</span>
+                                </a>
+                              </label>
+                            </div>
+                          </li>
                         <% })%>
                       </ul>
                     </div>
@@ -339,8 +348,9 @@
               <div class="accordion" id="accordion">
                 
                 <div class="accordion-body">
-                  <a href="/student/quiz/<%=data._id%>"><button style="display: block;" class="btn btn-primary">Attend Quiz</button></a>
-                  
+                    <a  style="display: block;" id="attend-quiz-btn" class="btn  btn-primary" role="button" href="/student/quiz/<%=data._id%>" aria-disabled="truew">Attend Quiz</a> 
+                 
+                 <a style="display: block; margin-top: 5px;  pointer-events: none;" role="button" class="btn certificatebtn btn-success" href="/certificate/<%=student._id%>/<%=data._id%>">Generate Certificate</a>
                 </div>
                 
               </div>
@@ -353,5 +363,26 @@
     </div>
   </div>
 </section>
+
+<script>
+  const checkboxes = document.querySelectorAll('input[type=checkbox]');
+const button = document.querySelector('.certificatebtn');
+
+checkboxes.forEach((checkbox) => {
+  checkbox.addEventListener('change', () => {
+    const checkedCheckboxes = Array.from(checkboxes).filter((checkbox) => checkbox.checked);
+    if (checkedCheckboxes.length === checkboxes.length) {
+      console.log(checkboxes.length)
+      console.log(checkedCheckboxes.length)
+      button.style.pointerEvents = 'all';
+    } else {
+      button.style.pointerEvents = 'none';
+    }
+  });
+});
+
+ 
+</script>
+
 
 <%-include("../partials/footer.ejs") %>

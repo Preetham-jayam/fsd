@@ -1,7 +1,6 @@
 const Student = require("../models/student");
 const Course = require("../models/course");
 const Teacher = require("../models/teacher");
-
 const User = require("../models/user");
 const Quiz = require("../models/quiz");
 const Review = require("../models/review");
@@ -58,8 +57,19 @@ exports.getHomepage = (req, res, next) => {
     });
 };
 
+exports.getPaymentpage = (req, res) => {
+  const id = req.params.id;
+  const sid = req.params.sid;
+  Course.findById(id)
+    .populate("teacher")
+    .then((course) => {
+      res.render("payment", { course: course, sid: sid });
+    });
+};
+
 exports.enrolledcourse = (req, res) => {
   const { studentId, courseId } = req.body;
+
   Student.findById(studentId)
     .then((student) => {
       if (!student) {
@@ -183,6 +193,7 @@ exports.postPasswordedit = (req, res) => {
           console.log(err);
         }
         if (!result) {
+          req.flash("error", "Current Password Incorrect");
           console.log("Current password is incorrect");
         }
 
@@ -195,6 +206,7 @@ exports.postPasswordedit = (req, res) => {
             }
             console.log("Password updated successfully");
           });
+          req.flash("success", "Password Updated");
           res.redirect("/student/account");
         });
       });
@@ -357,5 +369,96 @@ exports.postAddreview = (req, res) => {
     .catch((err) => {
       req.flash("error", "Unable to add review");
       res.redirect(`/student/courseContent/${course}`);
+    });
+};
+
+const PDFDocument = require("pdfkit");
+const fs = require("fs");
+const path = require("path");
+exports.generateCertificate = (req, res) => {
+  const { studentId, courseId } = req.params;
+  Student.findById(studentId)
+    .then((student) => {
+      Course.findById(courseId)
+        .populate("teacher")
+        .then((course) => {
+          const fileName = `${student.firstName}-${course.name}-Certificate.pdf`;
+          const filePath = path.join(
+            __dirname,
+            "..",
+            "public",
+            "certificates",
+            fileName
+          );
+          fs.access(filePath, fs.constants.F_OK, (err) => {
+            if (err) {
+              const doc = new PDFDocument({
+                size: "A4",
+                layout: "landscape",
+              });
+              doc.info[
+                "Title"
+              ] = `${student.firstName} - ${course.name} Certificate`;
+              doc.info["Author"] = "Eduphoria";
+
+              doc.image(
+                "C:/Users/Dell/OneDrive/Desktop/Project/public/Img/certificate-background.png",
+                0,
+                0,
+                { width: 842, height: 595 }
+              );
+
+              doc.moveDown();
+              doc.moveDown();
+              doc.moveDown();
+              doc.moveDown();
+              doc
+                .fontSize(30)
+                .strokeColor("black")
+                .fillColor("black")
+                .text("Certificate of Completion", {
+                  align: "center",
+                  underline: true,
+                  stroke: true,
+                  fill: false,
+                });
+              doc.moveDown();
+              doc.moveDown();
+              doc.moveDown();
+              doc.moveDown();
+              doc
+                .fontSize(16)
+                .text(
+                  `This certificate is awarded to ${student.firstName} for successfully completing the course`
+                );
+              doc.moveDown();
+              doc.fontSize(14).text(`Student Name: ${student.firstName}`);
+              doc.fontSize(14).text(`Course Title: ${course.title}`);
+              doc.fontSize(14).text(`Instructor: ${course.teacher.FullName}`);
+              doc
+                .fontSize(14)
+                .text(`Completion Date: ${new Date().toLocaleDateString()}`);
+              doc
+                .fontSize(18)
+                .text(`-Best Rewards from Eduphoria`, { align: "right" });
+
+              // Write the document to a file
+              doc.pipe(fs.createWriteStream(filePath));
+              doc.end();
+              req.flash("success", "Certificate is generated ");
+              res.redirect(`/student/courseContent/${courseId}`);
+            } else {
+              res.sendFile(filePath);
+            }
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          console.log("Error generating certificate");
+        });
+    })
+    .catch((err) => {
+      console.error(err);
+      console.log("Error generating certificate");
     });
 };

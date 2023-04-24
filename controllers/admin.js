@@ -4,6 +4,7 @@ const teacherModel = require("../models/teacher");
 const Chapter = require("../models/chapter");
 const Lesson = require("../models/lesson");
 const review = require("../models/review");
+const Admin = require("../models/admin");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
@@ -17,11 +18,9 @@ const mailTransporter = nodemailer.createTransport({
 });
 
 exports.getDashboard = (req, res) => {
-  User.findOne({ role: 2 })
-    .populate("teacher")
-    .then((admin) => {
-      res.render("admin/admindb", { title: "Admin Dashboard", admin: admin });
-    });
+  Admin.findOne({ role: 2 }).then((admin) => {
+    res.render("admin/admindb", { title: "Admin Dashboard", admin: admin });
+  });
 };
 
 exports.postProfileEdit = (req, res) => {
@@ -31,24 +30,18 @@ exports.postProfileEdit = (req, res) => {
   const pwd = req.body.password;
   const id = req.params.id;
 
-  User.findOne({ role: 2 })
+  Admin.findOne({ role: 2 })
     .then((admin) => {
       return bcrypt.hash(pwd, 12).then((hashespwd) => {
+        admin.FullName = name;
+        admin.phoneNo = phno;
         admin.email = email;
         admin.password = hashespwd;
         return admin.save();
       });
     })
-    .catch((err) => console.log(err));
-  teacherModel
-    .findById(id)
-    .then((admin) => {
-      admin.FullName = name;
-      admin.phoneNo = phno;
-      return admin.save();
-    })
     .then(() => {
-      req.flash('success','Profile Edited Succesfully');
+      req.flash("success", "Profile Edited Succesfully");
 
       res.redirect("/admin/admindb");
     })
@@ -121,7 +114,7 @@ exports.acceptTeacher = (req, res) => {
       return teacher.save();
     })
     .then(() => {
-      req.flash('success',"The teacher is accepted");
+      req.flash("success", "The teacher is accepted");
       res.redirect("/admin/all/teachers");
     })
     .catch((err) => {
@@ -137,7 +130,7 @@ exports.declineTeacher = (req, res) => {
       return teacher.save();
     })
     .then(() => {
-      req.flash('error',"The teacher is rejected");
+      req.flash("error", "The teacher is rejected");
       res.redirect("/admin/all/teachers");
     })
     .catch((err) => {
@@ -170,11 +163,11 @@ exports.BlockUser = (req, res) => {
     })
     .then((updatedUser) => {
       if (updatedUser.flag === 1) {
-        req.flash('success','User Blocked Succesfully');
-       
+        req.flash("success", "User Blocked Succesfully");
+
         console.log("User blocked successfully.");
       } else {
-        req.flash('success','User UnBlocked Succesfully');
+        req.flash("success", "User UnBlocked Succesfully");
 
         console.log("User unblocked successfully.");
       }
@@ -201,7 +194,7 @@ exports.DeleteUser = (req, res) => {
             console.log("User Not Found");
           }
           console.log("User deleted successfully");
-          req.flash('success','Student Deleted Succesfully');
+          req.flash("success", "Student Deleted Succesfully");
           res.redirect("/admindb/all/students");
         })
         .catch((err) => {
@@ -216,7 +209,7 @@ exports.DeleteUser = (req, res) => {
             console.log("User Not Found");
           }
           console.log("User Teacher deleted successfully");
-          req.flash('success','Teacher Deleted Succesfully');
+          req.flash("success", "Teacher Deleted Succesfully");
           res.redirect("/admin/all/teachers");
         })
         .catch((err) => {
@@ -231,7 +224,7 @@ exports.deleteCourse = (req, res) => {
   const id = req.params.id;
   courseModel.findByIdAndDelete(id).then(() => {
     console.log("Course deleted");
-    req.flash('success','Course Deleted Succesfully');
+    req.flash("success", "Course Deleted Succesfully");
     res.redirect("/admin/all/courses");
   });
 };
@@ -316,7 +309,7 @@ exports.postsendmail = (req, res, next) => {
         .sendMail(mailOptions)
         .then((info) => {
           console.log(`Email sent: ${info.response}`);
-          req.flash('success','Mail Sent to all users');
+          req.flash("success", "Mail Sent to all users");
           res.redirect("/admin/all/students");
         })
         .catch((error) => {

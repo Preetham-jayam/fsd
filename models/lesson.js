@@ -1,24 +1,28 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const lessonSchema = new mongoose.Schema({
   number: {
-    type: Number
+    type: Number,
   },
   title: {
-    type: String
+    type: String,
   },
   description: {
-    type: String
+    type: String,
   },
   videoUrl: {
-    type: String
+    type: String,
   },
   chapter: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Chapter'
-  }
+    ref: "Chapter",
+  },
+  checked: {
+    type: Number,
+    default: 0,
+  },
 });
 
-const Lesson = mongoose.model('Lesson', lessonSchema);
+const Lesson = mongoose.model("Lesson", lessonSchema);
 
 module.exports = Lesson;

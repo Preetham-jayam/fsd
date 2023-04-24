@@ -3,10 +3,10 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const multer = require("multer");
 const MongoDbStore = require("connect-mongodb-session")(session);
 const flash=require('connect-flash');
 const User = require("./models/user");
+const bcryptjs=require('bcryptjs');
 const MONGODB_URI =
   "mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/Learning";
 
@@ -15,8 +15,6 @@ const store = new MongoDbStore({
   uri: MONGODB_URI,
   collection: "sessions",
 });
-const sqlite3 = require("sqlite3");
-const cors = require("cors");
 app.use(express.static(__dirname + "/public"));
 app.use("/images", express.static(__dirname + "/images"));
 app.use("/uploads", express.static(__dirname + "/uploads"));
@@ -68,13 +66,21 @@ app.use("/admin", adminRoutes);
 app.use(studRoutes);
 app.use(courseRoutes);
 
+const Lesson=require('./models/lesson');
 
-
-
-
-app.get("/student/account/course-list", (req, res) => {
-  res.render("student/scourselist");
+app.put('/lessons/:id', (req, res) => {
+  const id = req.params.id;
+  
+  Lesson.findByIdAndUpdate(id, { checked: 1 }, { new: true })
+    .then(updatedLesson => {
+      res.json(updatedLesson);
+    })
+    .catch(err => {
+      console.error('An error occurred while updating the lesson');
+     
+    });
 });
+
 
 mongoose
   .connect("mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/Learning")

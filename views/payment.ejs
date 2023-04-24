@@ -1,0 +1,92 @@
+
+    <%-include("partials/header.ejs") %>;
+
+    <style>
+      .form-wrapper .submit-btn{
+                width: 100%;
+                padding:12px;
+                font-size: 17px;
+                background: #27ae60;
+                color:#fff;
+                margin-top: 5px;
+                cursor: pointer;
+                }
+
+    </style>
+    <section class="h-50 ">
+        <form class="form-wrapper"  method="post" action="/student/enroll" id="frmRegister" > 
+        <div class="container py-5 " style="height: max-content;">
+          <div class="row d-flex justify-content-center align-items-center ">
+            <div class="col">
+              <div class="card card-registration my-4">
+                <div class="row g-0" >
+                  <div class="col-xl-6 d-none d-xl-block">
+
+                            <input type="hidden" name="courseId" value="<%=course._id%>">
+                            <input type="hidden" name="studentId" value="<%=sid%>">
+
+                    <img src="/<%=course.Imageurl%>"                
+                      alt="Sample photo" class="img-fluid"
+                      style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="card-body p-md-5 text-black">
+                      <h3 class="mb-5 text-uppercase" style="text-align: center;">Payment Portal</h3>
+      
+                     
+      
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="Course Name">Course Name</label>
+                        <input type="text" id="Course Name" name="Course Name" class="form-control form-control-lg" value="<%=course.name%>"  readonly/>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="Course Instructor name">Course Instructor name</label>
+                        <input type="text" id="Course Instructor name" name="Course Instructor name" class="form-control form-control-lg"value="<%=course.teacher.FullName%>"  readonly/>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="Price">Price</label>
+                        <input type="text" id="Price" name="Price" class="form-control form-control-lg" value="<%=course.price%>" readonly/>
+                      </div>
+
+                      <div class="inputBox">
+                        <span>Cards accepted </span>
+                        <br>
+                        <img src="/Img/card_img.png" alt="Cards Page" />
+                      </div>
+                      <br>
+
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="Payment method">Payment method</label>
+                        <br>
+                        <select id="event_type" name="event_type" required>
+                          <option value="">Select an option</option>
+                          <option value="Credit Card">Credit card</option>
+                          <option value="UPI">UPI</option>
+                      </select></div>
+
+                      <br>
+                      <div class="d-flex justify-content-end pt-5">
+                        <button type="submit" class="btn btn-outline-success">
+                          <i class="fa fa-check" aria-hidden="true"></i>
+                         Proceed to Pay
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+      </section>
+
+
+    <%-include("partials/footer.ejs") %>;
+</body>
+
+
+</html>

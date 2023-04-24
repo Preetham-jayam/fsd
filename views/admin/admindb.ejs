@@ -34,7 +34,7 @@
                   class="form-control"
                   id="floatingInput"
                   placeholder="FullName"
-                  value="<%=admin.teacher.FullName%>"
+                  value="<%=admin.FullName%>"
                   name="FullName"
                 />
                 <label for="floatingInput">FullName</label>
@@ -45,7 +45,7 @@
                   class="form-control"
                   id="floatingInput"
                   placeholder="Username"
-                  value="<%=admin.teacher.phoneNo%>"
+                  value="<%=admin.phoneNo%>"
                   name="Phno"
                 />
                 <label for="floatingInput">phoneno</label>
@@ -61,22 +61,11 @@
                 />
                 <label for="floatingInput">Email</label>
               </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="password"
-                  class="form-control "
-                  id="floatingInput"
-                  placeholder="Password"
-                  value="<%=admin.password%>"
-                  name="password"
-                 
-                />
-                <label for="floatingInput">Password</label>
-              </div>
+              
               <button
                 type="submit"
                 class="btn btn-outline-success"
-                formaction="/admin/profile/edit/<%=admin.teacher._id%>"
+                formaction="/admin/profile/edit/<%=admin._id%>"
               >
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Save

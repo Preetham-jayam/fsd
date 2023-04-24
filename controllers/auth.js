@@ -2,53 +2,72 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const Student = require("../models/student");
 const Teacher = require("../models/teacher");
-
+const Admin = require("../models/admin");
 exports.getLogin = (req, res) => {
   res.render("login");
 };
 exports.postLogin = (req, res) => {
   const mail = req.body.email;
   const password = req.body.password;
-  User.findOne({ email: mail })
-  .then((user) => {
-    if (!user) {
-      req.flash("error", "User not Found");
-      return res.redirect("/login");
-    }
-    bcrypt
-      .compare(password, user.password)
-      .then((doMatch) => {
-        if (doMatch) {
-          if (user.flag === 1) {
-            req.flash("error", "You are blocked by admin");
-            return res.status(403).json({
-              error: "You are blocked by the admin",
+  if (mail == "admin@gmail.com") {
+    Admin.findOne({ email: mail }).then((admin) => {
+      bcrypt
+        .compare(password, admin.password)
+        .then((domatch) => {
+          if (domatch) {
+            req.session.isLoggedIn = true;
+            req.session.user = admin;
+            res.redirect("/admin/admindb");
+          } else {
+            req.flash("error", "Password not matching");
+            res.redirect("/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          req.flash("error", "Admin not found");
+          res.redirect("/login");
+        });
+    });
+  } else {
+    User.findOne({ email: mail }).then((user) => {
+      if (!user) {
+        req.flash("error", "User not Found");
+        return res.redirect("/login");
+      }
+      bcrypt
+        .compare(password, user.password)
+        .then((doMatch) => {
+          if (doMatch) {
+            if (user.flag === 1) {
+              req.flash("error", "You are blocked by admin");
+              return res.status(403).json({
+                error: "You are blocked by the admin",
+              });
+            }
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+            return req.session.save((err) => {
+              if (err) {
+                console.log(err);
+              }
+              if (user.role == 0) {
+                res.redirect("/student/shome");
+              } else if (user.role == 1) {
+                res.redirect("/teacher/home");
+              }
             });
           }
-          req.session.isLoggedIn = true;
-          req.session.user = user;
-          return req.session.save((err) => {
-            if (err) {
-              console.log(err);
-            }
-            if (user.role == 0) {
-              res.redirect("/student/shome");
-            } else if (user.role == 1) {
-              res.redirect("/teacher/home");
-            } else if (user.role == 2) {
-              res.redirect("/admin/admindb");
-            }
-          });
-        }
-        req.flash("error", "Password not matching");
-        res.redirect("/login");
-      })
-      .catch((err) => {
-        console.log(err);
-        req.flash("error", "User not found");
-        res.redirect("/login");
-      });
-  });
+          req.flash("error", "Password not matching");
+          res.redirect("/login");
+        })
+        .catch((err) => {
+          console.log(err);
+          req.flash("error", "User not found");
+          res.redirect("/login");
+        });
+    });
+  }
 };
 
 exports.getSignUp = (req, res, next) => {
@@ -112,7 +131,10 @@ exports.postSignUp = (req, res, next) => {
         })
         .then((result) => {
           console.log(result);
-          req.flash('success','Registration Succesfull Please Login to study ');
+          req.flash(
+            "success",
+            "Registration Succesfull Please Login to study "
+          );
           return res.redirect("/login");
         });
     })

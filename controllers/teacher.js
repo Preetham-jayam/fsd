@@ -8,7 +8,6 @@ const Quiz = require("../models/quiz");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 
-
 exports.getAddCourse = (req, res) => {
   Teacher.findById(req.session.user.teacher).then((result) => {
     res.render("teacher/add-course", {
@@ -50,7 +49,7 @@ exports.postAddCourse = (req, res, next) => {
       return User.findById(req.body.Id).populate("teacher").exec();
     })
     .then((user) => {
-      req.flash('success','Course added succesfully');
+      req.flash("success", "Course added succesfully");
       res.redirect("/teacher/home");
     })
     .catch((err) => {
@@ -97,7 +96,7 @@ exports.getSingleCourse = (req, res, next) => {
               teacher: course.teacher,
               chapters: chapters,
               lessons: lessons,
-              reviews: reviews
+              reviews: reviews,
             });
           });
       })
@@ -171,10 +170,9 @@ exports.postUpload = (req, res) => {
               chapter
                 .save()
                 .then(() => {
-                  req.flash('success','Chapter and lesson added successfully');
-                  req.session.save(function(err) {
+                  req.flash("success", "Chapter and lesson added successfully");
+                  req.session.save(function (err) {
                     if (err) {
-                   
                       console.error(err);
                     }
                     res.redirect(`/teacher/courseDetails/${courseId}`);
@@ -193,10 +191,10 @@ exports.postUpload = (req, res) => {
             $set: { videoUrl: req.file.path },
           })
             .then(() => {
-              req.flash('success','lesson updated succesfully');
-              req.session.save(function(){
+              req.flash("success", "lesson updated succesfully");
+              req.session.save(function () {
                 res.redirect(`/teacher/courseDetails/${courseId}`);
-              })
+              });
             })
             .catch((error) => {
               console.log(error);
@@ -226,10 +224,9 @@ exports.postUpload = (req, res) => {
               chapter
                 .save()
                 .then(() => {
-
-                  req.flash('success','Lesson added succesfully');
-                  req.session.save(function(){
-                  res.redirect(`/teacher/courseDetails/${courseId}`);
+                  req.flash("success", "Lesson added succesfully");
+                  req.session.save(function () {
+                    res.redirect(`/teacher/courseDetails/${courseId}`);
                   });
                 })
                 .catch((error) => {
@@ -245,7 +242,7 @@ exports.postUpload = (req, res) => {
             $set: { videoUrl: req.file.path },
           })
             .then(() => {
-              req.flash('success','lesson updated succesfully');
+              req.flash("success", "lesson updated succesfully");
               res.redirect(`/teacher/courseDetails/${courseId}`);
             })
             .catch((error) => {
@@ -287,7 +284,7 @@ exports.postEditCourse = (req, res, next) => {
     })
     .then((course) => {
       console.log("Course Updated");
-      req.flash('success','Course Updated Succesfully')
+      req.flash("success", "Course Updated Succesfully");
       res.redirect(`/teacher/courseDetails/${course._id}`);
     })
     .catch((err) => console.log(err));
@@ -325,7 +322,7 @@ exports.postProfileEdit = (req, res) => {
     })
     .then((teacher) => {
       console.log("Teacher Details Updated");
-      req.flash('success','Teacher Profile Updated')
+      req.flash("success", "Teacher Profile Updated");
       res.redirect("/teacher/profile");
     })
     .catch((err) => console.log(err));
@@ -354,7 +351,7 @@ exports.postPasswordedit = (req, res) => {
           console.log(err);
         }
         if (!result) {
-          req.flash('error','Current Password is incorrect');
+          req.flash("error", "Current Password is incorrect");
           console.log("Current password is incorrect");
         }
 
@@ -364,10 +361,10 @@ exports.postPasswordedit = (req, res) => {
             if (err) {
               console.log(err);
             }
-            
+
             console.log("Password updated successfully");
           });
-          req.flash('success','Password Updated');
+          req.flash("success", "Password Updated");
           res.redirect("/teacher/profile");
         });
       });
@@ -400,7 +397,7 @@ exports.PostaddQuestion = (req, res) => {
           .save()
           .then(() => {
             console.log(quiz);
-            req.flash("success",'Quiz question added succesfully');
+            req.flash("success", "Quiz question added succesfully");
             res.redirect("/teacher/quiz/" + req.body.IdCourse);
           })
           .catch((err) => {
@@ -436,7 +433,7 @@ exports.PostaddQuestion = (req, res) => {
                   .save()
                   .then(() => {
                     console.log(quiz);
-                    req.flash("success",'Quiz question added succesfully');
+                    req.flash("success", "Quiz question added succesfully");
                     res.redirect("/teacher/quiz/" + req.body.IdCourse);
                   })
                   .catch((err) => {

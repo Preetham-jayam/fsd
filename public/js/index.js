@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
-
+  
 var dropdowns = document.querySelectorAll('.navbar-nav .dropdown');
 dropdowns.forEach(function(dropdown) {
     dropdown.addEventListener('mouseover', function() {
@@ -66,6 +66,40 @@ faqs.forEach(faq=>{
     })
 });
 
+
+function playVideo(event, lessonId) {
+  console.log(lessonId);
+  event.preventDefault();
+  var videoUrl = event.target.getAttribute('data-video');
+  var videoPlayer = document.getElementById('video-player');
+  var checkbox = document.getElementById('lesson-' + lessonId + '-checkbox');
+
+  checkbox.checked = false; 
+
+  videoPlayer.src = videoUrl;
+  videoPlayer.play();
+
+  videoPlayer.addEventListener('ended', function() {
+    checkbox.checked=true;
+    updateLessonChecked(lessonId);
+  });
+}
+
+function updateLessonChecked(lessonId) {
+  fetch('/lessons/' + lessonId, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ checked: 1 })
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
+
+}
+
+
 //Course Preview video function
 function coursePreviewVideo(){
     const coursePreviewModal=document.querySelector(".js-course-preview-modal");
@@ -82,17 +116,17 @@ function coursePreviewVideo(){
 coursePreviewVideo();
 
 
-//Play Video Function in Course Content page
-function playVideo(event) {
-    event.preventDefault();
-    var video = document.getElementById('video-player');
-    var source = video.getElementsByTagName('source')[0];
-    var videoFile = event.target.getAttribute('data-video');
-    source.setAttribute('src', videoFile);
-    video.load();
-    video.play();
-  }
 
+
+
+
+
+
+
+
+
+
+  
 
   
   

@@ -42,7 +42,7 @@
     <nav id="navbar_top"
     class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
   >
-    <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+    <a href="/student/shome" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
       <h2 class="m-0"><span style="color: #06bbcc">Edu</span>Phoria</h2>
     </a>
 
@@ -260,9 +260,8 @@
                         <li><i class="fas fa-trophy"></i>Certificate of Completion</li>
                     </ul>
                     <div class="btn-wrap">
-                        <form action="/student/enroll" method="post">
-                            <input type="hidden" name="studentId" value="<%=student._id%>">
-                            <input type="hidden" name="courseId" value="<%=data._id%>">
+                        <form action="/payment/<%=data._id%>/<%=student._id%>" method="get">
+                            
                             <button type="submit" class="btn btn-theme btn-block">
                                 Enroll Now
                               </button>

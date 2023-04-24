@@ -109,8 +109,6 @@ exports.SearchCourse = (req, res) => {
     });
 };
 
-
-
 exports.getCheckoutPage = (req, res) => {
   res.render("checkout");
 };
