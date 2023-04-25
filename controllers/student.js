@@ -18,6 +18,16 @@ exports.getIndex = (req, res) => {
       console.log(err);
     });
 };
+exports.getAllCourses = (req, res) => {
+  Course.find({})
+    .populate("teacher")
+    .then((courses) => {
+      res.render("teacher/courses", { courses: courses });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 exports.getAboutpage = (req, res) => {
   res.render("about");

@@ -17,6 +17,7 @@ router.get("/about", studentController.getAboutpage);
 router.get("/help", studentController.getHelpPage);
 router.get("/contact", studentController.getContactPage);
 router.get("/student/about", studentController.getAboutpage);
+router.get("/student/courses", studentController.getAllCourses);
 router.get("/student/help", studentController.getHelpPage);
 router.get("/student/contact", studentController.getContactPage);
 router.get("/student/shome", isAuth, studentController.getHomepage);
