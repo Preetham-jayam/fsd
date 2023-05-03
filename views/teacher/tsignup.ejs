@@ -2,6 +2,13 @@
 <%-include("../partials/header.ejs") %>;
 
 <section class="">
+  <% if (messages.success) { %>
+    <div class="alert alert-success"><%= messages.success %></div>
+  <% } %>
+  
+  <% if (messages.error) { %>
+    <div class="alert alert-danger"><%= messages.error %></div>
+  <% } %>
     <form method="post" action="/tsignup" class="form-wrapper" id="frmRegister"  > 
     <div class="container">
       <div class="row d-flex justify-content-center align-items-center ">

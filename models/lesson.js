@@ -21,6 +21,7 @@ const lessonSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  
 });
 
 const Lesson = mongoose.model("Lesson", lessonSchema);

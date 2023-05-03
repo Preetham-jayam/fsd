@@ -11,20 +11,38 @@
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h2 class="text-center">Email Sending Form</h2>
-        <form method="POST" action="/admin/mail">
+        <form method="POST" action="/admin/mail" id="mailform">
           <div class="form-group">
             <label for="subject">Subject:</label>
-            <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter email subject" required>
+            <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter email subject" >
           </div>
           <div class="form-group">
             <label for="message">Message:</label>
-            <textarea class="form-control" id="message" name="message" placeholder="Enter email message" rows="5" required></textarea>
+            <textarea class="form-control" id="message" name="message" placeholder="Enter email message" rows="5"></textarea>
           </div>
           <button type="submit" class="btn btn-success">Send Email</button>
         </form>
       </div>
     </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+  $('#mailform').on('submit', function (e) {
+    e.preventDefault();
+    const subject=$('#subject').val();
+    const message=$('#message').val();
+    if(subject.length === 0 || message.length === 0 ){
+       Swal.fire({
+        icon: 'error',
+        text: 'Empty data.',
+      })
+      return;
+    }
+    
+     $('#mailform').off('submit').submit();
+  });
+</script>
 
 
 

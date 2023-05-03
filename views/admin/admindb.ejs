@@ -35,7 +35,7 @@
                   id="floatingInput"
                   placeholder="FullName"
                   value="<%=admin.FullName%>"
-                  name="FullName"
+                  name="FullName" readonly
                 />
                 <label for="floatingInput">FullName</label>
               </div>
@@ -46,7 +46,7 @@
                   id="floatingInput"
                   placeholder="Username"
                   value="<%=admin.phoneNo%>"
-                  name="Phno"
+                  name="Phno" readonly
                 />
                 <label for="floatingInput">phoneno</label>
               </div>
@@ -57,19 +57,12 @@
                   class="form-control"
                   id="floatingInput"
                   placeholder="Email"
-                  value="<%=admin.email%>"
+                  value="<%=admin.email%>" readonly
                 />
                 <label for="floatingInput">Email</label>
               </div>
               
-              <button
-                type="submit"
-                class="btn btn-outline-success"
-                formaction="/admin/profile/edit/<%=admin._id%>"
-              >
-                <i class="fa fa-check" aria-hidden="true"></i>
-                Save
-              </button>
+             
             </div>
           </div>
         </div>

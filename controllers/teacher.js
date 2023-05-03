@@ -104,6 +104,127 @@ exports.getSingleCourse = (req, res, next) => {
   });
 };
 
+
+
+exports.getCourseEdit = (req, res, next) => {
+  const course = req.params.id;
+  Course.findById(course)
+  .populate('teacher')
+  .then((course)=>{
+    res.render("teacher/course-edit", {
+      course: course,
+      teacher: course.teacher,
+    });
+  })
+ 
+};
+
+exports.postEditCourse = (req, res, next) => {
+  const id = req.params.id;
+  const newtitle = req.body.title;
+  const newname = req.body.nameCourse;
+  const description = req.body.Description;
+  const price = req.body.Price;
+  
+  Course.findById(id)
+    .then((course) => {
+      course.title = newtitle;
+      course.name = newname;
+      course.price = price;
+      course.description = description;
+     
+      return course.save();
+    })
+    .then((course) => {
+      console.log("Course Updated");
+      req.flash("success", "Course Updated Succesfully");
+      res.redirect(`/teacher/courseDetails/${course._id}`);
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getProfileEdit = (req, res) => {
+  Teacher.findById(req.session.user.teacher)
+    .then((result) => {
+      res.render("teacher/teacher-profile", {
+        user: req.session.user,
+        teacher: result,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.postProfileEdit = (req, res) => {
+  const id = req.session.user.teacher;
+  const name = req.body.FullName;
+  const Instname = req.body.Instname;
+  const email = req.body.email;
+  const userid = req.body.userId;
+  User.findById(userid)
+    .then((user) => {
+      user.email = email;
+      return user.save();
+    })
+    .catch((err) => console.log(err));
+
+  Teacher.findById(id)
+    .then((teacher) => {
+      teacher.FullName = name;
+      teacher.InstName = Instname;
+      return teacher.save();
+    })
+    .then((teacher) => {
+      console.log("Teacher Details Updated");
+      req.flash("success", "Teacher Profile Updated");
+      res.redirect("/teacher/profile");
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getPasswordEdit = (req, res) => {
+  Teacher.findById(req.session.user.teacher)
+    .then((result) => {
+      res.render("teacher/edit-password", {
+        user: req.session.user,
+        teacher: result,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.postPasswordedit = (req, res) => {
+  const currentPassword = req.body.CurrentPassword;
+  const newPassword = req.body.NewPassword;
+  const retypeNewPassword = req.body.RetypeNewPassword;
+  const userid = req.body.userId;
+  User.findById(userid)
+    .then((user) => {
+      bcrypt.compare(currentPassword, user.password, function (err, result) {
+        if (err) {
+          console.log(err);
+        }
+        if (!result) {
+          req.flash("error", "Current Password is incorrect");
+          console.log("Current password is incorrect");
+        }
+
+        return bcrypt.hash(newPassword, 12).then((hashespwd) => {
+          user.password = hashespwd;
+          user.save().then((err) => {
+            if (err) {
+              console.log(err);
+            }
+
+            console.log("Password updated successfully");
+          });
+          req.flash("success", "Password Updated");
+          res.redirect("/teacher/profile");
+        });
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
 exports.upload = (req, res, next) => {
   const id = req.params.cid;
   Teacher.findById(req.session.user.teacher).then((teacher) => {
@@ -256,125 +377,13 @@ exports.postUpload = (req, res) => {
   }
 };
 
-exports.getCourseEdit = (req, res, next) => {
-  const course = req.course;
-  res.render("teacher/course-edit", {
-    course: course,
-    teacher: course.teacher,
-  });
-};
-
-exports.postEditCourse = (req, res, next) => {
-  const id = req.params.cid;
-  const newtitle = req.body.title;
-  const newname = req.body.nameCourse;
-  const description = req.body.Description;
-  const price = req.body.Price;
-  const Image = req.file;
-  const imageUrl = Image.path;
-
-  Course.findById(id)
-    .then((course) => {
-      course.title = newtitle;
-      course.name = newname;
-      course.cost = price;
-      course.description = description;
-      course.Imageurl = imageUrl;
-      return course.save();
-    })
-    .then((course) => {
-      console.log("Course Updated");
-      req.flash("success", "Course Updated Succesfully");
-      res.redirect(`/teacher/courseDetails/${course._id}`);
-    })
-    .catch((err) => console.log(err));
-};
-
-exports.getProfileEdit = (req, res) => {
-  Teacher.findById(req.session.user.teacher)
-    .then((result) => {
-      res.render("teacher/teacher-profile", {
-        user: req.session.user,
-        teacher: result,
-      });
-    })
-    .catch((err) => console.log(err));
-};
-
-exports.postProfileEdit = (req, res) => {
-  const id = req.session.user.teacher;
-  const name = req.body.FullName;
-  const Instname = req.body.Instname;
-  const email = req.body.email;
-  const userid = req.body.userId;
-  User.findById(userid)
-    .then((user) => {
-      user.email = email;
-      return user.save();
-    })
-    .catch((err) => console.log(err));
-
-  Teacher.findById(id)
-    .then((teacher) => {
-      teacher.FullName = name;
-      teacher.InstName = Instname;
-      return teacher.save();
-    })
-    .then((teacher) => {
-      console.log("Teacher Details Updated");
-      req.flash("success", "Teacher Profile Updated");
-      res.redirect("/teacher/profile");
-    })
-    .catch((err) => console.log(err));
-};
-
-exports.getPasswordEdit = (req, res) => {
-  Teacher.findById(req.session.user.teacher)
-    .then((result) => {
-      res.render("teacher/edit-password", {
-        user: req.session.user,
-        teacher: result,
-      });
-    })
-    .catch((err) => console.log(err));
-};
-
-exports.postPasswordedit = (req, res) => {
-  const currentPassword = req.body.CurrentPassword;
-  const newPassword = req.body.NewPassword;
-  const retypeNewPassword = req.body.RetypeNewPassword;
-  const userid = req.body.userId;
-  User.findById(userid)
-    .then((user) => {
-      bcrypt.compare(currentPassword, user.password, function (err, result) {
-        if (err) {
-          console.log(err);
-        }
-        if (!result) {
-          req.flash("error", "Current Password is incorrect");
-          console.log("Current password is incorrect");
-        }
-
-        return bcrypt.hash(newPassword, 12).then((hashespwd) => {
-          user.password = hashespwd;
-          user.save().then((err) => {
-            if (err) {
-              console.log(err);
-            }
-
-            console.log("Password updated successfully");
-          });
-          req.flash("success", "Password Updated");
-          res.redirect("/teacher/profile");
-        });
-      });
-    })
-    .catch((err) => console.log(err));
-};
-
 exports.getQuizPage = (req, res, next) => {
   const course = req.course;
-  res.render("teacher/teacher-quiz", { course: course });
+  Teacher.findById(req.session.user.teacher)
+  .then((teacher)=>{
+    res.render("teacher/teacher-quiz", { course: course ,teacher:teacher});
+  })
+  
 };
 
 exports.PostaddQuestion = (req, res) => {

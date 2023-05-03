@@ -7,8 +7,7 @@ const MongoDbStore = require("connect-mongodb-session")(session);
 const flash=require('connect-flash');
 const User = require("./models/user");
 const bcryptjs=require('bcryptjs');
-const MONGODB_URI =
-  "mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/Learning";
+const MONGODB_URI = "mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/Learning";
 
 const app = express();
 const store = new MongoDbStore({
@@ -80,6 +79,7 @@ app.put('/lessons/:id', (req, res) => {
      
     });
 });
+
 
 
 mongoose

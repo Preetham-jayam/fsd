@@ -16,7 +16,6 @@ router.get("/block/:id", isAuth, adminController.BlockUser);
 router.get("/delete/:uid", isAuth, adminController.DeleteUser);
 router.get("/course/delete/:id", isAuth, adminController.deleteCourse);
 router.post("/search/users", isAuth, adminController.searchAdmin);
-router.post("/profile/edit/:id", isAuth, adminController.postProfileEdit);
 router.get("/mail", isAuth, adminController.sendmail);
 router.post("/mail", isAuth, adminController.postsendmail);
 

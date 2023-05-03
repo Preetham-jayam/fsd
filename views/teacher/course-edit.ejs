@@ -77,7 +77,7 @@
         <div class="alert alert-danger"><%= messages.error %></div>
       <% } %>
 
-      <form method="POST" action="/teacher/course/edit/<%=course._id%>"  id="frmCourse" enctype="multipart/form-data" >
+      <form method="POST" action="/teacher/course/edit/<%=course._id%>"  id="frmCourse">
         <div class="card">
           <h3 class="card-header">Edit Course</h3>
           <div class="card-body">
@@ -137,7 +137,7 @@
     e.preventDefault();
     const nameCourse=$('#txtNameCourse').val();
     const title=$('#txtTitle').val();
-    let SaleCost=$('#txtSaleCost').val();
+    let SaleCost=$('#txtprice').val();
     if(nameCourse.length === 0 || title.length === 0 ){
        Swal.fire({
         icon: 'error',
@@ -145,14 +145,8 @@
       })
       return;
     }
-    if(isNaN(SaleCost)){
-      Swal.fire({
-      icon: 'error',
-      text: 'not a number at SaleCost data.',
-    })
-    return;
-    }
-      if(SaleCost<=0 || SaleCost >999){
+    
+      if(SaleCost<=0 || SaleCost >10000){
        Swal.fire({
         icon: 'error',
         text: 'the amount is too large. Please re-write.',

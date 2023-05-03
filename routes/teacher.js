@@ -4,20 +4,31 @@ const teacherController = require("../controllers/teacher");
 const courseController = require("../controllers/course");
 const isAuth = require("../middleware/isAuth");
 const multer = require("multer");
-const fileStorage = multer.diskStorage({
+
+const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images");
+    cb(null, "uploads/images");
   },
   filename: (req, file, cb) => {
-    const timestamp = Date.now();
-    const randomString = Math.random().toString(36).substring(2, 15);
-    const extension = path.extname(file.originalname);
-    cb(null, `${file.fieldname}-${timestamp}-${randomString}${extension}`);
-  },
+    const fileName = `${file.originalname}-${Date.now()}`;
+    cb(null, fileName);
+  }
 });
 
-const imageUpload = multer({ dest: "uploads/images" });
-const videoUpload = multer({ dest: "uploads/videos" });
+const imageUpload = multer({ storage: imageStorage });
+
+const videoStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/videos");
+  },
+  filename: (req, file, cb) => {
+    const fileName = `${file.originalname}-${Date.now()}`;
+    cb(null, fileName);
+  }
+});
+
+const videoUpload = multer({ storage: videoStorage });
+
 
 router.param("cid", courseController.getcoursebyId);
 router.get("/home", isAuth, teacherController.getHomepage);
@@ -36,8 +47,8 @@ router.post(
   isAuth,
   teacherController.postUpload
 );
-router.get("/course/edit/:cid", isAuth, teacherController.getCourseEdit);
-router.post("/course/edit/:cid", isAuth, teacherController.postEditCourse);
+router.get("/course/edit/:id", isAuth, teacherController.getCourseEdit);
+router.post("/course/edit/:id", isAuth, teacherController.postEditCourse);
 router.get("/quiz/:cid", isAuth, teacherController.getQuizPage);
 router.post("/quiz/:cid", isAuth, teacherController.PostaddQuestion);
 router.get("/profile", isAuth, teacherController.getProfileEdit);

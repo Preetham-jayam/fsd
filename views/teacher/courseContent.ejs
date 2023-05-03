@@ -222,8 +222,15 @@
                   <input
                     type="hidden"
                     value="<%=student._id%>"
-                    name="student"
+                    name="studentId"
+                    id="studentId"
                   />
+                  <input
+                  type="hidden"
+                  value="<%=student._id%>"
+                  name="student"
+                 
+                />
                   <select
                     class="form-control"
                     id="rating"
@@ -325,7 +332,7 @@
                           <li>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" id="lesson-<%=lesson._id%>-checkbox" 
-                               <% if (lesson.checked==1) {
+                               <% if (lesson.checked == 1) {
                                  %> checked 
                                  <% } %> >
                               <label class="form-check-label" for="lesson-<%=lesson._id%>-checkbox">

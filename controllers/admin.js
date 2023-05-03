@@ -23,30 +23,7 @@ exports.getDashboard = (req, res) => {
   });
 };
 
-exports.postProfileEdit = (req, res) => {
-  const name = req.body.FullName;
-  const phno = req.body.Phno;
-  const email = req.body.email;
-  const pwd = req.body.password;
-  const id = req.params.id;
 
-  Admin.findOne({ role: 2 })
-    .then((admin) => {
-      return bcrypt.hash(pwd, 12).then((hashespwd) => {
-        admin.FullName = name;
-        admin.phoneNo = phno;
-        admin.email = email;
-        admin.password = hashespwd;
-        return admin.save();
-      });
-    })
-    .then(() => {
-      req.flash("success", "Profile Edited Succesfully");
-
-      res.redirect("/admin/admindb");
-    })
-    .catch((err) => console.log(err));
-};
 
 exports.getAllStudents = (req, res) => {
   User.find({ role: 0 })
@@ -163,16 +140,32 @@ exports.BlockUser = (req, res) => {
     })
     .then((updatedUser) => {
       if (updatedUser.flag === 1) {
-        req.flash("success", "User Blocked Succesfully");
+       
 
         console.log("User blocked successfully.");
       } else {
-        req.flash("success", "User UnBlocked Succesfully");
+        
 
         console.log("User unblocked successfully.");
       }
       if (updatedUser.role == 0) {
-        res.redirect("/admin/all/students");
+        if(updatedUser.flag==0){
+          req.flash("success", "User unblocked Succesfully");
+          req.session.save(()=>{
+            res.redirect("/admin/all/students");
+          })
+          return;
+          
+        }
+        else{
+          req.flash("success", "User Blocked Succesfully");
+          req.session.save(()=>{
+
+            res.redirect("/admin/all/students");
+          })
+          return;
+        }
+        
       } else {
         res.redirect("/admin/all/teachers");
       }
@@ -195,7 +188,7 @@ exports.DeleteUser = (req, res) => {
           }
           console.log("User deleted successfully");
           req.flash("success", "Student Deleted Succesfully");
-          res.redirect("/admindb/all/students");
+          res.redirect("/admin/all/students");
         })
         .catch((err) => {
           console.log(err);
@@ -223,38 +216,23 @@ exports.DeleteUser = (req, res) => {
 exports.deleteCourse = (req, res) => {
   const id = req.params.id;
   courseModel.findByIdAndDelete(id).then(() => {
+    studentModel.updateMany(
+      { courses: id }, 
+      { $pull: { courses: id } }
+    )
+    .then(() => {
+      console.log(`Course id ${id} deleted from all students`);
+    })
+    .catch(err => {
+      console.error(`Error deleting course id ${id} from students: ${err}`);
+    });
+    
     console.log("Course deleted");
     req.flash("success", "Course Deleted Succesfully");
     res.redirect("/admin/all/courses");
   });
 };
 
-exports.searchAdmin = (req, res) => {
-  const search = req.body;
-  const regex = new RegExp(search.searchValue, "i");
-  User.find({ email: { $regex: regex } })
-    .populate({
-      path: "student",
-      populate: {
-        path: "courses",
-        model: "Course",
-      },
-    })
-    .populate({
-      path: "teacher",
-      populate: {
-        path: "courses",
-        model: "Course",
-      },
-    })
-    .then((users) => {
-      console.log(users);
-      return res.render("admin/adminresults", {
-        title: "Search",
-        users: users,
-      });
-    });
-};
 
 exports.getSingleCourse = (req, res, next) => {
   const id = req.params.id;
@@ -322,5 +300,33 @@ exports.postsendmail = (req, res, next) => {
       req.flash("error", "Error occurred while finding users");
       console.log(`Error occurred while finding users: ${error}`);
       res.redirect("/admin/mail");
+    });
+};
+
+
+exports.searchAdmin = (req, res) => {
+  const search = req.body;
+  const regex = new RegExp(search.searchValue, "i");
+  User.find({ email: { $regex: regex } })
+    .populate({
+      path: "student",
+      populate: {
+        path: "courses",
+        model: "Course",
+      },
+    })
+    .populate({
+      path: "teacher",
+      populate: {
+        path: "courses",
+        model: "Course",
+      },
+    })
+    .then((users) => {
+      console.log(users);
+      return res.render("admin/adminresults", {
+        title: "Search",
+        users: users,
+      });
     });
 };

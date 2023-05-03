@@ -8,6 +8,7 @@ const review = require("../models/review");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const ObjectId = new mongoose.Types.ObjectId();
+
 exports.getIndex = (req, res) => {
   Course.find({})
     .populate("teacher")
@@ -30,7 +31,10 @@ exports.getAllCourses = (req, res) => {
 };
 
 exports.getAboutpage = (req, res) => {
-  res.render("about");
+  
+    res.render("about");
+
+ 
 };
 
 exports.getContactPage = (req, res) => {
@@ -70,11 +74,16 @@ exports.getHomepage = (req, res, next) => {
 exports.getPaymentpage = (req, res) => {
   const id = req.params.id;
   const sid = req.params.sid;
-  Course.findById(id)
+ Student.findById(sid)
+ .then((student)=>{
+   Course.findById(id)
     .populate("teacher")
     .then((course) => {
-      res.render("payment", { course: course, sid: sid });
+      res.render("payment", {student:student , course : course, sid: sid });
     });
+
+ })
+ 
 };
 
 exports.enrolledcourse = (req, res) => {
@@ -367,7 +376,7 @@ exports.postsubmitQuiz = (req, res) => {
 exports.postAddreview = (req, res) => {
   const { rating, comment, student } = req.body;
   const course = req.params.id;
-
+console.log(student);
   const reviews = new review({ course, student, rating, comment });
 
   reviews
@@ -377,6 +386,7 @@ exports.postAddreview = (req, res) => {
       res.redirect(`/student/courseContent/${course}`);
     })
     .catch((err) => {
+      console.log(err);
       req.flash("error", "Unable to add review");
       res.redirect(`/student/courseContent/${course}`);
     });

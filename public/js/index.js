@@ -1,7 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     (function ($) {
-      // Header carousel
       $(".header-carousel").owlCarousel({
         autoplay: false,
         smartSpeed: 1500,
@@ -67,12 +66,13 @@ faqs.forEach(faq=>{
 });
 
 
-function playVideo(event, lessonId) {
+function playVideo(event, lessonId,studentId) {
   console.log(lessonId);
   event.preventDefault();
   var videoUrl = event.target.getAttribute('data-video');
   var videoPlayer = document.getElementById('video-player');
   var checkbox = document.getElementById('lesson-' + lessonId + '-checkbox');
+  
 
   checkbox.checked = false; 
 
@@ -81,7 +81,7 @@ function playVideo(event, lessonId) {
 
   videoPlayer.addEventListener('ended', function() {
     checkbox.checked=true;
-    updateLessonChecked(lessonId);
+    updateLessonChecked(lessonId,studentId);
   });
 }
 
@@ -98,6 +98,8 @@ function updateLessonChecked(lessonId) {
   .catch(error => console.error(error));
 
 }
+
+
 
 
 //Course Preview video function

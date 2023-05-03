@@ -6,6 +6,7 @@ const Admin = require("../models/admin");
 exports.getLogin = (req, res) => {
   res.render("login");
 };
+
 exports.postLogin = (req, res) => {
   const mail = req.body.email;
   const password = req.body.password;
@@ -30,7 +31,8 @@ exports.postLogin = (req, res) => {
         });
     });
   } else {
-    User.findOne({ email: mail }).then((user) => {
+    User.findOne({ email: mail })
+    .then((user) => {
       if (!user) {
         req.flash("error", "User not Found");
         return res.redirect("/login");
@@ -41,9 +43,11 @@ exports.postLogin = (req, res) => {
           if (doMatch) {
             if (user.flag === 1) {
               req.flash("error", "You are blocked by admin");
-              return res.status(403).json({
-                error: "You are blocked by the admin",
-              });
+                req.session.save(() => {
+                  res.redirect('/login');
+                });
+                return;
+            
             }
             req.session.isLoggedIn = true;
             req.session.user = user;
@@ -86,9 +90,19 @@ exports.postSignUp = (req, res, next) => {
   const user = new User();
 
   User.findOne({ email: email })
-    .then((userDoc) => {
-      if (userDoc) {
-        res.redirect("/login");
+    .then((user) => {
+      if (user) {
+        req.flash("error", "User with this email already exists please enter another");
+        req.session.save(() => {
+          if(user.role==0){
+            res.redirect('/signup');
+          }
+          else{
+            res.redirect('/tsignup');
+          }
+         
+        });
+        return;
       }
       return bcrypt
         .hash(pwd, 12)
@@ -148,3 +162,4 @@ exports.Logout = (req, res) => {
     res.redirect("/");
   });
 };
+

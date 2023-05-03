@@ -35,27 +35,7 @@ exports.getAllCourses = (req, res) => {
       console.log(err);
     });
 };
-exports.getCourses = (req, res, next) => {
-  const sort = req.query.sort;
-  let promise;
-  if (sort === "price:asc") {
-    promise = Course.find().populate("teacher").sort({ price: 1 }).exec();
-  } else if (sort === "price:desc") {
-    promise = Course.find().populate("teacher").sort({ price: -1 }).exec();
-  } else if (sort == "title:asc") {
-    promise = Course.find().populate("teacher").sort({ title: "asc" }).exec();
-  } else {
-    promise = Course.find().populate("teacher").exec();
-  }
 
-  promise
-    .then((courses) => {
-      res.render("teacher/courses", { courses: courses });
-    })
-    .catch((error) => {
-      next(error);
-    });
-};
 exports.getSingleCourse = (req, res) => {
   const id = req.params.cid;
   Course.findById(id)
@@ -96,7 +76,6 @@ exports.SearchCourse = (req, res) => {
   Course.find({
     $or: [
       { title: { $regex: exp } },
-      { name: { $regex: exp } },
       { price: !isNaN(price) ? price : 0 },
     ],
   })
@@ -109,6 +88,26 @@ exports.SearchCourse = (req, res) => {
     });
 };
 
-exports.getCheckoutPage = (req, res) => {
-  res.render("checkout");
+exports.getCourses = (req, res, next) => {
+  const sort = req.query.sort;
+  let courses;
+  if (sort === "price:asc") {
+    courses = Course.find().populate("teacher").sort({ price: 1 }).exec();
+  } else if (sort === "price:desc") {
+    courses = Course.find().populate("teacher").sort({ price: -1 }).exec();
+  } else if (sort == "title:asc") {
+    courses = Course.find().populate("teacher").sort({ title: "asc" }).exec();
+  } else {
+    courses = Course.find().populate("teacher").exec();
+  }
+
+  courses
+    .then((courses) => {
+      res.render("teacher/courses", { courses: courses });
+    })
+    .catch((error) => {
+      next(error);
+    });
 };
+
+
