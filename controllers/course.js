@@ -88,26 +88,50 @@ exports.SearchCourse = (req, res) => {
     });
 };
 
-exports.getCourses = (req, res, next) => {
-  const sort = req.query.sort;
-  let courses;
-  if (sort === "price:asc") {
-    courses = Course.find().populate("teacher").sort({ price: 1 }).exec();
-  } else if (sort === "price:desc") {
-    courses = Course.find().populate("teacher").sort({ price: -1 }).exec();
-  } else if (sort == "title:asc") {
-    courses = Course.find().populate("teacher").sort({ title: "asc" }).exec();
-  } else {
-    courses = Course.find().populate("teacher").exec();
-  }
+// exports.getCourses = (req, res, next) => {
+//   const sort = req.query.sort;
+//   let courses;
+//   if (sort === "price:asc") {
+//     courses = Course.find().populate("teacher").sort({ price: 1 }).exec();
+//   } else if (sort === "price:desc") {
+//     courses = Course.find().populate("teacher").sort({ price: -1 }).exec();
+//   } else if (sort == "title:asc") {
+//     courses = Course.find().populate("teacher").sort({ title: "asc" }).exec();
+//   } else {
+//     courses = Course.find().populate("teacher").exec();
+//   }
 
-  courses
-    .then((courses) => {
-      res.render("teacher/courses", { courses: courses });
-    })
-    .catch((error) => {
-      next(error);
-    });
+//   courses
+//     .then((courses) => {
+//       res.render("teacher/courses", { courses: courses });
+//     })
+//     .catch((error) => {
+//       next(error);
+//     });
+// };
+exports.getCourses = async (req, res, next) => {
+  const sort = req.query.sort;
+  try {
+    let courses;
+    if (sort === "price:asc") {
+      courses = await Course.find().populate("teacher").sort({ price: 1 }).exec();
+    } else if (sort === "price:desc") {
+      courses = await Course.find().populate("teacher").sort({ price: -1 }).exec();
+    } else if (sort == "title:asc") {
+      courses = await Course.find().populate("teacher").sort({ title: "asc" }).exec();
+    } else {
+      courses = await Course.find().populate("teacher").exec();
+    }
+
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+      res.json({ courses });
+    } else {
+
+      res.render("teacher/courses", { courses });
+    }
+  } catch (error) {
+    next(error);
+  }
 };
 
 

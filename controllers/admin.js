@@ -23,8 +23,6 @@ exports.getDashboard = (req, res) => {
   });
 };
 
-
-
 exports.getAllStudents = (req, res) => {
   User.find({ role: 0 })
     .populate({
@@ -128,6 +126,8 @@ exports.getAllCourses = (req, res) => {
     });
 };
 
+
+
 exports.BlockUser = (req, res) => {
   const userId = req.params.id;
   User.findById(userId)
@@ -140,32 +140,24 @@ exports.BlockUser = (req, res) => {
     })
     .then((updatedUser) => {
       if (updatedUser.flag === 1) {
-       
-
         console.log("User blocked successfully.");
       } else {
-        
-
         console.log("User unblocked successfully.");
       }
       if (updatedUser.role == 0) {
-        if(updatedUser.flag==0){
+        if (updatedUser.flag == 0) {
           req.flash("success", "User unblocked Succesfully");
-          req.session.save(()=>{
+          req.session.save(() => {
             res.redirect("/admin/all/students");
-          })
+          });
           return;
-          
-        }
-        else{
+        } else {
           req.flash("success", "User Blocked Succesfully");
-          req.session.save(()=>{
-
+          req.session.save(() => {
             res.redirect("/admin/all/students");
-          })
+          });
           return;
         }
-        
       } else {
         res.redirect("/admin/all/teachers");
       }
@@ -187,8 +179,11 @@ exports.DeleteUser = (req, res) => {
             console.log("User Not Found");
           }
           console.log("User deleted successfully");
-          req.flash("success", "Student Deleted Succesfully");
-          res.redirect("/admin/all/students");
+
+          res
+            .status(200)
+            .json({ success: true, msg: "User deleted succesfully" });
+          // res.redirect("/admin/all/students");
         })
         .catch((err) => {
           console.log(err);
@@ -202,8 +197,10 @@ exports.DeleteUser = (req, res) => {
             console.log("User Not Found");
           }
           console.log("User Teacher deleted successfully");
-          req.flash("success", "Teacher Deleted Succesfully");
-          res.redirect("/admin/all/teachers");
+          res
+            .status(200)
+            .json({ success: true, msg: "User deleted succesfully" });
+          // res.redirect("/admin/all/teachers");
         })
         .catch((err) => {
           console.log(err);
@@ -216,23 +213,20 @@ exports.DeleteUser = (req, res) => {
 exports.deleteCourse = (req, res) => {
   const id = req.params.id;
   courseModel.findByIdAndDelete(id).then(() => {
-    studentModel.updateMany(
-      { courses: id }, 
-      { $pull: { courses: id } }
-    )
-    .then(() => {
-      console.log(`Course id ${id} deleted from all students`);
-    })
-    .catch(err => {
-      console.error(`Error deleting course id ${id} from students: ${err}`);
-    });
-    
+    studentModel
+      .updateMany({ courses: id }, { $pull: { courses: id } })
+      .then(() => {
+        console.log(`Course id ${id} deleted from all students`);
+      })
+      .catch((err) => {
+        console.error(`Error deleting course id ${id} from students: ${err}`);
+      });
+
     console.log("Course deleted");
     req.flash("success", "Course Deleted Succesfully");
     res.redirect("/admin/all/courses");
   });
 };
-
 
 exports.getSingleCourse = (req, res, next) => {
   const id = req.params.id;
@@ -302,7 +296,6 @@ exports.postsendmail = (req, res, next) => {
       res.redirect("/admin/mail");
     });
 };
-
 
 exports.searchAdmin = (req, res) => {
   const search = req.body;

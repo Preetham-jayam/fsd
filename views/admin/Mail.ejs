@@ -27,22 +27,31 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script>
-  $('#mailform').on('submit', function (e) {
-    e.preventDefault();
-    const subject=$('#subject').val();
-    const message=$('#message').val();
-    if(subject.length === 0 || message.length === 0 ){
-       Swal.fire({
-        icon: 'error',
-        text: 'Empty data.',
-      })
-      return;
-    }
-    
-     $('#mailform').off('submit').submit();
-  });
-</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const mailform = document.getElementById('mailform');
+      const subject = document.getElementById('subject');
+      const message = document.getElementById('message');
+  
+      mailform.addEventListener('submit', function(e) {
+        e.preventDefault();
+  
+        const subjectValue = subject.value;
+        const messageValue = message.value;
+  
+        if (subjectValue.length === 0 || messageValue.length === 0) {
+          Swal.fire({
+            icon: 'error',
+            text: 'Empty data.',
+          });
+          return;
+        }
+  
+        mailform.submit();
+      });
+    });
+  </script>
+  
 
 
 

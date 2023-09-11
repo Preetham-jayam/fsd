@@ -64,6 +64,9 @@
       Not yet a member? <a href="/signup">Sign up now</a>
     </div>
   </div>
+  <div class="loader-container">
+    <div class="book-loader"></div>
+</div>
   <script>
     function togglePasswordVisibility(passwordId) {
       const passwordInput = document.getElementById(passwordId);
@@ -82,25 +85,31 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script>
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    $('#frmRegister').on('submit',function(e){
-          e.preventDefault();
-          const email=$('#email').val();
-          if(email.length==0){
-            Swal.fire({
-              icon:'error',
-              text:'Invalid email data',
-            })
-              return;
-          }
-          const password = $('#password').val();
-            if (password.length == 0) {
-              Swal.fire({
-                icon: 'error',
-                text: 'Invalid password data.',
-              })
-              return;
-            }
-          })
+    const frmRegister = document.getElementById('frmRegister');
+  
+    frmRegister.addEventListener('submit', function(e) {
+      e.preventDefault();
+  
+      const email = document.getElementById('email').value;
+      if (email.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Invalid email data',
+        });
+        return;
+      }
+  
+      const password = document.getElementById('password').value;
+      if (password.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Invalid password data',
+        });
+        return;
+      }
+      frmRegister.submit();
+    });
   </script>
+  
 
   <%-include("partials/footer.ejs") %>

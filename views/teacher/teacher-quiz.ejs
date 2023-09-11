@@ -147,7 +147,7 @@
 <script src="/js/bootnavbar.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script>
+<!-- <script>
   $('#frmCourse').on('submit', function (e) {
     e.preventDefault();
     const question=$('#Question').val();
@@ -170,7 +170,43 @@
      }
      $('#frmCourse').off('submit').submit();
   });
+</script> -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const frmCourse = document.getElementById('frmCourse');
+    const question = document.getElementById('Question');
+    const qnoption = document.getElementById('qnoption');
+    const marks = document.getElementById('txtSaleCost');
+
+    frmCourse.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const questionValue = question.value;
+      const qnoptionValue = qnoption.value;
+      const marksValue = marks.value;
+
+      if (questionValue.length === 0 || qnoptionValue.length === 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Empty data.',
+        });
+        return;
+      }
+
+      if (marksValue <= 0 || marksValue > 100) {
+        Swal.fire({
+          icon: 'error',
+          text: 'The marks number is too large. Please re-write.',
+        });
+        return;
+      }
+
+      frmCourse.submit();
+    });
+  });
 </script>
+
 
 
 </html>

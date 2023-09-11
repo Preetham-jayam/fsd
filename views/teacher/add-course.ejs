@@ -132,52 +132,49 @@
 <script src="/js/bootnavbar.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://cdn.tiny.cloud/1/wafynfll6yk0et81pwlvcwdx6r76d4pl4gy3397p9126dmzm/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<!-- <script>
-  tinymce.init({
-    selector: '#txtDescription',
-    height: 300,
-    menubar: false,
-    toolbar: [
-    'undo redo | fontselect fontsizeselect | bold italic underline strikethrough | numlist bullist alignleft aligncenter alignright | forecolor  backcolor | table link image media'
-    ],
-    fontsize_formats: '10pt 12pt 14pt 16pt 18pt 24pt 36pt',
-    elementpath: false,
-    icons: 'material',
-    placeholder: 'write description here',
-    toolbar_mode:'scrolling'
-  });
-</script> -->
+
 
 <script>
-  $('#frmCourse').on('submit', function (e) {
-    e.preventDefault();
-    const nameCourse=$('#txtNameCourse').val();
-    const title=$('#txtTitle').val();
-    let Price=$('#txtPrice').val();
-    if(nameCourse.length === 0 || title.length === 0 || Price.length === 0){
-       Swal.fire({
-        icon: 'error',
-        text: 'Empty data.',
-     
-       })
-      return;
-    }
-    if(isNaN(Price)){
-      Swal.fire({
-      icon: 'error',
-      text: 'not a number at Price data.',
-    })
-    return;
-    }
-      if(Price<=0 || Price >9999){
-       Swal.fire({
-        icon: 'error',
-        text: 'the amount is too large. Please re-write.',
-      })
-      return;
-     }
-     $('#frmCourse').off('submit').submit();
+  document.addEventListener('DOMContentLoaded', function() {
+    const frmCourse = document.getElementById('frmCourse');
+    const nameCourse = document.getElementById('txtNameCourse');
+    const title = document.getElementById('txtTitle');
+    const Price = document.getElementById('txtPrice');
+
+    frmCourse.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nameCourseValue = nameCourse.value;
+      const titleValue = title.value;
+      const PriceValue = Price.value;
+
+      if (nameCourseValue.length === 0 || titleValue.length === 0 || PriceValue.length === 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Empty data.',
+        });
+        return;
+      }
+
+      if (isNaN(PriceValue)) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Not a number at Price data.',
+        });
+        return;
+      }
+
+      if (PriceValue <= 0 || PriceValue > 9999) {
+        Swal.fire({
+          icon: 'error',
+          text: 'The amount is too large. Please re-write.',
+        });
+        return;
+      }
+
+      frmCourse.submit();
+    });
   });
-  </script>
+</script>
+
 </html>

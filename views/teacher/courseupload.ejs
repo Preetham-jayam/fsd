@@ -160,92 +160,129 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
 <script>
-  $(document).ready(function() {
-    $("#fuVideo").fileinput({
-        maxFileCount: 10,
-        allowedFileTypes: ["mp4", "mov", "avi"]
+  document.addEventListener('DOMContentLoaded', function() {
+    const fuVideo = document.getElementById('fuVideo');
+
+    fuVideo.addEventListener('change', function() {
+      const files = fuVideo.files;
+      const allowedFileTypes = ["mp4", "mov", "avi"];
+      const maxFileCount = 10;
+      if (files.length > maxFileCount) {
+        alert('You can only select up to ' + maxFileCount + ' files.');
+        fuVideo.value = '';
+        return;
+      }
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileNameParts = file.name.split('.');
+        const fileExtension = fileNameParts[fileNameParts.length - 1].toLowerCase();
+        if (allowedFileTypes.indexOf(fileExtension) === -1) {
+          alert('File type not allowed. Please choose a valid file type (' + allowedFileTypes.join(', ') + ').');
+          fuVideo.value = '';
+          return;
+        }
+      }
     });
-});
-
-
+  });
 </script>
 
+
 <script>
-$('#frmCourse').on('submit',function(e){
-  e.preventDefault();
-  if($('#txtChapter').val()== 'new'){
-    if($('#txtNameChapter').val()==''){
-      Swal.fire({
-        icon: 'error',
-        text: 'Empty name of new Chapter.',
-      })
-      return;
-    }
-    if($('#txtNameLesson').val()==''){
-      Swal.fire({
-        icon: 'error',
-        text: 'Empty name of new Lesson.',
-      })
-      return;
-    }
-  }else{
-    if($('#txtLesson').val() == 'new' && $('#txtNameLesson').val()==''){
+  document.addEventListener('DOMContentLoaded', function() {
+    const frmCourse = document.getElementById('frmCourse');
+    const txtChapter = document.getElementById('txtChapter');
+    const txtNameChapter = document.getElementById('txtNameChapter');
+    const txtLesson = document.getElementById('txtLesson');
+    const txtNameLesson = document.getElementById('txtNameLesson');
+
+    frmCourse.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const selectedChapter = txtChapter.value;
+      const selectedLesson = txtLesson.value;
+
+      if (selectedChapter === 'new') {
+        if (txtNameChapter.value === '') {
+          Swal.fire({
+            icon: 'error',
+            text: 'Empty name of new Chapter.',
+          });
+          return;
+        }
+        if (txtNameLesson.value === '') {
+          Swal.fire({
+            icon: 'error',
+            text: 'Empty name of new Lesson.',
+          });
+          return;
+        }
+      } else if (selectedLesson === 'new' && txtNameLesson.value === '') {
         Swal.fire({
           icon: 'error',
           text: 'Empty name of new Lesson.',
         });
         return;
       }
-  };
-  $('#frmCourse').off('submit').submit();
-});
-  $('#txtChapter').on('change', function() {
-    let selected = $(this).val();
-    let url;
-    $("#txtLesson option").each(function(){
-        let element =  $(this) ;
-        if (element.data("tag") != selected && element.data("tag") !="new"){
-            element.removeClass('visible');
-            element.addClass('hidden');
-            element.hide() ;
-        }else{
-            element.removeClass('hidden');
-            element.addClass('visible');
-            element.show();
-        }
+
+      frmCourse.submit();
     });
-  if(selected=="new"){
-      $('#txtNameChapter').removeClass('hidden');
-      $('#txtNameChapter').addClass('visible');
-      $('#txtNameChapter').show();
-      $('#txtNameLesson').removeClass('hidden');
-      $('#txtNameLesson').addClass('visible');
-      $('#txtNameLesson').show();
-      
-      $('frmCourse').attr('action',url);
-    }else{
-      $('#txtNameChapter').removeClass('visible');
-      $('#txtNameChapter').addClass('hidden');
-      $('#txtNameChapter').hide();
-    };
-    $('#frmCourse').attr('action',)
-    let txtLesson = $('#txtLesson',);
-    txtLesson.prop('selectedIndex',txtLesson.find("option.visible:eq(0)").index());
-}).triggerHandler('change');
-$('#txtLesson').on('change', function() {
-      let selected = $(this).val();
-  if(selected=="new"){
-        $('#txtNameLesson').removeClass('hidden');
-        $('#txtNameLesson').addClass('visible');
-        $('#txtNameLesson').show();
-      }else{
-        $('#txtNameLesson').removeClass('visible');
-        $('#txtNameLesson').addClass('hidden');
-        $('#txtNameLesson').hide();
-    }
-}).triggerHandler('change');
 
+    txtChapter.addEventListener('change', function() {
+      const selected = txtChapter.value;
+      let url = ''; // Set your URL here
 
+      document.querySelectorAll('#txtLesson option').forEach(function(element) {
+        if (element.getAttribute('data-tag') !== selected && element.getAttribute('data-tag') !== 'new') {
+          element.classList.add('hidden');
+          element.classList.remove('visible');
+        } else {
+          element.classList.add('visible');
+          element.classList.remove('hidden');
+        }
+      });
+
+      if (selected === 'new') {
+        txtNameChapter.classList.add('visible');
+        txtNameChapter.classList.remove('hidden');
+        txtNameChapter.style.display = 'block';
+        txtNameLesson.classList.add('visible');
+        txtNameLesson.classList.remove('hidden');
+        txtNameLesson.style.display = 'block';
+        frmCourse.action = url;
+      } else {
+        txtNameChapter.classList.remove('visible');
+        txtNameChapter.classList.add('hidden');
+        txtNameChapter.style.display = 'none';
+      }
+
+      const txtLessonOptions = txtLesson.options;
+      let firstVisibleOptionIndex = -1;
+
+      for (let i = 0; i < txtLessonOptions.length; i++) {
+        if (txtLessonOptions[i].classList.contains('visible')) {
+          firstVisibleOptionIndex = i;
+          break;
+        }
+      }
+
+      txtLesson.selectedIndex = firstVisibleOptionIndex;
+    });
+
+    txtChapter.dispatchEvent(new Event('change'));
+
+    txtLesson.addEventListener('change', function() {
+      const selected = txtLesson.value;
+
+      if (selected === 'new') {
+        txtNameLesson.classList.add('visible');
+        txtNameLesson.classList.remove('hidden');
+        txtNameLesson.style.display = 'block';
+      } else {
+        txtNameLesson.classList.remove('visible');
+        txtNameLesson.classList.add('hidden');
+        txtNameLesson.style.display = 'none';
+      }
+    });
+  });
 </script>
 
 

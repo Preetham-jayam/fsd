@@ -87,14 +87,15 @@ exports.postSignUp = (req, res, next) => {
   const role = data.role;
   const email = data.email;
   const pwd = data.pwd;
-  const user = new User();
+  const user=new User();
+  
 
   User.findOne({ email: email })
-    .then((user) => {
-      if (user) {
+    .then((Existinguser) => {
+      if (Existinguser) {
         req.flash("error", "User with this email already exists please enter another");
         req.session.save(() => {
-          if(user.role==0){
+          if(Existinguser.role==0){
             res.redirect('/signup');
           }
           else{
@@ -107,9 +108,9 @@ exports.postSignUp = (req, res, next) => {
       return bcrypt
         .hash(pwd, 12)
         .then((hashedPwd) => {
-          user.email = data.email;
           user.password = hashedPwd;
           user.role = role;
+          user.email = data.email;
           if (role == 0) {
             const student = new Student();
             student.firstName = data.fname;

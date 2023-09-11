@@ -22,7 +22,7 @@
         <div class="row">
       <% } %>
       
-      <div class="col-md-4">
+      <div class="col-md-4" id="user-card-<%= user._id %>">
         <div class="card h-100 shadow mb-3">
           <img class="card-img-top img-thumbnail" src="https://img.freepik.com/premium-vector/happy-smiling-young-man-avatar-3d-portrait-man-cartoon-character-people-vector-illustration_653240-187.jpg?w=740" style="height: 250px;" alt="Can not display">
           <div class="card-body d-flex flex-column">
@@ -54,9 +54,10 @@
                   <% } %>
                 </div>
                 <div>
-                  <a href="/admin/delete/<%= user._id %>">
+                  <!-- <a href="/admin/delete/<%= user._id %>">
                     <button type="button" class="btn btn-danger">Delete</button>
-                  </a>
+                  </a> -->
+                  <button type="button" class="delete-user-btn btn btn-danger" data-user-id="<%=user._id%>">Delete</button>
                 </div>
               </div>
             </div>
@@ -76,7 +77,42 @@
   <% } %>
 </div>
 
-      
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  document.addEventListener("click", function (event) {
+    const target = event.target;
+
+    if (target.classList.contains("delete-user-btn")) {
+      const userId = target.getAttribute("data-user-id");
+      console.log(userId);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `/admin/delete/${userId}`, true);
+
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          if (response.success === true) {
+            const userCard = document.getElementById(`user-card-${userId}`);
+            if (userCard) {
+              userCard.remove();
+            }
+            alert(response.msg);
+          }
+          console.log(response);
+        } else {
+          console.error("Request failed with status:", xhr.status);
+        }
+      };
+
+      xhr.onerror = function () {
+        console.error("Request failed");
+      };
+
+      xhr.send();
+    }
+  });
+</script>
 
            
         

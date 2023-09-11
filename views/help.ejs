@@ -85,20 +85,31 @@
     </form>
   </div>
 </section>
+
+<div class="loader-container">
+  <div class="book-loader"></div>
+</div>
 <%-include('partials/footer.ejs');%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-    $('#helpfrm').on('submit',function(e){
-          e.preventDefault();
-          const question=$('#question').val();
-          if(question.length==0){
-            Swal.fire({
-              icon:'error',
-              text:'Question is Empty please type something',
-            })
-              return;
-          }
+  document.addEventListener('DOMContentLoaded', function() {
+    const helpfrm = document.getElementById('helpfrm');
+    const question = document.getElementById('question');
 
-          $('#helpfrm').off('submit').submit();
+    helpfrm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const questionValue = question.value;
+
+      if (questionValue.length === 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Question is empty. Please type something.',
         });
+        return;
+      }
+
+      helpfrm.submit();
+    });
+  });
 </script>

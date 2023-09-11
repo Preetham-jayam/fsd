@@ -1,9 +1,14 @@
 <%-include('../partials/header.ejs');%>
 
-<h1 class="display-3 text-center mt-5 mb-5" style="font-size: 4rem;">Courses Page</h1>
+<h1 class="display-3 text-center mt-5 mb-5" style="font-size: 4rem">
+  Courses Page
+</h1>
 
-<div style="text-align: center; margin: 10px; margin-bottom: 50px;">
-<form  action="/courses" method="get">
+<div class="loader-container">
+  <div class="book-loader"></div>
+</div>
+
+<div style="text-align: center; margin: 10px; margin-bottom: 50px">
   <div class="form-group">
     <label class="mr-5" for="sort">Sort by:</label>
     <select class="mr-2" name="sort" id="sort">
@@ -11,27 +16,109 @@
       <option value="price:asc">Price: Low to High</option>
       <option value="price:desc">Price: High to Low</option>
       <option value="title:asc">Title: A to Z</option>
-     
     </select>
-    <button type="submit" class="btn btn-primary">Sort</button>
+    <button type="button" id="sort-button" class="btn btn-primary">Sort</button>
   </div>
- 
-</form>
+</div>
+
+<div class="container">
+  <div
+    class="row g-4 justify-content-center"
+    id="course-list"
+    style="width: 100%"
+  >
+    <%if(courses.length > 0){%> <%for(let i=0; i < courses.length ;i++){%>
+    <div class="course-card col-lg-4 col-md-6">
+      <div class="course-item border-top">
+        <div class="position-relative overflow-hidden">
+          <img class="img-fluid" src="/<%=courses[i].Imageurl%>" alt="Image" />
+          <div
+            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
+          >
+            <a
+              href="/courseDetail/<%=courses[i]._id%>"
+              class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
+              style="border-radius: 30px"
+              >Read More</a
+            >
+          </div>
+        </div>
+        <div class="text-center p-4 pb-0 price">
+          <h3 class="mb-0">₹<%=courses[i].price%>.00</h3>
+          <div class="mb-3 rating">
+            <small class="fa fa-star orange"></small>
+            <small class="fa fa-star orange"></small>
+            <small class="fa fa-star orange"></small>
+            <small class="fa fa-star orange"></small>
+            <small class="fa fa-star-half orange"></small>
+            <small>(123)</small>
+          </div>
+          <h5 class="mb-4 title"><%=courses[i].title%></h5>
+        </div>
+        <div class="d-flex border-top">
+          <small class="flex-fill text-center border-end py-2 instructor"
+            ><i class="fa fa-user-tie text-primary me-2"></i>Dr
+            <%=courses[i].teacher.FullName%></small
+          >
+          <small class="flex-fill text-center border-end py-2 duration"
+            ><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small
+          >
+          <small class="flex-fill text-center py-2 students"
+            ><i class="fa fa-user text-primary me-2"></i
+            ><%=courses[i].students.length%> Students</small
+          >
+        </div>
+      </div>
+    </div>
+    <%}%> <%}else {%>
+
+    <h2>No Courses Found....</h2>
+    <%}%>
+  </div>
+
+   
 </div>
 
 
 
-<div class="container">
-  <div class="row g-4 justify-content-center" style="width: 100%">
-    <%if(courses.length > 0){%>
-      <%for(let i=0; i < courses.length ;i++){%>
-        <div class="course-card col-lg-4 col-md-6 ">
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    const loaderContainer = $(".loader-container");
+    
+    function showLoader() {
+        loaderContainer.show(); 
+    }
+
+    function hideLoader() {
+        loaderContainer.hide(); 
+    }
+    
+    function loadCourses(sortBy) {
+      showLoader();
+      $.ajax({
+        url: "/courses", 
+        method: "GET",
+        data: { sort: sortBy }, 
+        success: function (data) {
+          hideLoader();
+          const courseList = $("#course-list");
+          courseList.empty(); 
+
+          if (data.courses.length > 0) {
+            data.courses.forEach(function (course) {
+              const courseItem = `
+            <div class="course-card col-lg-4 col-md-6 ">
           <div class="course-item  border-top">
             <div class="position-relative overflow-hidden">
-              <img class="img-fluid" src="/<%=courses[i].Imageurl%>" alt="Image" />
+              <img class="img-fluid" src="/${course.Imageurl}" alt="Image" />
               <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
                 <a
-                  href="/courseDetail/<%=courses[i]._id%>"
+                  href="/courseDetail/${course._id}"
                   class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
                   style="border-radius: 30px"
                   >Read More</a
@@ -39,7 +126,7 @@
               </div>
             </div>
             <div class="text-center p-4 pb-0 price">
-              <h3 class="mb-0">₹<%=courses[i].price%>.00</h3>
+              <h3 class="mb-0">₹${course.price}.00</h3>
               <div class="mb-3 rating">
                 <small class="fa fa-star orange"></small>
                 <small class="fa fa-star orange"></small>
@@ -48,27 +135,46 @@
                 <small class="fa fa-star-half orange"></small>
                 <small>(123)</small>
               </div>
-              <h5 class="mb-4 title"><%=courses[i].title%></h5>
+              <h5 class="mb-4 title">${course.title}</h5>
             </div>
             <div class="d-flex border-top">
               <small class="flex-fill text-center border-end py-2 instructor"
-                ><i class="fa fa-user-tie text-primary me-2"></i>Dr <%=courses[i].teacher.FullName%></small
+                ><i class="fa fa-user-tie text-primary me-2"></i>Dr ${course.teacher.FullName}</small
               >
               <small class="flex-fill text-center border-end py-2 duration"
                 ><i class="fa fa-clock text-primary me-2"></i>20 Hrs</small
               >
               <small class="flex-fill text-center py-2 students"
-                ><i class="fa fa-user text-primary me-2"></i><%=courses[i].students.length%> Students</small
+                ><i class="fa fa-user text-primary me-2"></i>${course.students.length} Students</small
               >
             </div>
           </div>
-        </div> 
-      <%}%>
-      <%}else  {%>
-        
-        <h2>No Courses Found....</h2>
-    <%}%>
-  </div>
-</div>
+        </div>
+            `;
+              courseList.append(courseItem);
+             
+            });
+          } else {
+            
+            courseList.append("<h2>No Courses Found....</h2>");
+          }
+        },
+
+        error: function (error) {
+          hideLoader();
+          console.error("Error loading courses:", error);
+        },
+      });
+    }
+
+    
+    $("#sort-button").on("click", function () {
+      const sortBy = $(sort).val();
+      loadCourses(sortBy); 
+    });
+
+    loadCourses("");
+  });
+</script>
 
 <%-include('../partials/footer.ejs');%>

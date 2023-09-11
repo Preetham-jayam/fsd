@@ -13,7 +13,7 @@ router.get("/accept/:id", isAuth, adminController.acceptTeacher);
 router.get("/decline/:id", isAuth, adminController.declineTeacher);
 router.get("/all/courses", isAuth, adminController.getAllCourses);
 router.get("/block/:id", isAuth, adminController.BlockUser);
-router.get("/delete/:uid", isAuth, adminController.DeleteUser);
+router.post("/delete/:uid", isAuth, adminController.DeleteUser);
 router.get("/course/delete/:id", isAuth, adminController.deleteCourse);
 router.post("/search/users", isAuth, adminController.searchAdmin);
 router.get("/mail", isAuth, adminController.sendmail);

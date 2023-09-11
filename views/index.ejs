@@ -9,10 +9,10 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8">
-                                <h1 class="text-white text-uppercase mb-3 ">Best Online Courses</h1>
-                                <h1 class=" text-white ">Best Online Learning Platform</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">Get Educated Online From Your Home.Register now and Enroll the courses and lets break the records.</p>
-                                <a href="/signup" class="btn btn-light py-md-3 px-md-5 " style="background-color: #06bbcc; color: white;">Join Now</a>
+                              <h1 id="animation-text" class="text-white text-uppercase mb-3">Best Online Courses</h1>
+                              <h1 id="animation-title" class="text-white">Best Online Learning Platform</h1>
+                              <p id="animation-paragraph" class="fs-5 text-white mb-4 pb-2">Get Educated Online From Your Home.Register now and Enroll the courses and lets break the records.</p>
+                              <a id="animation-button" href="/signup" class="btn btn-light py-md-3 px-md-5" style="background-color: #06bbcc; color: white;">Join Now</a>
                             </div>
                         </div>
                     </div>
@@ -229,6 +229,7 @@
 
 
 <div class="container-xxl py-5 " >
+
     <div class="container">
       <div class="text-center">
         <h1 class="mb-5">Our Students Say!</h1>
@@ -321,6 +322,39 @@
       </div>
     </div>
   </div>
+
+  <div class="loader-container">
+    <div class="book-loader"></div>
+</div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const textElement = document.getElementById('animation-text');
+    const paragraphElement = document.getElementById('animation-paragraph');
+    const buttonElement = document.getElementById('animation-button');
+    const titleElement = document.getElementById('animation-title');
+
+    
+    function addSlideDownClass() {
+        textElement.classList.add('slide-down');
+        paragraphElement.classList.add('slide-down');
+        buttonElement.classList.add('slide-down');
+        titleElement.classList.add('slide-down');
+    }
+
+    textElement.classList.add('slide-in-up');
+    paragraphElement.classList.add('slide-in-up');
+    buttonElement.classList.add('slide-in-up');
+    titleElement.classList.add('slide-in-up');
+
+    setTimeout(addSlideDownClass, 500); 
+});
+
+
+
+
+
+  </script>
  
 
 

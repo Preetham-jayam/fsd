@@ -85,19 +85,41 @@ function playVideo(event, lessonId,studentId) {
   });
 }
 
-function updateLessonChecked(lessonId) {
-  fetch('/lessons/' + lessonId, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ checked: 1 })
-  })
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error(error));
+// function updateLessonChecked(lessonId) {
+//   fetch('/lessons/' + lessonId, {
+//     method: 'PUT',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({ checked: 1 })
+//   })
+//   .then(response => response.json())
+//   .then(data => console.log(data))
+//   .catch(error => console.error(error));
 
+// }
+
+function updateLessonChecked(lessonId) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('PUT', '/lessons/' + lessonId, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      const data = JSON.parse(xhr.responseText);
+      console.log(data);
+    } else {
+      console.error('An error occurred while updating the lesson');
+    }
+  };
+
+  xhr.onerror = function () {
+    console.error('Network error occurred');
+  };
+
+  xhr.send(JSON.stringify({ checked: 1 }));
 }
+
 
 
 
@@ -116,6 +138,12 @@ function coursePreviewVideo(){
     }
 }
 coursePreviewVideo();
+
+window.addEventListener('load', () => {
+  const loaderContainer = document.querySelector('.loader-container');
+  loaderContainer.style.display = 'none';
+});
+
 
 
 

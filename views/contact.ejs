@@ -77,62 +77,73 @@
     </div>
 </div>
 
+<div class="loader-container">
+    <div class="book-loader"></div>
+</div>
+
 
 
 <%-include('partials/footer.ejs');%>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-    $('#frmRegister').on('submit',function(e){
-          e.preventDefault();
-          const name=$('#name').val();
-          if(name.length==0){
-            Swal.fire({
-              icon:'error',
-              text:'Invalid name data',
-            })
-              return;
-          }
-
-          
-          const message = $('#message').val();
-            if (message.length == 0) {
-              Swal.fire({
-                icon: 'error',
-                text: 'Invalid message data.',
-              })
-              return;
-            }
-            
-            const desc = $('#Describe').val();
-            if (desc.length == 0) {
-              Swal.fire({
-                icon: 'error',
-                text: 'Invalid Describe data.',
-              })
-              return;
-            }
-          
-          
-
-            const email = $('#email').val();
-            if (email.length == 0) {
-              Swal.fire({
-                icon: 'error',
-                text: 'Invalid email data.',
-              })
-              return;
-            }
-
-            if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Invalid email data.',
-                })
-                return;
-              }
-              $('#frmRegister').off('submit').submit();
-              
+    document.addEventListener('DOMContentLoaded', function() {
+      const frmRegister = document.getElementById('frmRegister');
+      const name = document.getElementById('name');
+      const message = document.getElementById('message');
+      const desc = document.getElementById('Describe');
+      const email = document.getElementById('email');
+  
+      frmRegister.addEventListener('submit', function(e) {
+        e.preventDefault();
+  
+        const nameValue = name.value;
+        const messageValue = message.value;
+        const descValue = desc.value;
+        const emailValue = email.value;
+  
+        if (nameValue.length === 0) {
+          Swal.fire({
+            icon: 'error',
+            text: 'Invalid name data',
+          });
+          return;
+        }
+  
+        if (messageValue.length === 0) {
+          Swal.fire({
+            icon: 'error',
+            text: 'Invalid message data',
+          });
+          return;
+        }
+  
+        if (descValue.length === 0) {
+          Swal.fire({
+            icon: 'error',
+            text: 'Invalid Describe data',
+          });
+          return;
+        }
+  
+        if (emailValue.length === 0) {
+          Swal.fire({
+            icon: 'error',
+            text: 'Invalid email data',
+          });
+          return;
+        }
+  
+        if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailValue)) {
+          Swal.fire({
+            icon: 'error',
+            text: 'Invalid email data',
+          });
+          return;
+        }
+  
+        frmRegister.submit();
+      });
     });
-
-</script>
+  </script>
+  

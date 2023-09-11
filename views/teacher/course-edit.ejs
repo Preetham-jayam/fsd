@@ -133,47 +133,40 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
-  $('#frmCourse').on('submit', function (e) {
-    e.preventDefault();
-    const nameCourse=$('#txtNameCourse').val();
-    const title=$('#txtTitle').val();
-    let SaleCost=$('#txtprice').val();
-    if(nameCourse.length === 0 || title.length === 0 ){
-       Swal.fire({
-        icon: 'error',
-        text: 'Empty data.',
-      })
-      return;
-    }
-    
-      if(SaleCost<=0 || SaleCost >10000){
-       Swal.fire({
-        icon: 'error',
-        text: 'the amount is too large. Please re-write.',
-      })
-      return;
-     }
-     $('#frmCourse').off('submit').submit();
+  document.addEventListener('DOMContentLoaded', function() {
+    const frmCourse = document.getElementById('frmCourse');
+    const nameCourse = document.getElementById('txtNameCourse');
+    const title = document.getElementById('txtTitle');
+    const SaleCost = document.getElementById('txtPrice');
+
+    frmCourse.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nameCourseValue = nameCourse.value;
+      const titleValue = title.value;
+      const SaleCostValue = SaleCost.value;
+
+      if (nameCourseValue.length === 0 || titleValue.length === 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Empty data.',
+        });
+        return;
+      }
+
+      if (SaleCostValue <= 0 || SaleCostValue > 10000) {
+        Swal.fire({
+          icon: 'error',
+          text: 'The amount is too large. Please re-write.',
+        });
+        return;
+      }
+
+      frmCourse.submit();
+    });
   });
 </script>
-<script>
-$('#domain').on('change', function() {
-    let selected = $(this).val();
-    $("#categories option").each(function(){
-        let element =  $(this) ;
-        if (element.data("tag") != selected){
-            element.removeClass('visible');
-            element.addClass('hidden');
-            element.hide() ;
-        }else{
-            element.removeClass('hidden');
-            element.addClass('visible');
-            element.show();
-        }
-    });
-    let categories = $('#categories');
-    categories.prop('selectedIndex',categories.find("option.visible:eq(0)").index());
-}).triggerHandler('change');
-</script> 
+
+
 
 </html>

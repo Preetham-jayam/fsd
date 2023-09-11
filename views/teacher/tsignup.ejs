@@ -90,105 +90,113 @@
 </form>
   </section>
 
+  <div class="loader-container">
+    <div class="book-loader"></div>
+</div>
+
 
 <%-include("../partials/footer.ejs") %>;
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
+  document.addEventListener('DOMContentLoaded', function() {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const pwdreg= /^^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/;
-    $('#frmRegister').on('submit',function(e){
-          e.preventDefault();
-          const name=$('#name').val();
-          if(name.length==0){
-            Swal.fire({
-              icon:'error',
-              text:'Invalid name data',
-            })
-              return;
-          }
-          const password = $('#password').val();
-            if (password.length == 0) {
-              Swal.fire({
-                icon: 'error',
-                text: 'Invalid password data.',
-              })
-              return;
-            }
-            if( !pwdreg.test(password)){
-             Swal.fire({
-              icon:'error',
-              text:'Password contain minimum 6 characters and atleast one special character one number and one digit ',
-             })
-             return;
-          }
+    const pwdreg = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/;
+    const form = document.getElementById('frmRegister');
 
-            const phno=$('#phno').val();
-          let regph=/^[0-9]+$/;
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-          if(phno.length==0 ){
-             Swal.fire({
-              icon:'error',
-              text:'Phone Number is Empty ',
-             })
-             return;
-          }
-          if( !regph.test(phno)){
-             Swal.fire({
-              icon:'error',
-              text:'Phone Number must be in numbers ',
-             })
-             return;
-          }
+      const name = document.getElementById('name').value;
+      if (name.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Invalid name data',
+        });
+        return;
+      }
 
+      const password = document.getElementById('password').value;
+      if (password.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Invalid password data.',
+        });
+        return;
+      }
+      if (!pwdreg.test(password)) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Password must contain minimum 6 characters, at least one special character, one number, and one letter.',
+        });
+        return;
+      }
 
-          if(phno.length!=10 || !regph.test(phno)){
-             Swal.fire({
-              icon:'error',
-              text:'Phone Number must be 10 numbers ',
-             })
-             return;
-          }
+      const phno = document.getElementById('phno').value;
+      const regph = /^[0-9]+$/;
+      if (phno.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Phone Number is empty.',
+        });
+        return;
+      }
+      if (!regph.test(phno)) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Phone Number must be in numbers.',
+        });
+        return;
+      }
+      if (phno.length != 10 || !regph.test(phno)) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Phone Number must be 10 numbers.',
+        });
+        return;
+      }
 
+      const Instname = document.getElementById('instname').value;
+      if (Instname.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Invalid Inst Name',
+        });
+        return;
+      }
 
+      const confirm = document.getElementById('repassword').value;
+      if (password !== confirm) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Invalid confirm password data.',
+        });
+        return;
+      }
 
-            const Instname=$('#instname').val();
-            if(Instname.length == 0){
-              Swal.fire({
-                icon:'error',
-                text:'Invalid Inst Name',
-              })
-              return;
-            }
-            const confirm = $('#repassword').val();
-            if (password !== confirm) {
-              Swal.fire({
-                icon: 'error',
-                text: 'Invalid confirm password data.',
-              })
-              return;
-            }
+      const email = document.getElementById('emailId').value;
+      if (email.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Invalid email data.',
+        });
+        return;
+      }
 
-            const email = $('#emailId').val();
-            if (email.length == 0) {
-              Swal.fire({
-                icon: 'error',
-                text: 'Invalid email data.',
-              })
-              return;
-            }
+      if (!mailformat.test(email)) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Invalid email data.',
+        });
+        return;
+      }
 
-            if (!mailformat.test(email)) {
-                Swal.fire({
-                  icon: 'error',
-                  text: 'Invalid email data.',
-                })
-                return;
-              }
-              $('#frmRegister').off('submit').submit();
-             
+      
+      form.submit();
     });
+  });
 </script>
+
 
 
 </html>

@@ -373,22 +373,38 @@ exports.postsubmitQuiz = (req, res) => {
     });
 };
 
+// exports.postAddreview = (req, res) => {
+//   const { rating, comment, student } = req.body;
+//   const course = req.params.id;
+//   const reviews = new review({ course, student, rating, comment });
+
+//   reviews
+//     .save()
+//     .then(() => {
+//       // req.flash("success", "Review added successfully");
+//       // res.redirect(`/student/courseContent/${course}`);
+//       res.status(200).send({success:true,msg:"Review added succesfully"});
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       req.flash("error", "Unable to add review");
+//       res.redirect(`/student/courseContent/${course}`);
+//     });
+// };
+
 exports.postAddreview = (req, res) => {
   const { rating, comment, student } = req.body;
   const course = req.params.id;
-console.log(student);
   const reviews = new review({ course, student, rating, comment });
 
   reviews
     .save()
     .then(() => {
-      req.flash("success", "Review added successfully");
-      res.redirect(`/student/courseContent/${course}`);
+      res.status(200).json({ success: true, msg: "Review added successfully" });
     })
     .catch((err) => {
-      console.log(err);
-      req.flash("error", "Unable to add review");
-      res.redirect(`/student/courseContent/${course}`);
+      console.error(err);
+      res.status(500).json({ success: false, msg: "Unable to add review" });
     });
 };
 
