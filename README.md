@@ -51,12 +51,12 @@ Since we are using online mongodb cluster so anyone can use that data will be st
    - Admin able to send notifications to students via gmail
    - Admin able to approve teacher
 
-some Teacher Details:
+Some Teacher Details:
 1.krish@gmail.com,krishna@123
 2.teacher@gmail.com,teacher@123
 3.madhu@gmail.com,madhu@123
 
-some student details:
+Some student details:
 1.student@gmail.com,stu@123
 2.jayam@gmail.com,jayam@321
 
