@@ -176,17 +176,20 @@
   document.addEventListener('DOMContentLoaded', function() {
     const frmCourse = document.getElementById('frmCourse');
     const question = document.getElementById('Question');
-    const qnoption = document.getElementById('qnoption');
-    const marks = document.getElementById('txtSaleCost');
+    const marks = document.getElementById('marks');
+    
 
     frmCourse.addEventListener('submit', function(e) {
       e.preventDefault();
 
       const questionValue = question.value;
-      const qnoptionValue = qnoption.value;
       const marksValue = marks.value;
+      const qnoption1=document.getElementById('qnoption1').value;
+      const qnoption2=document.getElementById('qnoption2').value;
+      const qnoption3=document.getElementById('qnoption3').value;
+      const qnoption4=document.getElementById('qnoption4').value;
 
-      if (questionValue.length === 0 || qnoptionValue.length === 0) {
+      if (questionValue.length === 0 || qnoption1.length===0 || qnoption2.length===0||qnoption3.length===0||qnoption4.length===0 ) {
         Swal.fire({
           icon: 'error',
           text: 'Empty data.',
