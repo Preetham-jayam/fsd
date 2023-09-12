@@ -138,6 +138,7 @@
     const nameCourse = document.getElementById('txtNameCourse');
     const title = document.getElementById('txtTitle');
     const SaleCost = document.getElementById('txtPrice');
+    const Description=document.getElementById('txtDescription');
 
     frmCourse.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -145,8 +146,9 @@
       const nameCourseValue = nameCourse.value;
       const titleValue = title.value;
       const SaleCostValue = SaleCost.value;
+      const DescriptionValue=Description.value;
 
-      if (nameCourseValue.length === 0 || titleValue.length === 0) {
+      if (nameCourseValue.length === 0 || titleValue.length === 0 || DescriptionValue.length ===0) {
         Swal.fire({
           icon: 'error',
           text: 'Empty data.',
