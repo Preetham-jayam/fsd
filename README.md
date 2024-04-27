@@ -57,7 +57,7 @@ some Teacher Details:
 3.madhu@gmail.com,madhu@123
 
 some student details:
-1.stuident@gmail.com,student@123
+1.vamsi@gmail.com,vamsi@123
 2.jayam@gmail.com,jayam@321
 
 admin details:
