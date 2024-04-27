@@ -84,79 +84,88 @@ exports.gettsignup = (req, res, next) => {
 
 exports.postSignUp = (req, res, next) => {
   const data = req.body;
+  console.log(data);
   const role = data.role;
   const email = data.email;
   const pwd = data.pwd;
-  const user = new User();
 
   User.findOne({ email: email })
-    .then((user) => {
-      if (user) {
-        req.flash("error", "User with this email already exists please enter another");
+    .then((existingUser) => {
+      if (existingUser) {
+        req.flash("error", "User with this email already exists. Please enter another email.");
         req.session.save(() => {
-          if(user.role==0){
-            res.redirect('/signup');
+          if (existingUser.role == 0) {
+            return res.redirect('/signup');
+          } else {
+            return res.redirect('/tsignup');
           }
-          else{
-            res.redirect('/tsignup');
-          }
-         
         });
         return;
       }
-      return bcrypt
-        .hash(pwd, 12)
+      bcrypt.hash(pwd, 12)
         .then((hashedPwd) => {
-          user.email = data.email;
-          user.password = hashedPwd;
-          user.role = role;
+          const newUser = new User({
+            email: email,
+            password: hashedPwd,
+            role: role
+          });
           if (role == 0) {
-            const student = new Student();
-            student.firstName = data.fname;
-            student.lastName = data.lname;
-            student.phoneNo = data.phno;
-            student.address = data.address;
-            student
-              .save()
+            const student = new Student({
+              firstName: data.fname,
+              lastName: data.lname,
+              phoneNo: data.phno,
+              address: data.address
+            });
+            student.save()
               .then((result) => {
                 console.log(result);
+                newUser.student = result._id;
+                newUser.save()
+                  .then((userResult) => {
+                    console.log(userResult);
+                    req.flash("success", "Registration successful. Please login to study.");
+                    return res.redirect("/login");
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               })
               .catch((err) => {
                 console.log(err);
               });
-            user.student = student;
           } else if (role == 1) {
-            const teacher = new Teacher();
-            teacher.FullName = data.fname;
-            teacher.InstName = data.instname;
-            teacher.phoneNo = data.phno;
-            teacher
-              .save()
+            const teacher = new Teacher({
+              FullName: data.fname,
+              InstName: data.instname,
+              phoneNo: data.phno
+            });
+            teacher.save()
               .then((result) => {
                 console.log(result);
+                newUser.teacher = result._id;
+                newUser.save()
+                  .then((userResult) => {
+                    console.log(userResult);
+                    req.flash("success", "Registration successful. Please login to study.");
+                    return res.redirect("/login");
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               })
               .catch((err) => {
                 console.log(err);
               });
-
-            user.teacher = teacher;
           }
-          return user.save();
         })
-        .then((result) => {
-          console.log(result);
-          req.flash(
-            "success",
-            "Registration Succesfull Please Login to study "
-          );
-          return res.redirect("/login");
+        .catch((err) => {
+          console.log(err);
         });
     })
     .catch((err) => {
       console.log(err);
     });
 };
-
 exports.Logout = (req, res) => {
   req.session.destroy((err) => {
     res.redirect("/");
